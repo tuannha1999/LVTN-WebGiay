@@ -49,11 +49,11 @@ Route::post('admin','AdminController@postLogin')->name('login-admin');
 //
 Route::middleware('checkloginadmin')->group(function(){
 
+Route::get('index','AdminController@index')->name('noi-dung-admin');
 Route::get('logout','AdminController@getLogout');
-
-//donhang
-Route::get('danhsachdonhang','DonhangController@getDSDonhang')->name('danh-sach-don-hang');//index admin
 //sanpham
+Route::get('danhsachsanpham','QLsanphamController@getDSSanpham')->name('danh-sach-san-pham');
+//
 });
 
 //Admin

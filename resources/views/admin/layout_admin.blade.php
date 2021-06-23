@@ -27,7 +27,7 @@
 <!--Header-->
 <nav class="navbar navbar-expand-sm justify-content-center sticky-top ">
     <div class="container ">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="{{ url('/index' )}}">
         <img src="/img/logo_website.png" height="50">
         </a>
 
@@ -42,7 +42,7 @@
 
                             @if (Auth::check())
                             <li class="nav-item dropdown">
-                            <a class="nav-link" href="{{ url('/danhsachdonhang' )}}">HI {{ Auth::user()->name}}                   <i class="fas fa-user fa-2x"></i> </a>
+                            <a class="nav-link" href="{{ url('/index' )}}">HI {{ Auth::user()->name}}                   <i class="fas fa-user fa-2x"></i> </a>
                             <ul class="dropdown-menu">
                                 <li><a  class="nav-link" href="{{url('/logout' )}}">Đăng xuất</a></li>
                             </ul>
@@ -60,12 +60,12 @@
     </div>
 </nav>
 
-<!-- admin -->
-@yield('list_donhang')
+<!-- body -->
+@yield('sidebar')
 
 
 
-<!-- admin -->
+<!-- body -->
 
 
 
@@ -90,6 +90,7 @@
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
 
 <!-- JavaScript -->
-
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </body>
 </html>

@@ -14,6 +14,7 @@ class AdminController extends Controller
      */
     public function index()
     {
+        return view('admin.home');
 
     }
 
@@ -47,7 +48,7 @@ class AdminController extends Controller
         
         if(Auth::attempt($credential))
         {
-            return redirect()->route('danh-sach-don-hang');
+            return redirect()->route('noi-dung-admin');
         }
        
             return redirect()->back()->with('thongbao','Email hoặc Password không chính xác.');

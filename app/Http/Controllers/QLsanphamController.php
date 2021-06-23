@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
-class DonhangController extends Controller
+class QLsanphamController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class DonhangController extends Controller
     {
         //
     }
-    public function getDSDonhang()
+    public function getDSSanpham()
     {
         //index admin
         // if(Gate::allows('is-admin')){
@@ -23,7 +23,7 @@ class DonhangController extends Controller
         // }else{
         //     abort(403);
         // }
-        return view('pages_admin.donhang.list_donhang');
+        return view('pages_admin.sanpham.list_sanpham');
 
     }
     /**
