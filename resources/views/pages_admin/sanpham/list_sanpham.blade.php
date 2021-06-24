@@ -1,5 +1,4 @@
 @extends('admin.layout_admin')
-@extends('admin.sidebar')
-@section('danhsachsanpham')
+@section('home')
 <h2>DANH SÁCH SẢN PHẨM</h2>
 @endsection
