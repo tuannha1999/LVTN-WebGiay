@@ -2,55 +2,68 @@
 
 namespace App\Http\Controllers;
 
-use App\Cart;
+use App\Hinhanh;
 use App\Sanpham;
+use App\Size;
+use App\Loaisanpham;
 use Session;
+use Cart;
 
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
     //
-    public function themGiohang(Request $req, $id, $quanty)
+    public function themGiohang(Request $req)
     {
-        $product = Sanpham::where('masp', $id)->first();
-        if ($product != null) {
-            $oldCart = Session('Cart') ? Session('Cart') : null;
-            $newCart = new Cart($oldCart);
-            $newCart->addCart($product, $id, $quanty);
-            $req->Session()->put('Cart', $newCart);
+        $product = Sanpham::where('id', $req->id)->first();
+        $img = Hinhanh::where('id_sp', $req->id)->where('avt', 1)->first();
+        $size = Size::where('id', $req->size)->first();
+        if ($size->soluong >= $req->qty) {
+            Cart::add(
+                [
+                    'id' => $product->id,
+                    'name' => $product->tensp,
+                    'qty' => $req->qty,
+                    'price' => $product->giakm == 0 ? $product->giaban : $product->giakm,
+                    'options' => ['size' => $size, 'images' => $img->name]
+                ]
+            );
+            return response()->json(['success' => 'Đã thêm vào giỏ hàng', 'data' => Cart::count()]);
         }
-        return view('pages.sanpham.cart');
+        return response()->json(['error' => 'Số lượng trong kho còn ' . $size->soluong . ' sản phẩm' .
+            '<br>' . 'Chúng tôi xin lỗi vì sự bất tiện này!']);
     }
     public function getCart()
     {
-        if (Session('Cart') != null) {
-            return view('pages.sanpham.cart');
-        }
-        $oldCart = Session('cart');
-        $cart = new Cart($oldCart);
-
-        return view('pages.sanpham.cart');
+        $loai_sp = Loaisanpham::all();
+        return view('pages.giohang.list_cart', compact('loai_sp'));
     }
-    public function xoaGiohang(Request $req, $id)
+    public function xoaGiohang($id)
     {
-        $oldCart = Session('Cart') ? Session('Cart') : null;
-        $newCart = new Cart($oldCart);
-        $newCart->deleteCart($id);
-        if (count($newCart->products) > 0) {
-            $req->Session()->put('Cart', $newCart);
-        } else {
-            $req->Session()->forget('Cart');
-        }
-        return redirect('cart');
+        Cart::remove($id);
+        return view('pages.giohang.cart');
     }
-    public function suaAllGiohang(Request $req)
+    public function qtyUp($rowId)
     {
-        foreach ($req->data as $item) {
-            $oldCart = Session('Cart') ? Session('Cart') : null;
-            $newCart = new Cart($oldCart);
-            $newCart->updateCart($item["key"], $item["value"]);
-            $req->Session()->put('Cart', $newCart);
+        $product = Cart::get($rowId);
+        $size = Size::where('id', $product->options->size->id)->first();
+        if ($size->soluong > $product->qty) {
+            $qty = $product->qty + 1;
+            Cart::update($rowId, $qty);
+            return view('pages.giohang.cart');
         }
+        return response()->json(['error' => 'Số lượng trong kho còn ' . $size->soluong . ' sản phẩm' .
+            '<br>' . 'Chúng tôi xin lỗi vì sự bất tiện này!']);
+    }
+    public function qtyDown($rowId)
+    {
+        $product = Cart::get($rowId);
+        if ($product->qty > 1) {
+            $qty = $product->qty - 1;
+            Cart::update($rowId, $qty);
+            return view('pages.giohang.cart');
+        }
+        return view('pages.giohang.cart');
     }
 }

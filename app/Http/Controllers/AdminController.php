@@ -48,6 +48,7 @@ class AdminController extends Controller
         
         if(Auth::attempt($credential))
         {
+            if (auth()->user()->is_admin == 1)
             return redirect()->route('noi-dung-admin');
         }
        

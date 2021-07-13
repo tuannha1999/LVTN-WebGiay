@@ -6,8 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" type="text/css" href="{{ asset ('/Bootstrap/css/bootstrap.css') }}">
+
     <link rel="stylesheet" type="text/css" href="{{ asset ('/css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset ('/css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset ('/css/owl.theme.default.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset ('/css/tagify.css') }}">
+
+
+
     <link rel="stylesheet" type="text/css" href="{{ asset ('/fontawesome/css/all.css') }}">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.css"/>
+
+
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -17,6 +28,38 @@
     ntegrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- khachhang  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
+    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" defer></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" defer></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"defer ></script>
+
+    <script>
+    error=false
+
+    function validate()
+    {
+    if(document.userForm.name.value !='' && document.userForm.email.value !='' && document.userForm.sdt.value !='')
+    document.userForm.btnsave.disabled=false
+    else
+    document.userForm.btnsave.disabled=true
+    }
+
+    function checkEmail()
+    {
+
+    }
+
+
+    </script>
+
+
+
+    <!-- khachhang  -->
     <title>
         @yield('title')
     </title>
@@ -51,11 +94,11 @@
                             <li class="nav-item">
                             <a class="nav-link" href="{{url('/admin')}}"><i class="fas fa-user fa-2x"></i></a>
                             </li>
-                            @endif	
+                            @endif
 
                 </ul>
             </div>
-        </div>    
+        </div>
 
     </div>
 </nav>
@@ -75,13 +118,13 @@
   Sản phẩm <i class="fa fa-caret-down"></i>
   </button>
   <div id="demoAcc" class="w3-hide w3-white w3-card">
-    <a href="{{ url('/danhsachsanpham') }}" class="btn w3-bar-item">Danh sách sản phẩm</a>
-    <a href="#" class="btn w3-bar-item">Quản lý kho</a>
-    <a href="#" class="btn w3-bar-item">Nhập hàng</a>
+    <a href="{{ url('/admin/danhsachsanpham') }}" class="btn w3-bar-item">Danh sách sản phẩm</a>
+    <a href="{{ url('/admin/khohang') }}" class="btn w3-bar-item">Xem kho hàng</a>
+    <a href="{{ url('/admin/dsphieunhap') }}" class="btn w3-bar-item">Nhập hàng</a>
     <a href="#" class="btn w3-bar-item">Danh mục</a>
   </div>
 
-  <a href="#" class="btn btn-secondary w3-bar-item">Khách hàng</a>
+  <a href="{{ url('/users') }}" class="btn btn-secondary w3-bar-item">Khách hàng</a>
   <a href="#" class="btn btn-secondary w3-bar-item">Nhà cung cấp</a>
   <a href="#" class="btn btn-secondary w3-bar-item">Khuyến mãi</a>
 
@@ -100,9 +143,9 @@ function myAccFunc() {
   if (x.className.indexOf("w3-show") == -1) {
     x.className += " w3-show";
     x.previousElementSibling.className += " w3-light-blue";
-  } else { 
+  } else {
     x.className = x.className.replace(" w3-show", "");
-    x.previousElementSibling.className = 
+    x.previousElementSibling.className =
     x.previousElementSibling.className.replace(" w3-light-blue", "");
   }
 }
@@ -111,9 +154,9 @@ function myAccFunc1() {
   if (x.className.indexOf("w3-show") == -1) {
     x.className += " w3-show";
     x.previousElementSibling.className += " w3-light-blue";
-  } else { 
+  } else {
     x.className = x.className.replace(" w3-show", "");
-    x.previousElementSibling.className = 
+    x.previousElementSibling.className =
     x.previousElementSibling.className.replace(" w3-light-blue", "");
   }
 }
@@ -129,6 +172,8 @@ function myAccFunc1() {
 <script type="text/javascript" src="{{asset('/Bootstrap/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset ('/Bootstrap/js/jquery-3.6.0.min.js') }}"></script>
 
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.js"></script>
 
 
 <!-- JavaScript -->
@@ -148,6 +193,7 @@ function myAccFunc1() {
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <!-- sidebar -->
+@stack('scripts')
 
 </body>
 </html>

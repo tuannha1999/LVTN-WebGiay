@@ -8,6 +8,10 @@
 
     <link rel="stylesheet" type="text/css" href="{{ asset ('/Bootstrap/css/bootstrap.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset ('/css/style.css') }}">
+
+    <link rel="stylesheet" type="text/css" href="{{ asset ('/css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset ('/css/owl.theme.default.min.css') }}">
+
     <link rel="stylesheet" type="text/css" href="{{ asset ('/fontawesome/css/all.css') }}">
 
 
@@ -27,7 +31,8 @@
 <body>
 <!--Header-->
     <nav class="navbar navbar-expand-sm justify-content-center sticky-top ">
-    <div class="container" >
+
+    <div class="container "  >
                 <a class="navbar-brand" href="{{ url('/')}}">
                     <img src="/img/logo_website.png" height="50">
                 </a>
@@ -43,8 +48,9 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link" href="{{ url('san-pham')}}">SẢN PHẨM</a>
                                 <ul class="dropdown-menu">
-                                    <li><a  class="nav-link" href="{{ url('loai-sanpham/1')}}">Giày</a></li>
-                                    <li><a  class="nav-link" href="{{ url('loai-sanpham/2')}}">Phụ kiện</a></li>
+                                    @foreach ($loai_sp as $item)
+                                    <li><a  class="nav-link" href="{{ url('loai-sanpham/'.$item->slug)}}">{{$item->tenloai}}</a></li>
+                                    @endforeach
                                 </ul>
                             </li>
                             <li class="nav-item">
@@ -65,14 +71,14 @@
                       </div>
                         <ul class="navbar-nav m-xl-auto">
 
-                           
+
                             @if (Auth::check())
                                 @if(Auth::user()->is_admin==1)
                                     <li class="nav-item">
                             		<a class="nav-link" href="{{url('/dangnhap')}}"><i class="fas fa-user fa-2x"></i></a>
                             	    </li>
                                 @else(Auth::user()->is_admin==0)
-                                
+
                                     <li class="nav-item dropdown">
                                     <a class="nav-link" href="{{ url('/profile' )}}"><i class="fas fa-user fa-2x"></i> </a>
                                     <ul class="dropdown-menu">
@@ -86,17 +92,16 @@
                             <a class="nav-link" href="{{url('/dangnhap')}}"><i class="fas fa-user fa-2x"></i></a>
                             </li>
                             @endif
-                            
-
-                            	
 
 
 
-                            <li class="nav-item ">
+
+
+                            <li class="nav-item">
                                 <a class="nav-link cart-head" style="position:relative;" href="{{URL('cart')}}">
                                     <i class="fas fa-shopping-bag fa-2x" ></i>
-                                    @if (Session::has('Cart')!=null)
-                                    <span id="total-quanty-show" class="hd-cart-count">{{Session::get('Cart')->totalQuanty}}</span>
+                                    @if (Cart::count()>0)
+                                    <span id="total-quanty-show" class="hd-cart-count">{{Cart::count()}}</span>
                                     @else
                                     <span id="total-quanty-show"  class="hd-cart-count">0</span></i>
                                     @endif
@@ -118,52 +123,50 @@
 
 <!--Container-->
 <!--Footer-->
-<hr class="my-4">
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 mt-3 p-2">
-                <h5 class="text-uppercase">Liên hệ</h5>
-                <p><i class="far fa-envelope"></i> Email: tuannha1234@gmail.com</p>
-                <p><i class="fas fa-phone"></i> Hotline: 0376440058</p>
-                <p><i class="fas fa-home"></i> Đ/c: 180 Cao Lỗ, P4, Quận 8, Tp HCM</p>
-                <p><i class="fas fa-phone"></i> Điện thoại:</p>
-            </div>
-            <div class="col-md-4 mt-3">
-                <h5 class="text-uppercase"><a class="nav-link text-color" href="#">Trang chủ</a></h5>
-                <ul class="list-unstyled">
-                    <li>
-                        <a class="nav-link text-color" href="#">Giới thiệu</a>
-                    </li>
-                    <li>
-                        <a class="nav-link text-color" href="#">Sản phẩm</a>
-                    </li>
-                    <li>
-                        <a class="nav-link text-color" href="#">Tìm kiếm đơn hàng</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-md-4 mt-3 text-center p-2">
-                <h5 class="text-uppercase">Follow US</h5>
-                <a href="#"><i class="fab fa-facebook-square fa-3x"></i></a>
-                <a href="#"><i class="fab fa-instagram-square fa-3x"></i></a>
-                <a href="#"><i class="fab fa-youtube fa-3x"></i></a>
+    <hr class="my-4">
+    <footer>
+        <div class="container" >
+            <div class="row p-4" >
+                <div class="col-md-4 mt-3 p-2">
+                    <h5 class="text-uppercase">Liên hệ</h5>
+                    <p><i class="far fa-envelope"></i> Email: tuannha1234@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> Hotline: 0376440058</p>
+                    <p><i class="fas fa-home"></i> Đ/c: 180 Cao Lỗ, P4, Quận 8, Tp HCM</p>
+                    <p><i class="fas fa-phone"></i> Điện thoại:</p>
+                </div>
+                <div class="col-md-4 mt-3">
+                    <h5 class="text-uppercase"><a class="nav-link text-color" href="#">Trang chủ</a></h5>
+                    <ul class="list-unstyled">
+                        <li>
+                            <a class="nav-link text-color" href="#">Giới thiệu</a>
+                        </li>
+                        <li>
+                            <a class="nav-link text-color" href="#">Sản phẩm</a>
+                        </li>
+                        <li>
+                            <a class="nav-link text-color" href="#">Tìm kiếm đơn hàng</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mt-3 text-center p-2">
+                    <h5 class="text-uppercase">Follow US</h5>
+                    <a href="#"><i class="fab fa-facebook-square fa-3x"></i></a>
+                    <a href="#"><i class="fab fa-instagram-square fa-3x"></i></a>
+                    <a href="#"><i class="fab fa-youtube fa-3x"></i></a>
+                </div>
             </div>
         </div>
-    </div>
-    <!--Coppyright-->
-    <hr>
-    <div class="text-center p-2" >
-    © Bản quyền thuộc về Tuấn Nhã - Tấn Tài | D17_TH06
-  </div>
-  <!--Coppyright-->
-</footer>
+        <!--Coppyright-->
+        <hr>
+        <div class="text-center p-2" >
+        © Bản quyền thuộc về Tuấn Nhã - Tấn Tài | D17_TH06
+      </div>
+      <!--Coppyright-->
+    </footer>
 <!--Footer-->
 <script type="text/javascript" src="{{asset('/Bootstrap/js/bootstrap.js') }}"></script>
 <script type="text/javascript" src="{{asset('/Bootstrap/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset ('/Bootstrap/js/jquery-3.6.0.min.js') }}"></script>
-<script src="{{ asset ('/Bootstrap/js/main.js') }}"></script>
-
 
 
 
@@ -179,24 +182,7 @@
 <!-- Bootstrap theme -->
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
 
-<!-- JavaScript -->
-<script>
-    function addCart(id)
-    {
-        $.ajaxSetup({
-            headers: {
-                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
-            }
-        });
-        $.ajax({
-            url:'/them-giohang/'+id+'/'+$("#quanty-item").val(),
-            type:'GET',
-        }).done(function(response){
 
-        location.reload();
-        alertify.success('Thêm vào giỏ hàng thành công');
-        });
-    }
-</script>
+<!-- JavaScript -->
 </body>
 </html>

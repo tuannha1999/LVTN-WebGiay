@@ -8,9 +8,9 @@ class Dondathang extends Model
 {
     //
     protected $table = 'dondathang';
-    protected $primaryKey = 'madh';
+    protected $primaryKey = 'id';
     public function sanpham()
     {
-        return $this->belongsToMany(Sanpham::class, 'chitietdondathang', 'madh', 'masp');
+        return $this->belongsToMany(Sanpham::class, 'chitietdondathang', 'id_dh', 'id_sp')->withPivot('soluong', 'size');
     }
 }

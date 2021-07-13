@@ -15,47 +15,92 @@ NT store
 <h2>SẢN PHẨM MỚI</h2>
 <hr>
 	<div class="row">
-	            	@foreach($sp as $key=>$value)
-	            	<div class="col-md-3 col-sm-6">
+        <div class="owl-carousel owl-theme">
+	            	@foreach($sp as $sp)
 	                <div class="productinfo text-center">
-                        <a href="{{ url('chitiet-sanpham/'.$value->masp)}}" class="link">
-						  <img class="card-img-top" src="{{asset ('/img/sanpham/'.$value->hinhanh) }}" alt="Card image">
+                        <a href="{{ url('chitiet-sanpham/'.$sp->id)}}" class="link">
+                            @foreach ($sp->Hinhanh as $img )
+                            @if ($img->avt===1)
+                                 <img class="card-img-top" src="{{asset ('storage/'.$img->name) }}" alt="Card image">
+                            @endif
+                            @endforeach
 						  <div class="card-body">
-						    <h4 class="card-title">{{$value->tensp}}</h4>
-                          </a>
-                          <p class="text-danger">{{ number_format($value->giaban,0,'.','.').' '.'đ' }}</p>
-						</div>
-					</div>
-
-		</div>
-		@endforeach
-        <div class="col-md-12 text-center">
-            <a href="#"><button type="button" class="btn btn-outline-secondary">Xem tất cả |  <i class="fas fa-arrow-right"></i></button></a>
+                                @php
+                               $total=0;
+                                foreach ($sp->size as $size)
+                                {
+                                    $total+=$size->soluong;
+                                }
+                                    if ($total==0) {
+                                        echo '<h5 class="card-title text-danger" >[HẾT HÀNG]</h5>';
+                                    }
+                                @endphp
+						    <h4 class="card-title">{{$sp->tensp}}</h4>
+                        </a>
+                             @if ($sp->giakm===0)
+                                  <p style="color: red;">{{ number_format($sp->giaban,0,'.','.').' '.'đ' }}</p>
+                              @else
+                                  <p><del>{{ number_format($sp->giaban,0,'.','.').' '.'đ' }}</del></p>
+                                 <p style="color: red;">{{ number_format($sp->giakm,0,'.','.').' '.'đ' }}</p>
+                              @endif
+                    </div>
+		    </div>
+		            @endforeach
         </div>
     </div>
 <h2 >SẢN PHẨM BÁN CHẠY</h2>
 <hr>
 	<div class="row">
-	            	@foreach($sp_banchay as $key=>$value)
-	            	<div class="col-md-3 col-sm-6">
+        <div class="owl-carousel owl-theme">
+	    @foreach($sp_banchay as $sp)
 	                <div class="productinfo text-center">
-                        <a href="{{ url('chitiet-sanpham/'.$value->masp)}}" class="link">
-						  <img class="card-img-top" src="{{asset ('/img/sanpham/'.$value->hinhanh) }}" alt="Card image">
+                        <a href="{{ url('chitiet-sanpham/'.$sp->id)}}" class="link">
+                            @foreach ($sp->Hinhanh as $img )
+                            @if ($img->avt===1)
+                                 <img class="card-img-top" src="{{asset ('storage/'.$img->name) }}" alt="Card image">
+                            @endif
+                            @endforeach
 						  <div class="card-body">
-						    <h4 class="card-title">{{$value->tensp}}</h4>
-                          </a>
-                          <p class="text-danger">{{ number_format($value->giaban,0,'.','.').' '.'đ' }}</p>
-						</div>
+                            @php
+                            $total=0;
+                             foreach ($sp->size as $size)
+                             {
+                                 $total+=$size->soluong;
+                             }
+                                 if ($total==0) {
+                                     echo '<h5 class="card-title text-danger" >[HẾT HÀNG]</h5>';
+                                 }
+                             @endphp
+						        <h4 class="card-title">{{$sp->tensp}}</h4>
+                              </a>
+                              @if ($sp->giakm===0)
+                                    <p style="color: red;">{{ number_format($sp->giaban,0,'.','.').' '.'đ' }}</p>
+                              @else
+                                     <p><del>{{ number_format($sp->giaban,0,'.','.').' '.'đ' }}</del></p>
+                                    <p style="color: red;">{{ number_format($sp->giakm,0,'.','.').' '.'đ' }}</p>
+                              @endif
+                            </div>
 					</div>
-
-		</div>
 		@endforeach
-        <div class="col-md-12 text-center">
-            <a href="#"><button type="button" class="btn btn-outline-secondary">Xem tất cả |  <i class="fas fa-arrow-right"></i></button></a>
-        </div>
+    </div>
+
 </div>
 </div>
 <!--Container-->
+<script src="{{ asset ('/js/owl.carousel.min.js') }}" type="text/javascript"></script>
+
+<script>
+     $('.owl-carousel').owlCarousel({
+        loop:false,
+        margin:10,
+        nav:true,
+        responsive:{
+            460:{
+                items:4
+            },
+        }
+    })
+</script>
 @endsection
 
 

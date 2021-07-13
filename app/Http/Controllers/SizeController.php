@@ -2,38 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
-class QLsanphamController extends Controller
+use App\Size;
+use Yajra\DataTables\DataTables;
+
+class SizeController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, $id)
     {
         //
     }
-    public function getDSSanpham()
-    {
-        //index admin
-        // if(Gate::allows('is-admin')){
-        //     return view('pages_admin.donhang.list_donhang');
-        // }else{
-        //     abort(403);
-        // }
-        return view('pages_admin.sanpham.list_sanpham');
 
-    }
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id, $size)
     {
-        //
+        $kt_size = Size::Where('id_sp', $id)->get();
+        foreach ($kt_size as $item) {
+            if ($item->size == $size) {
+                return false;
+            }
+        }
+        $sizenew = new Size();
+        $sizenew->size = $size;
+        $sizenew->soluong = 0;
+        $sizenew->id_sp = $id;
+        $sizenew->save();
     }
 
     /**
@@ -90,5 +92,7 @@ class QLsanphamController extends Controller
     public function destroy($id)
     {
         //
+        $delete_size = Size::where('id', $id)->delete();
+        return response()->json($delete_size);
     }
 }
