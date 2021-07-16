@@ -28,19 +28,17 @@
     <input type="text" class="form-control @error('tonggd') is-invalid @enderror" id="basic-url" aria-describedby="basic-addon3" value="{{$chitiet_kh->tonggd}}" name="tonggd" readonly>     
     </div>
 
-    <!-- <table class="display" id="ddh-list" style="width:100%">
+    <table class="display" id="ddh-list" style="width:100%">
         <thead>
             <tr>
                 <th>Mã đơn hàng</th>
                 <th>Tên khách hàng</th>
-                <th>Địa chỉ</th>
                 <th>Số điện thoại</th>
-                <th>ID KH</th>
                 <th>Tác vụ</th>
 
             </tr>
         </thead>
-    </table> -->
+    </table>
     
     </div>
 </div>
@@ -49,3 +47,47 @@
 </div>
 
 @endsection
+@push('scripts')
+<script type="text/javascript">
+ $(document).ready( function () {
+              $.ajaxSetup({
+                 headers: {
+                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                 }
+             });
+                $('#ddh-list').DataTable({
+                   processing: true,
+                   serverSide: true,
+                   ajax : '{!! route('getCTDonhang.getChitietkhachhang') !!}',
+                   columns: [
+                    { data: 'id', name: 'id' },
+                    { data: 'name', name: 'users.name'},
+                    { data: 'users', name: 'users.sdt'},
+                    {data: 'action',name: 'action',orderable: false},
+
+                   ]
+               });
+
+ });
+      /* $('body').on('click', '#delete-user', function () {
+
+             var user_id = $(this).data("id");
+
+             if(confirm("Bạn có chắc muốn xóa khách hàng này !")){
+               $.ajax({
+                   type: "GET",
+                   url:'/admin/danhsachkhachhang-delete/'+user_id,
+                   success: function (data) {
+                   var oTable = $('#user-list').dataTable();
+                   oTable.fnDraw(false);
+                  //console.log(user_id);
+                   },
+                    error: function (data) {
+                        console.log('Error:', data);
+                    }
+               });
+             }
+        });
+ */
+</script>
+@endpush

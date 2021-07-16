@@ -83,13 +83,11 @@ class QLkhachhangController extends Controller
     public function getChitietkhachhang($id, Request $request)
     {
         //User::latest()->where('is_admin',0)->get()
-        $chitiet_kh = User::where('id', $id)->first();
-/*         $chitiet_kh = User::with('dondathang')->where('id', $id)->first();
- */
-        /* if ($request->ajax()) {
-            $chitiet_kh = User::with('dondathang')->where('id', $id)->first();
+        // $chitiet_kh = User::where('id', $id)->first();
+        $chitiet_kh = User::with('dondathang')->where('id', $id)->first();
 
-            $dondathang_kh = Dondathang::latest()->with('users')->where('id_kh', $id)->get();
+        if ($request->ajax()) {
+            $dondathang_kh = Dondathang::with('users')->get();
             return Datatables::of($dondathang_kh)
                 ->addColumn('action', function ($dondathang_kh) {
                    return '<a class="btn btn-default"  id="edit-user" data-toggle="tooltip" href="' . URL('/admin/danhsachkhachhang-detail/show/'.$dondathang_kh->id) . '"><i class="fa fa-eye"></i></a>
@@ -101,10 +99,10 @@ class QLkhachhangController extends Controller
                 })->rawColumns(['action'])->make(true);
             
             
-            } */
+            }
         return view(
             'pages_admin.khachhang.details_khachhang',
-             compact('chitiet_kh',)
+             compact('chitiet_kh')
         );
     }
     /**

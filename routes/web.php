@@ -56,7 +56,7 @@ Route::middleware('checkloginadmin')->group(function () {
     //khachhang
     Route:: get('admin/danhsachkhachhang','QLkhachhangController@getDanhsach')->name('getKhachhang');
 
-    Route:: get('admin/danhsachkhachhang-detail/{id}','QLkhachhangController@getChitietkhachhang');
+    Route:: get('admin/danhsachkhachhang-detail/{id}','QLkhachhangController@getChitietkhachhang')->name('getDSdonhang.getChitietkhachhang');
 
     Route:: get('admin/danhsachkhachhang-edit/{id}','QLkhachhangController@getSua');
     Route:: post('admin/danhsachkhachhang-edit/{id}','QLkhachhangController@edit');

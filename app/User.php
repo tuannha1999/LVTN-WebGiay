@@ -40,8 +40,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Phieunhap::class, 'id_user');
     }
-    /* public function dondathang()
+    public function dondathang()
     {
-        return $this->hasMany(Dondathang::class, 'id_kh');
-    } */
+        return $this->hasMany(Dondathang::class, 'id');
+    }
 }
