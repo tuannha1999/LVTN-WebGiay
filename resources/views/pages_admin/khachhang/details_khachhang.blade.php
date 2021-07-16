@@ -31,10 +31,10 @@
     <table class="display" id="ddh-list" style="width:100%">
         <thead>
             <tr>
-                <th>Mã đơn hàng</th>
+                <!-- <th>Mã đơn hàng</th>
                 <th>Tên khách hàng</th>
                 <th>Số điện thoại</th>
-                <th>Tác vụ</th>
+                <th>Tác vụ</th> -->
 
             </tr>
         </thead>
@@ -49,26 +49,7 @@
 @endsection
 @push('scripts')
 <script type="text/javascript">
- $(document).ready( function () {
-              $.ajaxSetup({
-                 headers: {
-                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                 }
-             });
-                $('#ddh-list').DataTable({
-                   processing: true,
-                   serverSide: true,
-                   ajax : '{!! route('getCTDonhang.getChitietkhachhang') !!}',
-                   columns: [
-                    { data: 'id', name: 'id' },
-                    { data: 'name', name: 'users.name'},
-                    { data: 'users', name: 'users.sdt'},
-                    {data: 'action',name: 'action',orderable: false},
 
-                   ]
-               });
-
- });
       /* $('body').on('click', '#delete-user', function () {
 
              var user_id = $(this).data("id");
