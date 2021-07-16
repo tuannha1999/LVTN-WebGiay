@@ -48,9 +48,10 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link" href="{{ url('san-pham')}}">SẢN PHẨM</a>
                                 <ul class="dropdown-menu">
-                                    @foreach ($loai_sp as $item)
+                                @foreach ($loai_sp as $item)
                                     <li><a  class="nav-link" href="{{ url('loai-sanpham/'.$item->slug)}}">{{$item->tenloai}}</a></li>
-                                    @endforeach
+                                @endforeach
+
                                 </ul>
                             </li>
                             <li class="nav-item">

@@ -49,14 +49,17 @@ class SanphamController extends Controller
                     return '<a href="javascript:void(0);" id="delete-product" data-toggle="tooltip"
                     data-original-title="Delete" data-id="' . $sp->id . ' " class="delete">
                     <i class="fas fa-trash-alt"></i></a>';
+
                 })->editColumn('tensp', function ($sp) {
                     return '<a href="' . URL('/admin/danhsachsanpham-detail/' . $sp->id) . '" class="link text-primary">' . $sp->tensp . '</a>';
+                
                 })->editColumn('trangthai', function ($sp) {
                     if ($sp->trangthai == 1) {
                         return '<span class="text-success"> Đang bán <span/>';
                     } else {
                         return '<span class="text-warning"> Không đăng bán <span/>';
                     }
+                    
                 })->rawColumns(['tensp', 'trangthai', 'action'])->make(true);
         }
         return view('pages_admin.sanpham.list_sanpham');

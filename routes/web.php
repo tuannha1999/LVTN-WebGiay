@@ -3,7 +3,9 @@
 use App\Chitietdondathang;
 use App\Danhmuc;
 use App\Dondathang;
+use App\Http\Controllers\QLkhachhangController;
 use App\Sanpham;
+use App\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -52,8 +54,24 @@ Route::middleware('checkloginadmin')->group(function () {
     Route::get('index', 'AdminController@index')->name('noi-dung-admin');
     Route::get('logout', 'AdminController@getLogout');
     //khachhang
-    Route::resource('users', 'QLkhachhangController');
-    Route::get('users/{id}/edit/', 'QLkhachhangController@edit');
+    Route:: get('admin/danhsachkhachhang','QLkhachhangController@getDanhsach')->name('getKhachhang');
+
+    Route:: get('admin/danhsachkhachhang-detail/{id}','QLkhachhangController@getChitietkhachhang');
+
+    Route:: get('admin/danhsachkhachhang-edit/{id}','QLkhachhangController@getSua');
+    Route:: post('admin/danhsachkhachhang-edit/{id}','QLkhachhangController@edit');
+
+    Route:: get('admin/danhsachkhachhang-add','QLkhachhangController@getThem');
+    Route:: post('admin/danhsachkhachhang-add','QLkhachhangController@store');
+
+    Route:: get('admin/danhsachkhachhang-delete/{id}','QLkhachhangController@destroy');
+
+    //dondathang
+    Route:: get('admin/danhsachdonhang','QLdondathangController@index')->name('getDonhang');
+
+    Route:: get('admin/danhsachdonhang-detail/{id}','QLdondathangController@detail');
+
+
 
     //sanpham
     Route::get('admin/danhsachsanpham', 'SanphamController@getDSSanpham')->name('getSanpham');

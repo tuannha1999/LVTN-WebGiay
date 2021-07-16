@@ -29,7 +29,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <!-- khachhang  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
     <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
@@ -57,7 +57,7 @@
 
     </script>
 
-
+ -->
 
     <!-- khachhang  -->
     <title>
@@ -110,7 +110,7 @@
   Đơn hàng <i class="fa fa-caret-down"></i>
   </button>
   <div id="demoAcc1" class="w3-hide w3-white w3-card">
-    <a href="#" class="btn w3-bar-item">Danh sách đơn hàng</a>
+    <a href="{{ url('/admin/danhsachdonhang') }}" class="btn w3-bar-item">Danh sách đơn hàng</a>
     <a href="#" class="btn w3-bar-item">Trả hàng</a>
   </div>
 
@@ -124,7 +124,7 @@
     <a href="#" class="btn w3-bar-item">Danh mục</a>
   </div>
 
-  <a href="{{ url('/users') }}" class="btn btn-secondary w3-bar-item">Khách hàng</a>
+  <a href="{{ url('/admin/danhsachkhachhang') }}" class="btn btn-secondary w3-bar-item">Khách hàng</a>
   <a href="#" class="btn btn-secondary w3-bar-item">Nhà cung cấp</a>
   <a href="#" class="btn btn-secondary w3-bar-item">Khuyến mãi</a>
 

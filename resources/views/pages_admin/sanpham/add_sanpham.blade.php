@@ -13,7 +13,7 @@
                 <label for="basic-url">Tên sản phẩm*</label>
                 <div class="input-group mb-3">
                   <input type="text" class="form-control @error('tensp') is-invalid @enderror" id="basic-url" aria-describedby="basic-addon3" value="" name="tensp">
-                  @error('tensp')
+                    @error('tensp')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

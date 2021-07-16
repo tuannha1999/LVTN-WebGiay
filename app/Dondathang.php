@@ -13,4 +13,9 @@ class Dondathang extends Model
     {
         return $this->belongsToMany(Sanpham::class, 'chitietdondathang', 'id_dh', 'id_sp')->withPivot('soluong', 'size');
     }
+    /* public function khachhang()
+    {
+        return $this->belongsTo(User::class, 'id_kh');
+    } */
+ 
 }

@@ -1,19 +1,19 @@
 @extends('admin.layout_admin')
 @section('home')
 <div class="col-md-12">
-<h3 class="card-title">Danh sách khách hàng </h3>
+<h3 class="card-title">Danh sách đơn hàng </h3>
   <div class="text-right">
-      <a class="btn btn-success mb-3" href="{{ url('admin/danhsachkhachhang-add')}}"
-          id="create-new-user"> Thêm khách hàng</a>
+      <a class="btn btn-success mb-3" href="{{ url('admin/danhsachdonhang-add')}}"
+          id="create-new-ddh"> Thêm đơn hàng</a>
   </div>
 </div>
 
-<table class="display" id="user-list" style="width:100%">
+<table class="display" id="ddh-list" style="width:100%">
         <thead>
             <tr>
-                <th>Mã khách hàng</th>
-                <th>Tên khách hàng</th>
-                <th>Email</th>
+                <th>Mã đơn hàng</th>
+                <th>Họ tên</th>
+                <th>Địa chỉ</th>
                 <th>Số điện thoại</th>
                 <th>Tác vụ</th>
 
@@ -30,14 +30,14 @@
                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                  }
              });
-                $('#user-list').DataTable({
+                $('#ddh-list').DataTable({
                    processing: true,
                    serverSide: true,
-                   ajax : '{!! route('getKhachhang') !!}',
+                   ajax : '{!! route('getDonhang') !!}',
                    columns: [
                     { data: 'id', name: 'id' },
-                    { data: 'name', name: 'name'},
-                    { data: 'email', name: 'email'},
+                    { data: 'hoten', name: 'hoten'},
+                    { data: 'diachi', name: 'diachi'},
                     { data: 'sdt', name: 'sdt'},
                     {data: 'action',name: 'action',orderable: false},
 
@@ -45,7 +45,7 @@
                });
 
  });
-      $('body').on('click', '#delete-user', function () {
+      /* $('body').on('click', '#delete-user', function () {
 
              var user_id = $(this).data("id");
 
@@ -64,7 +64,7 @@
                });
              }
         });
-
+ */
 </script>
 @endpush
 

@@ -17,6 +17,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'password', 'sdt', 'is_admin',
     ];
+    protected $primaryKey = 'id';
 
     /**
      * The attributes that should be hidden for arrays.
@@ -39,4 +40,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Phieunhap::class, 'id_user');
     }
+    /* public function dondathang()
+    {
+        return $this->hasMany(Dondathang::class, 'id_kh');
+    } */
 }
