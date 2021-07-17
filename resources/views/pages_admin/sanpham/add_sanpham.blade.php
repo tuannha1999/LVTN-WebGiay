@@ -20,11 +20,11 @@
                     @enderror
                 </div>
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label for="basic-url">Giá bán</label>
                         <div class="input-group mb-3">
                           <input type="number" class="form-control @error('giaban') is-invalid @enderror"
-                           id="basic-url" aria-describedby="basic-addon3" min="1000" max="100000000" value="" name="giaban">
+                           id="basic-url" aria-describedby="basic-addon3" min="1000" max="100000000" value="0" name="giaban">
                           @error('giaban')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -32,7 +32,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    {{-- <div class="col-md-4">
                         <label for="basic-url">Giá nhập</label>
                         <div class="input-group mb-3">
                           <input type="number" class="form-control  @error('gianhap') is-invalid @enderror"
@@ -43,12 +43,12 @@
                                     </span>
                             @enderror
                         </div>
-                    </div>
-                    <div class="col-md-4">
+                    </div> --}}
+                    <div class="col-md-6">
                         <label for="basic-url">Giá khuyến mãi</label>
                         <div class="input-group mb-3">
                           <input type="number" class="form-control  @error('giakm') is-invalid @enderror"
-                          min="0" max="giaban" id="basic-url" aria-describedby="basic-addon3" value="" name="giakm">
+                          min="0" max="giaban" id="basic-url" aria-describedby="basic-addon3" value="0" name="giakm">
                           @error('giakm')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -63,19 +63,28 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                 <label for="list-lsp">Loại sản phẩm</label>
-                                 <select class="form-control" id="list-lsp" name="lsp">
-                                    <option value="0">- Chọn loại sản phẩm-</option>
+                                 <select class="form-control @error('lsp') is-invalid @enderror" id="list-lsp" name="lsp" required>
+                                    <option value="">- Chọn loại sản phẩm-</option>
                                     @foreach ($loai_sp as $item)
                                      <option value="{{$item->id}}" >{{$item->tenloai}}</option>
                                      @endforeach
+                                     @error('lsp')
+                                     <span class="invalid-feedback" role="alert">
+                                         <strong>{{ $message }}</strong>
+                                     </span>
+                                     @enderror
                                 </select>
+
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                 <label for="list-th">Thương hiệu</label>
                                  <select class="form-control" id="list-th" name="th">
-                                   <option value="0"></option>
+                                   <option value="">- Chọn thương hiệu-</option>
+                                    @foreach ($thuonghieu as $item)
+                                     <option value="{{$item->id}}" >{{$item->ten}}</option>
+                                     @endforeach
                                 </select>
                                 </div>
                             </div>
@@ -98,7 +107,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label for="basic-url">Size</label>
-                            <input type="text"  placeholder="Nhập size và nhấn enter" id="basic-url" name="tags" aria-describedby="basic-addon3" value="">
+                            <input type="text"  required placeholder="Nhập size và nhấn enter" id="basic-url" name="tags" aria-describedby="basic-addon3" value="">
                     </div>
                     <div class="col-md-6 mt-5">
                         <input type="checkbox" id="basic-url" name="trangthai" value="1"> Cho phép bán
@@ -124,31 +133,31 @@ tagify = new Tagify( input );
 
 $('[name=tags]').tagify({duplicates : false,maxTags:Infinity});
 
+//Chọn loại sản phẩm
+// $(document).ready(function(){
 
-$(document).ready(function(){
+//       $("#list-lsp").change(function(){
 
-      $("#list-lsp").change(function(){
+//             var id_lsp= $(this).val();
+//             console.log(id_lsp);
+//             if(id_lsp != '0')
+//             {
+//                $.ajax({
+//                   type: 'GET',
+//                   url: '/admin/changelist/'+id_lsp,
+//                   success: function(data){
+//                     var len=data.length;
+//                     $("#list-th").empty();
+//                     for( var i = 0; i<len; i++){
+//                     var id = data[i]['id'];
+//                     var name = data[i]['ten'];
+//                     $("#list-th").append("<option value='"+id+"'>"+name+"</option>");
+//                 }
+//                   }
+//                });
+//             }
+//       });
 
-            var id_lsp= $(this).val();
-            console.log(id_lsp);
-            if(id_lsp != '0')
-            {
-               $.ajax({
-                  type: 'GET',
-                  url: '/admin/changelist/'+id_lsp,
-                  success: function(data){
-                    var len=data.length;
-                    $("#list-th").empty();
-                    for( var i = 0; i<len; i++){
-                    var id = data[i]['id'];
-                    var name = data[i]['ten'];
-                    $("#list-th").append("<option value='"+id+"'>"+name+"</option>");
-                }
-                  }
-               });
-            }
-      });
-
-   });
+//    });
     </script>
 @endsection

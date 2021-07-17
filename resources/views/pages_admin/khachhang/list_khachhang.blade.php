@@ -83,15 +83,15 @@
 </div>
 <div class="modal-body">
 <div class="container">
-<div class="row"> 
+<div class="row">
 <!-- <div class="col-xs-2 col-sm-2 col-md-2"></div>
  --><div class="col-xs-10 col-sm-10 col-md-10 ">
 
 <table class="table-responsive ">
-<tr height="50px"><td><strong>Name:</strong></td><td id="sname"></td></tr>
+<tr height="50px"><td><strong>Name:</strong></td><td id="c e"></td></tr>
 <tr height="50px"><td><strong>Email:</strong></td><td id="semail"></td></tr>
 <tr height="50px"><td><strong>Phone:</strong></td><td id="ssdt"></td></tr>
-    
+
 <!-- <table class="table table-bordered data-table" >
 <thead>
 <tr id="">
@@ -147,7 +147,7 @@ $('#crud-modal').modal('show');
 });
 
 //
-    
+
 
 
 

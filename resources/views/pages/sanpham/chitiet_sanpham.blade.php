@@ -16,9 +16,9 @@
         <div class="col-6">
 <form>
     @csrf
-            <div class="owl-carousel owl-theme">
+            <div class="owl-carousel owl-theme" id="chitiet">
                 @foreach ($chitiet_sp->Hinhanh as $img)
-                          <div class="item"><img src="{{asset ('storage/'.$img->name) }}" alt=""></div>
+                          <div class="item"><img style="width:480px;heigth:460px;" src="{{asset ('storage/'.$img->name) }}" alt=""></div>
                 @endforeach
             </div>
 
@@ -75,9 +75,44 @@
     </form>
 
     </div>
+
     <div class="mt-5">
         <hr>
         <h2 class="text-center ">Sản phẩm liên quan</h2>
+        <div class="row">
+            <div class="owl-carousel owl-theme" id="lienquan">
+                        @foreach($sp_lienquan as $sp)
+                        <div class="productinfo text-center">
+                            <a href="{{ url('chitiet-sanpham/'.$sp->id)}}" class="link">
+                                @foreach ($sp->Hinhanh as $img )
+                                @if ($img->avt===1)
+                                     <img class="card-img-top" src="{{asset ('storage/'.$img->name) }}" alt="Card image">
+                                @endif
+                                @endforeach
+                              <div class="card-body">
+                                    @php
+                                   $total=0;
+                                    foreach ($sp->size as $size)
+                                    {
+                                        $total+=$size->soluong;
+                                    }
+                                        if ($total==0) {
+                                            echo '<h5 class="card-title text-danger" >[HẾT HÀNG]</h5>';
+                                        }
+                                    @endphp
+                                <h4 class="card-title">{{$sp->tensp}}</h4>
+                            </a>
+                                 @if ($sp->giakm===0)
+                                      <p style="color: red;">{{ number_format($sp->giaban,0,'.','.').' '.'đ' }}</p>
+                                  @else
+                                      <p><del>{{ number_format($sp->giaban,0,'.','.').' '.'đ' }}</del></p>
+                                     <p style="color: red;">{{ number_format($sp->giakm,0,'.','.').' '.'đ' }}</p>
+                                  @endif
+                        </div>
+                </div>
+                        @endforeach
+            </div>
+        </div>
     </div>
 
 </div>
@@ -85,7 +120,7 @@
 <script src="{{ asset ('/js/owl.carousel.min.js') }}" type="text/javascript"></script>
 
 <script>
-    $('.owl-carousel').owlCarousel({
+    $('#chitiet').owlCarousel({
         loop:true,
         margin:10,
         nav:true,
@@ -93,6 +128,16 @@
         responsive:{
             520:{
                 items:1
+            },
+        }
+    });
+    $('#lienquan').owlCarousel({
+        margin:10,
+        nav:true,
+        autoplay:true,
+        responsive:{
+            460:{
+                items:4
             },
         }
     });

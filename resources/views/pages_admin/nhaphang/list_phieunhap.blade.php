@@ -16,6 +16,7 @@
                 <th>Tên nhà cung cấp</th>
                 <th>Trạng thái</th>
                 <th>Thanh toán</th>
+                <th>Nhập kho</th>
                 <th>Tổng tiền</th>
                 <th>Nhân viên tạo</th>
                 <th> </th>
@@ -41,6 +42,7 @@
                     { data: 'tenncc', name: 'tenncc',orderable: false },
                     { data: 'trangthai', name: 'trangthai'},
                     { data: 'thanhtoan', name: 'thanhtoan'},
+                    {data: 'nhaphang',name: 'nhaphang'},
                     { data: 'tongtien', name: 'tongtien'},
                     { data: 'tennv', name: 'tennv'},
                     {data: 'action',name: 'action',orderable: false},

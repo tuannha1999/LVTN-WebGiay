@@ -27,7 +27,7 @@ class SizeController extends Controller
     {
         $kt_size = Size::Where('id_sp', $id)->get();
         foreach ($kt_size as $item) {
-            if ($item->size == $size) {
+            if ($item->size === $size) {
                 return false;
             }
         }
@@ -36,6 +36,7 @@ class SizeController extends Controller
         $sizenew->soluong = 0;
         $sizenew->id_sp = $id;
         $sizenew->save();
+        return back();
     }
 
     /**

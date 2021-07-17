@@ -7,7 +7,7 @@
 
 <div class="container">
     <h3 class="mt-4">HOÀN TẤT ĐẶT HÀNG</h3>
-    <form id="form-hoantat-dathang" >
+    <form id="form-hoantat-dathang" action="{{URL('/dathang')}}" method="post" >
     {{ csrf_field() }}
     <div class="row">
         <div class="col-md-6 mt-3">
@@ -127,27 +127,27 @@
 
 <script>
 //dat hang
-    $(document).ready(function() {
-        $("#form-hoantat-dathang").submit(function(e){
-            e.preventDefault();
+    // $(document).ready(function() {
+    //     $("#form-hoantat-dathang").submit(function(e){
+    //         e.preventDefault();
 
-            var form = $(this);
+    //         var form = $(this);
 
-            $.ajaxSetup({
-                    headers: {
-                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
-                     }
-                });
+    //         $.ajaxSetup({
+    //                 headers: {
+    //                     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+    //                  }
+    //             });
 
-                    $.ajax({
-                    url:'/dathang',
-                    type:'post',
-                    data:form.serialize(),
-                }).done(function(response){
-                        window.location.replace("dathang-thanhcong/"+response)
-                });
-        });
-    });
+    //                 $.ajax({
+    //                 url:'/dathang',
+    //                 type:'post',
+    //                 data:form.serialize(),
+    //             }).done(function(response){
+    //                     window.location.replace("dathang-thanhcong/"+response)
+    //             });
+    //     });
+    // });
 </script>
 
 @endsection

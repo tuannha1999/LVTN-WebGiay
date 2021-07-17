@@ -8,6 +8,7 @@
     <thead>
         <tr>
             <th>Mã sản phẩm</th>
+            <th> </th>
             <th>Sản phẩm</th>
             <th>Có thể bán</th>
             <th>Tồn kho</th>
@@ -35,6 +36,7 @@
                    ajax : '{!! route('khohang') !!}',
                    columns: [
                     { data: 'id_sp', name: 'id_sp' },
+                    { data: 'img', name: 'img' },
                     { data: 'tensp', name: 'tensp',orderable: false  },
                     { data: 'soluong', name: 'soluong'},
                     { data: 'tonkho', name: 'tonkho'},

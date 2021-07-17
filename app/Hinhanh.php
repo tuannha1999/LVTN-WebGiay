@@ -8,7 +8,6 @@ class Hinhanh extends Model
 {
     protected $table = 'hinhanh';
     protected $primaryKey = 'id';
-    public $timestamps = false;
     protected $casts = ['name' => 'array'];
     public function sanpham()
     {

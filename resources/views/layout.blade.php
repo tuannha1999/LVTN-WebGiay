@@ -182,7 +182,11 @@
 <!-- Bootstrap theme -->
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
 
+{{-- //zalo
+<div class="zalo-chat-widget" data-oaid="579745863508352884"
+data-welcome-message="Rất vui khi được hỗ trợ bạn!" data-autopopup="3" data-width="350" data-height="420"></div>
 
+<script src="https://sp.zalo.me/plugins/sdk.js"></script> --}}
 <!-- JavaScript -->
 </body>
 </html>

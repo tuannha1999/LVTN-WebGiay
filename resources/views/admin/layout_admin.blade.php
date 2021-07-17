@@ -121,11 +121,13 @@
     <a href="{{ url('/admin/danhsachsanpham') }}" class="btn w3-bar-item">Danh sách sản phẩm</a>
     <a href="{{ url('/admin/khohang') }}" class="btn w3-bar-item">Xem kho hàng</a>
     <a href="{{ url('/admin/dsphieunhap') }}" class="btn w3-bar-item">Nhập hàng</a>
-    <a href="#" class="btn w3-bar-item">Danh mục</a>
+    <a href="{{ url('/admin/dsthuonghieu') }}" class="btn w3-bar-item">Thương hiệu</a>
+    <a href="{{ url('/admin/dsloaisanpham') }}" class="btn w3-bar-item">Loại sản phẩm</a>
+
   </div>
 
   <a href="{{ url('/users') }}" class="btn btn-secondary w3-bar-item">Khách hàng</a>
-  <a href="#" class="btn btn-secondary w3-bar-item">Nhà cung cấp</a>
+  <a href="{{ url('/admin/dsnhacungcap') }}" class="btn btn-secondary w3-bar-item">Nhà cung cấp</a>
   <a href="#" class="btn btn-secondary w3-bar-item">Khuyến mãi</a>
 
 </div>

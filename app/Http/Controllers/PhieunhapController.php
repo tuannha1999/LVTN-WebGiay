@@ -7,7 +7,14 @@ use App\Nhacungcap;
 use App\Phieunhap;
 use App\Sanpham;
 use App\User;
+use App\Size;
+use App\Hinhanh;
+use App\Cart;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 use Yajra\DataTables\DataTables;
 
 
@@ -20,7 +27,9 @@ class PhieunhapController extends Controller
             $pn = Phieunhap::all();
             return  DataTables::of($pn)
                 ->addColumn('action', function ($pn) {
-                    return '<a href="javascript:void(0);" id="delete" data-toggle="tooltip"
+                    return '<a href="' . URL('/admin/dsphieunhap-detail/' . $pn->id) . '" class="link text-primary">
+                    <i class="far fa-eye"></i></a>
+                    <a href="javascript:void(0);" id="delete" data-toggle="tooltip"
                     data-original-title="Delete" data-id="' . $pn->id . ' " class="delete">
                     <i class="fas fa-trash-alt"></i></a>';
                 })->addColumn('tenncc', function ($pn) {
@@ -33,7 +42,7 @@ class PhieunhapController extends Controller
                     }
                     return number_format($total, 0, '.', '.');
                 })->editColumn('id', function ($pn) {
-                    return '<a href="' . URL('/admin/danhsachsanpham-detail/' . $pn->id) . '" class="link text-primary">' . $pn->id . '</a>';
+                    return '<a href="' . URL('/admin/dsphieunhap-detail/' . $pn->id) . '" class="link text-primary">' . $pn->id . '</a>';
                 })->editColumn('tennv', function ($pn) {
                     $user = User::find($pn->id_user);
                     return $user->name;
@@ -49,28 +58,218 @@ class PhieunhapController extends Controller
                     } else {
                         return '<span class="text-warning"> Đang giao dịch <span/>';
                     }
-                })->rawColumns(['id', 'trangthai', 'action', 'tenncc', 'tongtien', 'thanhtoan', 'tennv'])->make(true);
+                })->editColumn('nhaphang', function ($pn) {
+                    if ($pn->nhapkho == 1) {
+                        return '<span class="text-success"> Đã nhập kho<span/>';
+                    } else {
+                        return '<span class="text-warning"> Chưa nhập kho <span/>';
+                    }
+                })->rawColumns(['id', 'trangthai', 'action', 'tenncc', 'tongtien', 'thanhtoan', 'tennv', 'nhaphang'])->make(true);
         }
         return view('pages_admin.nhaphang.list_phieunhap');
+    }
+    public function detailPhieuNhap($id)
+    {
+        $phieunhap = Phieunhap::with('nhacungcap')->with('user')->where('id', $id)->first();
+        return view('pages_admin.nhaphang.chitiet_phieunhap', compact('phieunhap'));
     }
     public function delete($id)
     {
         $delete_pn = Phieunhap::find($id)->delete();
         return response()->json($delete_pn);
     }
+
+    public function thanhtoan($id)
+    {
+        $phieunhap = Phieunhap::find($id);
+        $phieunhap->thanhtoan = 1;
+        if ($phieunhap->nhapkho == 1) {
+            $phieunhap->trangthai = 1;
+        }
+        $phieunhap->save();
+        return back();
+        //dd($pn->thanhtoan );
+    }
+    public function nhapkho($id)
+    {
+        $phieunhap = Phieunhap::find($id);
+        foreach ($phieunhap->sanpham as $pn) {
+            $sl = Size::find($pn->pivot->size);
+            $sl->soluong = $sl->soluong + $pn->pivot->soluong;
+            $sl->save();
+            $phieunhap->nhapkho = 1;
+            if ($phieunhap->thanhtoan == 1) {
+                $phieunhap->trangthai = 1;
+            }
+            $phieunhap->save();
+        }
+        return back();
+    }
     public function formAdd()
     {
         $ncc = Nhacungcap::all();
         return view("pages_admin.nhaphang.add_phieunhap", compact("ncc"));
     }
-    public function infoNhaCungCap($id)
+    public function addPhieuNhap(Request $req)
     {
-        $nhacungcap = Nhacungcap::find($id);
-        return response()->json($nhacungcap);
+        // //print_r($req->thanhtoan);
+        // dd($req->thanhtoan);
+
+        $this->validate(
+            $req,
+            [
+                'ngaynhap' => 'required|date|before_or_equal:today',
+            ],
+
+            [
+                'ngaynhap.required' => 'Không được để trống',
+                'ngaynhap.before_or_equal' => 'Ngày nhập không hợp lệ',
+
+            ]
+        );
+        if (Session::has('Cart') != null) {
+            if (!empty(Session::get('Cart')->supplier) && !empty(Session::get('Cart')->products)) {
+                $new_phieunhap = new Phieunhap();
+                $new_phieunhap->ngaynhap = $req->ngaynhap;
+                $new_phieunhap->ghichu = $req->ghichu != null ? $req->ghichu : '';
+                $new_phieunhap->thanhtoan = $req->thanhtoan != null ? 1 : 0;
+                $new_phieunhap->id_user = Auth::user()->id;
+                $new_phieunhap->nhapkho = $req->nhaphang != null ? $req->nhaphang : 0;
+                $new_phieunhap->trangthai = $req->thanhtoan == 1 && $req->nhaphang == 1 ? 1 : 0;
+
+                foreach (Session::get('Cart')->supplier as $ncc) {
+                    $new_phieunhap->id_ncc = $ncc['supplierinfo']->id;
+                }
+                $new_phieunhap->save();
+                $tongtien = 0;
+                foreach (Session::get('Cart')->products as $sp) {
+                    $new_phieunhap->sanpham()->attach($sp['productinfo']->id, ['soluong' => $sp['quanty'], 'size' => $sp['id_size'], 'gianhap' => $sp['entryprice']]);
+                    if ($req->nhaphang == 1) {
+                        $sl = Size::find($sp['id_size']);
+                        $sl->soluong = $sl->soluong + $sp['quanty'];
+                        $sl->save();
+                    }
+                }
+
+                $req->session()->forget('Cart');
+                return redirect('/admin/dsphieunhap');
+            }
+
+            $req->session()->flash('error', 'Chưa Chọn nhà cung cấp hoặc sản phẩm!');
+            return redirect()->back();
+        }
+        $req->session()->flash('error', 'Tạo không thành công!');
+        return redirect()->back();
     }
-    public function searchSanPham($id)
+    public function dsSanpham(Request $request)
     {
-        $sanpham = Sanpham::with('size')->where('tensp', 'like', '%' . $id . '%')->get();
-        return view("pages_admin.nhaphang.search", compact('sanpham'));
+        if ($request->ajax()) {
+            $size = Size::with('Sanpham')->get();
+            return  DataTables::of($size)
+                ->editColumn('tensp', function ($size) {
+                    $sp = Sanpham::where('id', $size->id_sp)->first();
+                    return $sp->tensp . ' - ' . $size->size;
+                })->addColumn('img', function ($size) {
+                    $img = Hinhanh::where('id_sp', $size->id_sp)->where('avt', 1)->first();
+                    return '<img style="heigth:50px;width:50px;" src="' . asset('storage/' . $img->name) . '" alt="Card image">';
+                })->addColumn('soluong', function ($size) {
+                    return '<input type="number"id="qty-' . $size->id_sp . $size->id   . '" min="1"
+                    style="width: 60px;height: 30px;" value="1">';
+                })->addColumn('gianhap', function ($size) {
+                    $sp = Sanpham::where('id', $size->id_sp)->first();
+                    $pn = Phieunhap::all();
+                    $gianhap = 0;
+                    foreach ($pn as $pn) {
+                        foreach ($pn->sanpham as $item) {
+                            if ($item->pivot->size ==  $size->id) {
+                                $gianhap = $item->pivot->gianhap;
+                            }
+                        }
+                    }
+
+                    return '<input type="number" id="price-' . $size->id_sp . $size->id  . '" required
+                     style="width: 100px;height: 30px;" value="' . $gianhap . '">';
+                })->addColumn('action', function ($size) {
+                    if (Session::has("Cart") != null) {
+                        if (array_key_exists($size->id_sp  . $size->id, Session::get("Cart")->products)) {
+                            return '<button class="btn btn-outline-info" disabled/> Chọn</button>';
+                        }
+                    }
+                    //return '<i onclick="addCart(' . $size->id_sp  . ',' . $size->id . ')" class="fas fa-2x fa-plus"></i>';
+                    return '<a href="#" onclick="addCart(' . $size->id_sp  . ',' . $size->id . ')" class="btn btn-outline-info">Chọn</a>';
+                })->rawColumns(['tensp', 'img', 'soluong', 'action', 'gianhap'])->make(true);
+        }
+        return view('pages_admin.nhaphang.add_phieunhap');
+    }
+
+    public function dsNhaCungCap(Request $request)
+    {
+        if ($request->ajax()) {
+            $ncc = Nhacungcap::all();
+            return  DataTables::of($ncc)
+                ->addColumn('action', function ($ncc) {
+                    if (Session::has("Cart") != null) {
+                        if (count(Session::get("Cart")->supplier) === 1) {
+                            return '<button class="btn btn-outline-info" disabled/> Chọn</button>';
+                        }
+                    }
+                    return '<a href="' . URL('admin/dsphieunhap-addncc/' . $ncc->id) . '" class="btn btn-outline-info">Chọn</a>';
+                })->rawColumns(['action'])->make(true);
+        }
+        return view('pages_admin.nhaphang.add_phieunhap');
+    }
+
+    public function addNCC(Request $request, $id)
+    {
+        $ncc = Nhacungcap::find($id);
+        $oldCart = Session('Cart') ? Session('Cart') : null;
+        $newCart = new Cart($oldCart);
+        $newCart->addNCC($ncc, $id);
+        $request->session()->put('Cart', $newCart);
+        return back();
+    }
+
+    public function addSanPham(Request $request, $id, $size, $qty, $price)
+    {
+        $product = Sanpham::find($id);
+        $size = Size::find($size);
+        $oldCart = Session('Cart') ? Session('Cart') : null;
+        $newCart = new Cart($oldCart);
+        $newCart->AddCart($product, $id, $size, $qty, $price);
+        $request->session()->put('Cart', $newCart);
+        return back();
+    }
+    public function RemoveItemCart(Request $request, $id)
+    {
+        $oldCart = Session('Cart') ? Session('Cart') : null;
+        $newCart = new Cart($oldCart);
+        $newCart->DeleteItemCart($id);
+        if (count($newCart->products) > 0) {
+            $request->session()->put('Cart', $newCart);
+        } else {
+            $request->session()->forget('Cart');
+        }
+        return back();
+    }
+    public function RemoveNCC(Request $request, $id)
+    {
+        $oldCart = Session('Cart') ? Session('Cart') : null;
+        $newCart = new Cart($oldCart);
+        $newCart->DeleteNCC($id);
+        if (count($newCart->supplier) > 0) {
+            $request->session()->put('Cart', $newCart);
+        } else {
+            $request->session()->forget('Cart');
+        }
+        return back();
+    }
+    public function updateCart(Request $request, $id, $qty, $price)
+    {
+        //dd($qty);
+        $oldCart = Session('Cart') ? Session('Cart') : null;
+        $newCart = new Cart($oldCart);
+        $newCart->updateCart($id, $qty, $price);
+        $request->Session()->put('Cart', $newCart);
+        return back();
     }
 }

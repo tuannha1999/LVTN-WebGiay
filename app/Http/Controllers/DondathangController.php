@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Districts;
 use App\Dondathang;
 use App\Sanpham;
 use App\Size;
 use App\Loaisanpham;
+use App\Provinces;
+use App\Wards;
 use Illuminate\Http\Request;
 use Cart;
 
@@ -23,9 +26,24 @@ class DondathangController extends Controller
     public function getformDatHang()
     {
         //
+        $provinces = Provinces::all();
         $loai_sp = Loaisanpham::all();
-        return view("pages.dathang.dathang", compact('loai_sp'));
+        return view("pages.dathang.dathang", compact('loai_sp', 'provinces'));
     }
+    // public function changeProvinces($id)
+    // {
+    //     //
+    //     $dist = Districts::all()->where('province_id', $id);
+    //     //dd($dist);
+    //     return response()->json($dist);
+    // }
+    // public function changeDistrict($id)
+    // {
+    //     //
+    //     $ward = Wards::all()->where('district_id', $id);
+    //     //dd($dist);
+    //     return response()->json($ward);
+    // }
     public function formSuccess($sdt)
     {
         //
@@ -79,22 +97,25 @@ class DondathangController extends Controller
     public function store(Request $req)
     {
         //
-        $new_dh = new Dondathang();
-        $new_dh->hoten = $req->hoten;
-        $new_dh->diachi = $req->diachi;
-        $new_dh->sdt = $req->sdt;
-        $new_dh->trangthai = 0;
-        $new_dh->ptthanhtoan = $req->thanhtoan;
-        $new_dh->ghichu = $req->ghichu;
-        $new_dh->save();
-        foreach (Cart::content() as $item) {
-            $new_dh->sanpham()->attach($item->id, ['soluong' => $item->qty, 'giaban' => $item->price, 'size' => $item->options->size->size]);
-            $sl = Size::where('size', $item->options->size->size)->where('id_sp', $item->id)->first();
-            $sl->soluong = $sl->soluong - $item->qty;
-            $sl->save();
-            Cart::destroy($item->rowId);
+        if (Cart::count() != null) {
+            $new_dh = new Dondathang();
+            $new_dh->hoten = $req->hoten;
+            $new_dh->diachi = $req->diachi;
+            $new_dh->sdt = $req->sdt;
+            $new_dh->trangthai = 0;
+            $new_dh->ptthanhtoan = $req->thanhtoan;
+            $new_dh->ghichu = $req->ghichu;
+            $new_dh->save();
+            foreach (Cart::content() as $item) {
+                $new_dh->sanpham()->attach($item->id, ['soluong' => $item->qty, 'giaban' => $item->price, 'size' => $item->options->size->size]);
+                $sl = Size::where('size', $item->options->size->size)->where('id_sp', $item->id)->first();
+                $sl->soluong = $sl->soluong - $item->qty;
+                $sl->save();
+                Cart::destroy($item->rowId);
+            }
+            return redirect('dathang-thanhcong/' . $req->sdt);
         }
-        return response()->json($req->sdt);
+        return redirect('/');
     }
 
     /**

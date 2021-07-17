@@ -13,6 +13,7 @@
         <thead>
             <tr>
                 <th>Mã sản phẩm</th>
+                <th></th>
                 <th>Tên sản phẩm</th>
                 <th>Trạng thái</th>
                 <th>Tác vụ</th>
@@ -35,6 +36,7 @@
                    ajax : '{!! route('getSanpham') !!}',
                    columns: [
                     { data: 'id', name: 'id' },
+                    { data: 'img', name: 'img' },
                     { data: 'tensp', name: 'tensp',orderable: false },
                     { data: 'trangthai', name: 'trangthai' },
                     {data: 'action',name: 'action',orderable: false},

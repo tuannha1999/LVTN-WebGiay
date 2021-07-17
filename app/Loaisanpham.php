@@ -7,8 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Loaisanpham extends Model
 {
     //
-    protected $table = 'Loaisanpham';
+    protected $table = 'loaisanpham';
     protected $primaryKey = 'id';
+    protected $fillable = [
+        'tenloai', 'slug'
+    ];
+
     public function sanpham()
     {
         return $this->hasMany(Sanpham::class, 'id_lsp');

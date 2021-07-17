@@ -26,7 +26,7 @@
                  @enderror
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label for="basic-url">Giá bán</label>
                     <div class="input-group mb-3">
                       <input type="number" class="form-control @error('giaban') is-invalid @enderror" name="giaban" id="basic-url" aria-describedby="basic-addon3" value="{{$chitiet_sp->giaban}}">
@@ -37,7 +37,7 @@
                         @enderror
                     </div>
                 </div>
-                <div class="col-md-4">
+                {{-- <div class="col-md-4">
                     <label for="basic-url">Giá nhập</label>
                     <div class="input-group mb-3">
                       <input type="number" class="form-control @error('gianhap') is-invalid @enderror" name="gianhap" id="basic-url" aria-describedby="basic-addon3" value="{{$chitiet_sp->gianhap}}">
@@ -47,8 +47,8 @@
                       </span>
                      @enderror
                     </div>
-                </div>
-                <div class="col-md-4">
+                </div> --}}
+                <div class="col-md-6">
                     <label for="basic-url">Giá khuyến mãi</label>
                     <div class="input-group mb-3">
                       <input type="number" class="form-control @error('giakm') is-invalid @enderror" name="giakm" id="basic-url" aria-describedby="basic-addon3" value="{{$chitiet_sp->giakm}}">
@@ -67,7 +67,7 @@
                             <div class="form-group">
                                 <label for="exampleFormControlSelect1">Loại sản phẩm</label>
                                 <select class="form-control" name="lsp" id="exampleFormControlSelect1">
-                                    <option value="{{$loai_sp->id}}" >{{$loai_sp->tenloai}}</option>
+                                    <option value="{{$chitiet_sp->loaisanpham->id}}" >{{$chitiet_sp->loaisanpham->tenloai}}</option>
                                   @foreach ($all_loai as $item)
                                   <option value="{{$item->id}}">{{$item->tenloai}}</option>
                                   @endforeach
@@ -78,11 +78,13 @@
                             <div class="form-group">
                                 <label for="exampleFormControlSelect1">Thương hiệu</label>
                                 <select class="form-control" name="th" id="exampleFormControlSelect1">
-                                    <option value="{{$thuonghieu->id}}" >{{$thuonghieu->ten}}</option>
-                                  @foreach ($loai_sp->thuonghieu as $item)
-                                  @if ($item->id!=$thuonghieu->id)
+                                    @if ($chitiet_sp->id_th!==null)
+                                    <option value="{{$chitiet_sp->thuonghieu->id}}">{{$chitiet_sp->thuonghieu->ten}}</option>
+                                    @else
+                                    <option value=""></option>
+                                    @endif
+                                  @foreach ($thuonghieu as $item)
                                   <option value="{{$item->id}}" >{{$item->ten}}</option>
-                                  @endif
                                   @endforeach
                                 </select>
                             </div>
@@ -211,7 +213,7 @@
                         url:'/admin/add-size/'+product_id+'/'+$("#size-name").val(),
                         type:'GET',
                         success: function (data) {
-                            if(data!=true)
+                            if(data==false)
                             {
                                 alertify.error("Size đã tồn tại!");
                             }

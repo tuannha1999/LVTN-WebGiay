@@ -75,7 +75,8 @@ class KhachhangController extends Controller
     public function getRegister()
     {
         //
-        return view('khachhang.dangki');
+        $loai_sp = Loaisanpham::all();
+        return view('khachhang.dangki', compact('loai_sp'));
     }
 
     public function postRegister(Request $request)
@@ -125,7 +126,8 @@ class KhachhangController extends Controller
     public function getProfile()
     {
         //
-        return view('khachhang.profile');
+        $loai_sp = Loaisanpham::all();
+        return view('khachhang.profile', compact('loai_sp'));
     }
     /**
      * Show the form for creating a new resource.
