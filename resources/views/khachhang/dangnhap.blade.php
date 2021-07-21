@@ -38,7 +38,7 @@
     </div>
     <br>
     <div>
-    <a class="btn btn-secondary" href="{{ url('/dangki') }}" >
+    <a class="btn btn-outline-success" href="{{ url('/dangki') }}" >
     Đăng kí thành viên mới</a>
     </div>
     

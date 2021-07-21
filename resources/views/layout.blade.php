@@ -83,7 +83,7 @@
                                          <ul class="dropdown-menu">
                                              <li>
                                                  <a  class="nav-link" href="{{url('/profile' )}}">
-                                                    Hi {{ Auth::user()->name}}
+                                                   {{ Auth::user()->name}}
                                                     @if (Auth::user()->level==1)
                                                         <span>(5%)</span>
                                                     @elseif(Auth::user()->level==2)
@@ -165,7 +165,7 @@
                     <p><i class="far fa-envelope"></i> Email: tuannha1234@gmail.com</p>
                     <p><i class="fas fa-phone"></i> Hotline: 0376440058</p>
                     <p><i class="fas fa-home"></i> Đ/c: 180 Cao Lỗ, P4, Quận 8, Tp HCM</p>
-                    <p><i class="fas fa-phone"></i> Điện thoại:</p>
+                    <p><i class="fas fa-phone"></i> Điện thoại: 0379307950</p>
                 </div>
                 <div class="col-md-4 mt-3">
                     <h5 class="text-uppercase"><a class="nav-link text-color" href="#">Trang chủ</a></h5>

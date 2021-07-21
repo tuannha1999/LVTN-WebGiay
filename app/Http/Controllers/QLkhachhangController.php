@@ -12,7 +12,7 @@ class QLkhachhangController extends Controller
     public function getDanhSach(Request $req)
     {
         if ($req->ajax()) {
-            $khachhang = User::all();
+            $khachhang = User::latest()->where('is_admin',0)->get();
             return  DataTables::of($khachhang)
                 ->addColumn('action', function ($khachhang) {
                     return '<a  id="edit-khachhang" data-toggle="tooltip"
@@ -27,21 +27,21 @@ class QLkhachhangController extends Controller
     }
     public function add(Request $req)
     {
-        $this->validate(
-            $req,
-            [
-                //kiem tra hop le
-                'email' => 'unique:users,email',
-                'sdt' => 'unique:users,sdt|regex:/(0)[3-9][0-9]{8}/|max:10',
-            ],
-            [
-                'email.unique' => 'Email đã tồn tại',
+        // $this->validate(
+        //     $req,
+        //     [
+        //         //kiem tra hop le
+        //         'email' => 'unique:users,email',
+        //         'sdt' => 'unique:users,sdt|regex:/(0)[3-9][0-9]{8}/|max:10',
+        //     ],
+        //     [
+        //         'email.unique' => 'Email đã tồn tại',
 
-                'sdt.unique' => 'Số điện thoại đã tồn tại',
-                'sdt.regex' => 'Số điện thoại không hợp lệ',
-                'sdt.max' => 'Số điện thoại không hợp lệ',
-            ]
-        );
+        //         'sdt.unique' => 'Số điện thoại đã tồn tại',
+        //         'sdt.regex' => 'Số điện thoại không hợp lệ',
+        //         'sdt.max' => 'Số điện thoại không hợp lệ',
+        //     ]
+        // );
         User::updateOrCreate(['id' => $req->id_khachhang], [
             'name' => $req->tenkh,
             'email' => $req->email,
