@@ -110,7 +110,7 @@
   Đơn hàng <i class="fa fa-caret-down"></i>
   </button>
   <div id="demoAcc1" class="w3-hide w3-white w3-card">
-    <a href="#" class="btn w3-bar-item">Danh sách đơn hàng</a>
+    <a href="{{ url('/admin/dsdonhang') }}" class="btn w3-bar-item">Danh sách đơn hàng</a>
     <a href="#" class="btn w3-bar-item">Trả hàng</a>
   </div>
 
@@ -126,9 +126,9 @@
 
   </div>
 
-  <a href="{{ url('/users') }}" class="btn btn-secondary w3-bar-item">Khách hàng</a>
+  <a href="{{ url('/admin/dskhachhang') }}" class="btn btn-secondary w3-bar-item">Khách hàng</a>
   <a href="{{ url('/admin/dsnhacungcap') }}" class="btn btn-secondary w3-bar-item">Nhà cung cấp</a>
-  <a href="#" class="btn btn-secondary w3-bar-item">Khuyến mãi</a>
+  <a href="{{ url('/admin/dskhuyenmai') }}" class="btn btn-secondary w3-bar-item">Khuyến mãi</a>
 
 </div>
 

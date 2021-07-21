@@ -51,7 +51,7 @@
                     </label>
                     @else
                         <label for="size-{{$value->size}}"class="btn btn-outline-dark text-center">
-                            <input type="radio" id="size-{{$value->size}}" checked name="size" value="{{$value->id}}">{{$value->size}}
+                            <input type="radio" id="size-{{$value->size}}" checked name="size" value="{{$value->size}}">{{$value->size}}
                         </label>
                     @endif
                     @endforeach
@@ -68,7 +68,24 @@
                     @if ($total_sp==0)
                         <button type="button" class="btn btn-dark" disabled >Hết hàng</button>
                     @else
-                        <button type="submit" class="btn btn-dark btn-submit"> Thêm vào giỏ hàng</button>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-dark btn-submit"> Thêm vào giỏ hàng</button>
+                        </div>
+                            @if ($sp_yeuthich==false)
+                            <div class="col-md-8">
+                                @if (Auth::check())
+                                <a href="#" class="btn btn-outline-dark btn-add-yeuthich" data-id="{{$chitiet_sp->id}}"><i class="far fa-heart"></i> Thêm vào yêu thích</a>
+                                @else
+                                <a href="{{URL('/dangnhap')}}" class="btn btn-outline-dark"><i class="far fa-heart"></i> Thêm vào yêu thích</a>
+                                @endif
+                            </div>
+                            @else
+                            <div class="col-md-8">
+                                <a href="{{URL('delete-yeuthich/'.$chitiet_sp->id)}}" class="btn btn-outline-dark"><i class="far fa-heart"></i> Bỏ yêu thích</a>
+                            </div>
+                            @endif
+                    </div>
                     @endif
                 </div>
         </div>
@@ -78,7 +95,7 @@
 
     <div class="mt-5">
         <hr>
-        <h2 class="text-center ">Sản phẩm liên quan</h2>
+        <h2 class="text-center mb-3 ">Sản phẩm liên quan</h2>
         <div class="row">
             <div class="owl-carousel owl-theme" id="lienquan">
                         @foreach($sp_lienquan as $sp)
@@ -174,7 +191,22 @@ $(document).ready(function() {
                     }
                 });
     });
+    $(".btn-add-yeuthich").click(function(e){
+
+            var size = document.querySelector('input[name = "size"]:checked').value;
+            $.ajaxSetup({
+                    headers: {
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+                     }
+                });
+                $.ajax({
+                    url:'/add-yeuthich/'+$(this).data("id")+'/'+size,
+                    type:'GET',
+                }).done(function(response){
+                    location.reload();
+                });
     });
+});
 
  //alert thông báo
  window.setTimeout(function() {

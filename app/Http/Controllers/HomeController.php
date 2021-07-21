@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Sanpham;
 use App\Loaisanpham;
 use App\Dondathang;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 
@@ -27,5 +28,16 @@ class HomeController extends Controller
         $loai_sp = Loaisanpham::all();
         $search = Sanpham::with('Hinhanh')->with('size')->where('tensp', 'like', '%' . $request->search . '%')->get();
         return view('pages.search', compact('search', 'loai_sp'));
+    }
+    public function formsearchDonHang()
+    {
+        $loai_sp = Loaisanpham::all();
+        return view('pages.dathang.form_search', compact('loai_sp'));
+    }
+    public function searchDonHang(Request $req)
+    {
+        $loai_sp = Loaisanpham::all();
+        $search = Dondathang::where('id', $req->search)->orwhere('sdt', $req->search)->get();
+        return view('pages.dathang.kq_search', compact('loai_sp', 'search'));
     }
 }

@@ -1,7 +1,7 @@
 
 @extends('admin.layout_admin')
 @section('home')
-<div class="col-md-12">
+<div class="col-md-12 mt-5">
 <h3 class="card-title">Danh sách sản phẩm </h3>
   <div class="text-right">
       <a class="btn btn-success mb-3" href="{{ url('/admin/danhsachsanpham-formadd')}}"
@@ -33,6 +33,7 @@
                 $('#product-list').DataTable({
                    processing: true,
                    serverSide: true,
+                   order:[[ 0, 'desc' ], [ 1, 'desc' ]],
                    ajax : '{!! route('getSanpham') !!}',
                    columns: [
                     { data: 'id', name: 'id' },

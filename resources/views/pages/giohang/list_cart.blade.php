@@ -63,7 +63,7 @@ Giỏ hàng
             </table>
             <div class="col-12 text-right">
                 <div class="mb-4"><span class="font-weight-bold">
-                    Tạm tính: </span> {{Cart::subtotal()}}
+                    Tạm tính: </span> {{Cart::subtotal()}} đ
                 </div>
                     <div class="text-right">
                       <a href="{{URL('/')}}"><button type="button" class="btn btn-secondary">Tiếp tục mua hàng</button></a>

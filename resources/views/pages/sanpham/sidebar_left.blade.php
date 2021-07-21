@@ -31,13 +31,13 @@
     <div class="mt-3">
         <h5>KHOẢNG GIÁ</h5>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item"><input type="radio" name="locgia" value="0" > All</li>
-            <li class="list-group-item"><input type="radio" name="locgia" value="1"> Giá dưới 1.000.000đ</li>
-            <li class="list-group-item"><input type="radio" name="locgia" value="2" > 1.000.000đ - 2.000.000đ</li>
-            <li class="list-group-item"><input type="radio" name="locgia" value="3" > 2.000.000đ - 3.000.000đ</li>
-            <li class="list-group-item"><input type="radio" name="locgia" value="4" > 3.000.000đ - 4.000.000đ</li>
-            <li class="list-group-item"><input type="radio" name="locgia" value="5" > 4.000.000đ - 5.000.000đ</li>
-            <li class="list-group-item"><input type="radio" name="locgia" value="6" > Giá trên 5.000.000đ</li>
+            <li class="list-group-item"><input type="radio"  name="locgia" value="0" checked > All</li>
+            <li class="list-group-item"><input type="radio" name="locgia" @php if(Session::get('locgia')==1){echo 'checked';} @endphp value="1"> Giá dưới 1.000.000đ</li>
+            <li class="list-group-item"><input type="radio" name="locgia"  @php if(Session::get('locgia')==2){echo 'checked';} @endphp value="2" > 1.000.000đ - 2.000.000đ</li>
+            <li class="list-group-item"><input type="radio" name="locgia"  @php if(Session::get('locgia')==3){echo 'checked';} @endphp value="3" > 2.000.000đ - 3.000.000đ</li>
+            <li class="list-group-item"><input type="radio" name="locgia"  @php if(Session::get('locgia')==4){echo 'checked';} @endphp value="4" > 3.000.000đ - 4.000.000đ</li>
+            <li class="list-group-item"><input type="radio" name="locgia"  @php if(Session::get('locgia')==5){echo 'checked';} @endphp value="5" > 4.000.000đ - 5.000.000đ</li>
+            <li class="list-group-item"><input type="radio" name="locgia"  @php if(Session::get('locgia')==6){echo 'checked';} @endphp value="6" > Giá trên 5.000.000đ</li>
         </ul>
     </div>
 </div>

@@ -28,19 +28,15 @@ class PhieunhapController extends Controller
             return  DataTables::of($pn)
                 ->addColumn('action', function ($pn) {
                     return '<a href="' . URL('/admin/dsphieunhap-detail/' . $pn->id) . '" class="link text-primary">
-                    <i class="far fa-eye"></i></a>
+                    <i class="far fa-2x fa-eye"></i></a>
                     <a href="javascript:void(0);" id="delete" data-toggle="tooltip"
                     data-original-title="Delete" data-id="' . $pn->id . ' " class="delete">
-                    <i class="fas fa-trash-alt"></i></a>';
+                    <i class="fas fa-2x fa-trash-alt"></i></a>';
                 })->addColumn('tenncc', function ($pn) {
                     $ncc = Nhacungcap::find($pn->id_ncc);
                     return $ncc->tenncc;
                 })->addColumn('tongtien', function ($pn) {
-                    $total = 0;
-                    foreach ($pn->sanpham as $item) {
-                        $total += $item->pivot->soluong * $item->pivot->gianhap;
-                    }
-                    return number_format($total, 0, '.', '.');
+                    return number_format($pn->tongtien, 0, '.', '.');
                 })->editColumn('id', function ($pn) {
                     return '<a href="' . URL('/admin/dsphieunhap-detail/' . $pn->id) . '" class="link text-primary">' . $pn->id . '</a>';
                 })->editColumn('tennv', function ($pn) {
@@ -94,7 +90,7 @@ class PhieunhapController extends Controller
     {
         $phieunhap = Phieunhap::find($id);
         foreach ($phieunhap->sanpham as $pn) {
-            $sl = Size::find($pn->pivot->size);
+            $sl = Size::where('size', $pn->pivot->size)->where('id_sp', $pn->pivot->id_sp)->first();
             $sl->soluong = $sl->soluong + $pn->pivot->soluong;
             $sl->save();
             $phieunhap->nhapkho = 1;
@@ -136,14 +132,20 @@ class PhieunhapController extends Controller
                 $new_phieunhap->id_user = Auth::user()->id;
                 $new_phieunhap->nhapkho = $req->nhaphang != null ? $req->nhaphang : 0;
                 $new_phieunhap->trangthai = $req->thanhtoan == 1 && $req->nhaphang == 1 ? 1 : 0;
-
+                $new_phieunhap->tongtien = Session::get("Cart")->totalPrice;
                 foreach (Session::get('Cart')->supplier as $ncc) {
                     $new_phieunhap->id_ncc = $ncc['supplierinfo']->id;
                 }
                 $new_phieunhap->save();
                 $tongtien = 0;
                 foreach (Session::get('Cart')->products as $sp) {
-                    $new_phieunhap->sanpham()->attach($sp['productinfo']->id, ['soluong' => $sp['quanty'], 'size' => $sp['id_size'], 'gianhap' => $sp['entryprice']]);
+                    $new_phieunhap->sanpham()->attach($sp['productinfo']->id, [
+                        'soluong' => $sp['quanty'],
+                        'size' => $sp['size'], 'gianhap' => $sp['entryprice']
+                    ]);
+                    $save_gianhap = Sanpham::find($sp['productinfo']->id);
+                    $save_gianhap->gianhap = $sp['entryprice'];
+                    $save_gianhap->save();
                     if ($req->nhaphang == 1) {
                         $sl = Size::find($sp['id_size']);
                         $sl->soluong = $sl->soluong + $sp['quanty'];
@@ -177,18 +179,8 @@ class PhieunhapController extends Controller
                     style="width: 60px;height: 30px;" value="1">';
                 })->addColumn('gianhap', function ($size) {
                     $sp = Sanpham::where('id', $size->id_sp)->first();
-                    $pn = Phieunhap::all();
-                    $gianhap = 0;
-                    foreach ($pn as $pn) {
-                        foreach ($pn->sanpham as $item) {
-                            if ($item->pivot->size ==  $size->id) {
-                                $gianhap = $item->pivot->gianhap;
-                            }
-                        }
-                    }
-
                     return '<input type="number" id="price-' . $size->id_sp . $size->id  . '" required
-                     style="width: 100px;height: 30px;" value="' . $gianhap . '">';
+                     style="width: 100px;height: 30px;" value="' . $sp->gianhap . '">';
                 })->addColumn('action', function ($size) {
                     if (Session::has("Cart") != null) {
                         if (array_key_exists($size->id_sp  . $size->id, Session::get("Cart")->products)) {

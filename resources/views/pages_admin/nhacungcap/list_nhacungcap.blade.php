@@ -1,7 +1,7 @@
 
 @extends('admin.layout_admin')
 @section('home')
-<div class="col-md-12">
+<div class="col-md-12 mt-5">
 <h3 class="card-title">Danh sách nhà cung cấp</h3>
   <div class="text-right">
       <a class="btn btn-success mb-3" href="javascript:void(0)"

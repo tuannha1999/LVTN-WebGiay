@@ -2,7 +2,7 @@
 @section('home')
 <div class="container">
 
-    <div class="mt-2"><a href="{{URL('/admin/dsphieunhap')}}"><i class="fas fa-2x fa-chevron-left"></i></a></div>
+    <div class="mt-2"><a href="{{URL('/admin/dsnhacungcap')}}"><i class="fas fa-2x fa-chevron-left"></i></a></div>
     @if (Session::has('success'))
     <div class="alert alert-success mt-3" id="alert-success">
         <span>{{Session::get('success')}}</span>
@@ -12,7 +12,7 @@
         <h2 class="card-title text-center font-weight-bold">CHI TIẾT NHÀ CUNG CẤP</h2>
         <div class="row mt-4">
 
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <table class="table">
                     <h4 class="font-weight-bold">Thông tin nhà cung cấp</h4>
                  <tr>
@@ -33,44 +33,47 @@
                  </tr>
              </table>
             </div>
-            <div class="col-md-6">
-
-                <div class="mt-4">
-                    <h4 class="font-weight-bold">Lịch sử nhập hàng</h4>
-                    <div class="table-wrapper-scroll-y my-custom-scrollbar" id="table-size">
-                            <table class="table mb-0">
-                              <thead class="sticky-top">
-                                <tr>
-                                  <th scope="col">Mã phiếu nhập</th>
-                                  <th scope="col">Trạng thái</th>
-                                  <th scope="col"></th>
-
-                                </tr>
-                              </thead>
-                              <tbody>
-                                @foreach ($nhacungcap->phieunhap as $pn)
-                                  <tr>
-                                    <td>{{$pn->id}}</td>
-                                    <td>
-                                        @if ($pn->trangthai==1)
-                                            <span class="text-success">Hoàn thành</span>
-                                        @else
-                                        <span class="text-warning">Chưa hoàn thành</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <a href="{{URL('/admin/dsphieunhap-detail/' . $pn->id)}}" class="btn btn-outline-primary">Chi tiết </a>
-                                    </td>
-                                </tr>
-                                  @endforeach
-                              </tbody>
-                            </table>
-                    </div>
-                </div>
-            </div>
-        </div>
 
     </div>
+
+    <div class="col-md-12">
+
+        <div class="mt-4">
+            <h4 class="font-weight-bold">Lịch sử nhập hàng</h4>
+            <div class="table-wrapper-scroll-y my-custom-scrollbar" id="table-size">
+                    <table class="table mb-0">
+                      <thead class="sticky-top">
+                        <tr>
+                          <th scope="col">Mã phiếu nhập</th>
+                          <th scope="col">Ngày nhập</th>
+                          <th scope="col">Trạng thái</th>
+                          <th scope="col"></th>
+
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @foreach ($nhacungcap->phieunhap as $pn)
+                          <tr>
+                            <td>{{$pn->id}}</td>
+                            <td>{{$pn->ngaynhap}}</td>
+                            <td>
+                                @if ($pn->trangthai==1)
+                                    <span class="text-success">Hoàn thành</span>
+                                @else
+                                <span class="text-warning">Chưa hoàn thành</span>
+                                @endif
+                            </td>
+                            <td>
+                                <a href="{{URL('/admin/dsphieunhap-detail/' . $pn->id)}}" class="btn btn-outline-primary">Chi tiết </a>
+                            </td>
+                        </tr>
+                          @endforeach
+                      </tbody>
+                    </table>
+            </div>
+        </div>
+    </div>
+</div>
 
     {{-- <div class="row">
         <div class="col-md-6">

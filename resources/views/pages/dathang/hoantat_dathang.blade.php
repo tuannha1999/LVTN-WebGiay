@@ -96,10 +96,10 @@
 
             <div class="row">
                 <div class="col-md-9">
-                    <label for="">Phí vận chuyển</label>
+                    <label for="">Sau giảm giá</label>
                 </div>
                 <div class="col-md-3">
-                    <label for="">Miễn phí</label>
+                    <label for="">{{number_format(Session::get('tongtien'),0,',',',')}} đ</label>
                 </div>
             </div>
 
@@ -108,7 +108,8 @@
                     <label for="" class="font-weight-bold">Tổng tiền phải thanh toán:</label>
                 </div>
                 <div class="col-md-3">
-                   <label for="" class="text-info h5">{{Cart::subtotal()}}đ</label>
+                   <label for="" class="text-info h5">{{number_format(Session::get('tongtien'),0,',',',')}}đ</label>
+                   <input type="number" hidden name="tongtien" value="{{Session::get('tongtien')}}">
                 </div>
             </div>
 

@@ -7,6 +7,10 @@
 
 <div class="container">
     <h3 class="mt-4">ĐẶT HÀNG</h3>
+    @if (Auth::check()==null)
+    <span><a href="{{URL('dangnhap')}}">Đăng nhập</a> để nhận được ưu đãi thành viên cho đơn hàng <a href="{{URL('/chinh-sach-thanh-vien')}}">xem chi tiết</a></span><br>
+    <span> Bạn chưa có tài khoản?<a href="{{URL('dangki')}}">Đăng ký ngay</a></span>
+    @endif
     <form action="{{URL('/hoantat-dathang')}}" method="POST">
         {{ csrf_field() }}
     <div class="row">
@@ -17,7 +21,7 @@
                 <div class="col-md-6">
                     <label for="basic-url">Họ tên*</label>
                     <div class="input-group mb-3">
-                      <input type="text" class="form-control @error('hoten') is-invalid @enderror" id="basic-url" aria-describedby="basic-addon3" value="" name="hoten">
+                      <input type="text" class="form-control @error('hoten') is-invalid @enderror" id="basic-url" aria-describedby="basic-addon3" value="{{old('hoten')}}" name="hoten">
                       @error('hoten')
                       <span class="invalid-feedback" role="alert">
                           <strong>{{ $message }}</strong>
@@ -29,7 +33,7 @@
                 <div class="col-md-6">
                     <label for="basic-url">Số điện thoại*</label>
                      <div class="input-group mb-3">
-                        <input type="text" class="form-control @error('sdt') is-invalid @enderror" id="basic-url" aria-describedby="basic-addon3" value="" name="sdt">
+                        <input type="number" class="form-control @error('sdt') is-invalid @enderror" id="basic-url" aria-describedby="basic-addon3" value="{{old('sdt')}}" name="sdt">
                         @error('sdt')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -41,7 +45,7 @@
 
             <label for="basic-url">Địa chỉ*</label>
                 <div class="input-group mb-3">
-                  <input type="text" class="form-control @error('diachi') is-invalid @enderror" id="basic-url" aria-describedby="basic-addon3" name="diachi" >
+                  <input type="text" class="form-control @error('diachi') is-invalid @enderror" id="basic-url" aria-describedby="basic-addon3" value="{{old('diachi')}}" name="diachi" >
                   @error('diachi')
                   <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -82,7 +86,7 @@
 
                 <label for="basic-url">Ghi chú</label>
                 <div class="input-group mb-3">
-                    <textarea name="ghichu" id="" cols="200" rows="3"></textarea>
+                    <textarea name="ghichu" id="" cols="200" rows="3">{{old('ghichu')}}</textarea>
                 </div>
 
         </div>
@@ -133,10 +137,20 @@
 
             <div class="row">
                 <div class="col-md-9">
+                    <label for="" class="font-weight-bold">Sau giảm giá:</label>
+                </div>
+                <div class="col-md-3">
+                   <label for="" class="h6">{{number_format($total,0,',',',')}}đ</label>
+                   <input type="number" hidden name="tongtien" value="{{$total}}">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-9">
                     <label for="" class="font-weight-bold">Tổng cộng:</label>
                 </div>
                 <div class="col-md-3">
-                   <label for="" class="text-info h5">{{Cart::subtotal()}}đ</label>
+                   <label for="" class="text-danger h5">{{number_format($total,0,',',',')}}đ</label>
                 </div>
             </div>
 

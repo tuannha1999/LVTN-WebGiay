@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'sdt', 'is_admin',
+        'name', 'email', 'password', 'sdt', 'is_admin', 'yeuthich', 'level',
     ];
 
     /**
@@ -38,5 +38,17 @@ class User extends Authenticatable
     public function phieunhap()
     {
         return $this->hasMany(Phieunhap::class, 'id_user');
+    }
+    public function dondathang()
+    {
+        return $this->hasMany(Dondathang::class, 'id_kh');
+    }
+    public function khuyenmai()
+    {
+        return $this->hasMany(khuyenmai::class, 'id_user');
+    }
+    public function sanpham()
+    {
+        return $this->belongsToMany(sanpham::class, 'yeuthich', 'id_user', 'id_sp')->withPivot('img', 'size');
     }
 }

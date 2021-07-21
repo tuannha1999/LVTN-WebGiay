@@ -24,6 +24,8 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', 'HomeController@index')->name('trangchu');
 Route::get('/trang-chu', 'HomeController@index');
 Route::get('search', 'HomeController@search');
+Route::get('/form-search-donhang', 'HomeController@formsearchDonHang');
+Route::get('/search-donhang', 'HomeController@searchDonHang');
 
 
 //Khachhang
@@ -32,6 +34,15 @@ Route::post('dangnhap', 'KhachhangController@postLogin')->name('login');
 
 Route::get('dangki', 'KhachhangController@getRegister')->name('show-form-register');
 Route::post('dangki', 'KhachhangController@postRegister')->name('register');
+Route::get('chinh-sach-thanh-vien', 'KhachhangController@chinhsachThanhVien');
+
+
+//yeuthich
+Route::get('yeuthich', 'KhachhangController@yeuthich');
+Route::get('add-yeuthich/{id}/{size}', 'KhachhangController@addyeuthich');
+Route::get('delete-yeuthich/{id}', 'KhachhangController@deleteyeuthich');
+
+
 //
 Route::middleware('checklogin')->group(function () {
 
@@ -49,11 +60,23 @@ Route::post('admin', 'AdminController@postLogin')->name('login-admin');
 //
 Route::middleware('checkloginadmin')->group(function () {
 
-    Route::get('index', 'AdminController@index')->name('noi-dung-admin');
+    Route::get('index', 'AdminController@homeAdmin')->name('getDHcanxuly');
     Route::get('logout', 'AdminController@getLogout');
+
+    //Home
+
+    //Donhang
+    Route::get('/admin/dsdonhang', 'DondathangController@getDanhsach')->name('getDonHang');
+
     //khachhang
-    Route::resource('users', 'QLkhachhangController');
-    Route::get('users/{id}/edit/', 'QLkhachhangController@edit');
+    Route::get('/admin/dskhachhang', 'QLKhachhangController@getDanhsach')->name('getKhachhang');
+    Route::post('/admin/dskhachhang-add', 'QLKhachhangController@add');
+    Route::get('/admin/dskhachhang-edit/{id}', 'QLKhachhangController@edit');
+    Route::get('/admin/dskhachhang-delete/{id}', 'QLKhachhangController@delete');
+    Route::get('/admin/dskhachhang-detail/{id}', 'QLKhachhangController@detail');
+
+
+
 
     //sanpham
     Route::get('admin/danhsachsanpham', 'SanphamController@getDSSanpham')->name('getSanpham');
@@ -108,7 +131,8 @@ Route::middleware('checkloginadmin')->group(function () {
 
 
 
-
+    //khuyenmai
+    Route::get('admin/dskhuyenmai/', 'KhuyenmaiController@getdsKhuyenMai')->name('getkhuyenmai');
 
 
     //size
@@ -136,8 +160,11 @@ Route::get('/form-dathang', 'DondathangController@getformDatHang');
 Route::post('/hoantat-dathang', 'DondathangController@getformHoanTat');
 Route::get('dathang-thanhcong/{sdt}', 'DondathangController@formSuccess');
 Route::post('/dathang', 'DondathangController@store');
-// Route::get('change-province/{id}', 'DondathangController@changeProvinces');
-// Route::get('change-district/{id}', 'DondathangController@changeDistrict');
+//huydonhang
+Route::get('huy-donhang/{id}', 'DondathangController@huyDonHang');
+Route::get('chitiet-donhang/{id}', 'DondathangController@chitietDonHang');
+
+
 
 
 //Giohang

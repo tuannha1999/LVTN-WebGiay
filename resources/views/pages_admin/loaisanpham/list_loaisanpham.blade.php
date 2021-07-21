@@ -1,7 +1,7 @@
 
 @extends('admin.layout_admin')
 @section('home')
-<div class="col-md-12">
+<div class="col-md-12 mt-5">
 <h3 class="card-title">Danh sách loại sản phẩm</h3>
   <div class="text-right">
       <a class="btn btn-success mb-3" href="javascript:void(0)"
@@ -96,7 +96,7 @@
 //Xóa Thương hiệu
             $('body').on('click', '#delete-lsp', function () {
                 var id = $(this).data("id");
-                if(confirm("Bạn có chắc muốn xóa thương hiệu này!")){
+                if(confirm("Bạn có chắc muốn xóa loại sản phẩm này!")){
                 $.ajax({
                       type: "GET",
                       url:'/admin/dsloaisanpham-delete/'+id,

@@ -12,9 +12,12 @@ use App\Size;
 use App\Phieunhap;
 use App\Thuonghieu;
 use App\User;
+use Cart;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Session;
 
@@ -39,16 +42,26 @@ class SanphamController extends Controller
     }
     public function chitiet_sp($id)
     {
+        $sp_yeuthich = false;
+        if (Auth::check()) {
+            $user = User::find(Auth::user()->id);
+            foreach ($user->sanpham as $item) {
+                if ($item->pivot->id_sp == $id) {
+                    $sp_yeuthich = true;
+                }
+            }
+        }
+
         $loai_sp = Loaisanpham::all();
         $total_sp = Size::where('id_sp', $id)->sum('soluong');
         $chitiet_sp = Sanpham::with('size')->with('Hinhanh')->where('id', $id)->first();
         $sp_lienquan = Sanpham::with('Hinhanh')->with('size')->where('id_th', $chitiet_sp->id_th)->whereNotIn('id', [$chitiet_sp->id])->paginate(8);
-        return view('pages.sanpham.chitiet_sanpham', compact('chitiet_sp', 'total_sp', 'loai_sp', 'sp_lienquan'));
+        return view('pages.sanpham.chitiet_sanpham', compact('chitiet_sp', 'total_sp', 'loai_sp', 'sp_lienquan', 'sp_yeuthich'));
     }
     public function getDSSanpham(Request $request)
     {
         if ($request->ajax()) {
-            $sp = Sanpham::all();
+            $sp = Sanpham::all()->sortByDesc('id');
             return  DataTables::of($sp)
                 ->addColumn('action', function ($sp) {
                     return '<a href="javascript:void(0);" id="delete-product" data-toggle="tooltip"
@@ -277,9 +290,8 @@ class SanphamController extends Controller
      */
     public function update()
     {
-
-        session()->flush();
-        // // echo $sl;
+        $loai_sp = Loaisanpham::all();
+        return view("khachhang.chinhsach_thanhvien", compact('loai_sp'));
     }
 
     public function locLoaisp($loai)
@@ -299,6 +311,7 @@ class SanphamController extends Controller
 
     public function locgia($value)
     {
+        session()->flash('locgia', $value);
         $loai_sp = Loaisanpham::all();
         $thuonghieu = Thuonghieu::all();
         if ($value == 1) {

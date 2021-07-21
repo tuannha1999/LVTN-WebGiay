@@ -1,7 +1,7 @@
 
 @extends('admin.layout_admin')
 @section('home')
-<div class="col-md-12 mt-2">
+<div class="col-md-12 mt-5">
 <h3 class="card-title">KHO HÀNG</h3>
   <div class="mt-5">
     <table class="display" id="khohang" style="width:100%">

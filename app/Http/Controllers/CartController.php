@@ -18,14 +18,14 @@ class CartController extends Controller
     {
         $product = Sanpham::where('id', $req->id)->first();
         $img = Hinhanh::where('id_sp', $req->id)->where('avt', 1)->first();
-        $size = Size::where('id', $req->size)->first();
+        $size = Size::where('size', $req->size)->where('id_sp', $req->id)->first();
         $sl = 0;
         foreach (Cart::content() as $item) {
-            if ($item->id == $req->id && $item->options->size->id == $req->size) {
+            if ($item->id == $req->id && $item->options->size->size == $req->size) {
                 $sl = $item->qty + $req->qty;
             }
         }
-        if ($size->soluong >= $req->qty) {
+        if ($size->soluong >= $sl) {
             Cart::add(
                 [
                     'id' => $product->id,

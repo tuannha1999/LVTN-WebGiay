@@ -17,7 +17,9 @@ class NhacungcapController extends Controller
             $nhacungcap = Nhacungcap::all();
             return  DataTables::of($nhacungcap)
                 ->addColumn('action', function ($nhacungcap) {
-                    return '<a href="javascript:void(0);" id="delete-nhacungcap" data-id="' . $nhacungcap->id . ' " class="delete">
+                    return '<a  id="edit-khachhang" data-toggle="tooltip"
+                    href="' . URL('/admin/dsnhacungcap-detail/' . $nhacungcap->id) . '"><i class="fa fa-2x fa-eye"></i></a>
+                    <a href="javascript:void(0);" id="delete-nhacungcap" data-id="' . $nhacungcap->id . ' " class="delete">
                     <i class="fas fa-2x fa-trash-alt"></i></a>
                     <a href="javascript:void(0);" id="edit-nhacungcap" data-toggle="modal" data-id=' . $nhacungcap->id . '>
                     <i class="far fa-2x fa-edit"></i></a>';
@@ -25,9 +27,7 @@ class NhacungcapController extends Controller
                     $total = 0;
                     $pn = Phieunhap::where('id_ncc', $nhacungcap->id)->get();
                     foreach ($pn as $pn) {
-                        foreach ($pn->sanpham as $sp) {
-                            $total += $sp->pivot->gianhap * $sp->pivot->soluong;
-                        }
+                        $total += $pn->tongtien;
                     }
                     return number_format($total, 0, '.', '.');
                 })->editColumn('id', function ($nhacungcap) {

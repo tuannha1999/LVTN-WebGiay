@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Loaisanpham;
+use App\Sanpham;
+use App\Size;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -50,7 +52,7 @@ class KhachhangController extends Controller
 
         if (Auth::attempt($credential)) {
             if (auth()->user()->is_admin == 0)
-                return redirect()->route('show-profile');
+                return redirect('/');
         }
 
         return redirect()->back()->with('thongbao', 'Email hoặc mật khẩu không chính xác.');
@@ -116,6 +118,7 @@ class KhachhangController extends Controller
         $khachhang->name = $request->name;
         $khachhang->sdt = $request->sdt;
         $khachhang->email = $request->email;
+        $khachhang->yeuthich = 0;
         $khachhang->password = bcrypt($request->password); //mã hóa bcrypt
         $khachhang->save();
         return redirect()->back()->with('thanhcong', 'Đăng kí thành công');
@@ -129,69 +132,49 @@ class KhachhangController extends Controller
         $loai_sp = Loaisanpham::all();
         return view('khachhang.profile', compact('loai_sp'));
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function chinhsachThanhVien()
     {
         //
+        $loai_sp = Loaisanpham::all();
+        return view('khachhang.chinhsach_thanhvien', compact('loai_sp'));
+    }
+    public function yeuthich()
+    {
+        //
+        $loai_sp = Loaisanpham::all();
+        $sp_yeuthich = User::find(Auth::user()->id);
+        //dd(count($sp_yeuthich->sanpham));
+        return view('khachhang.list_yeuthich', compact('sp_yeuthich', 'loai_sp'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function addyeuthich($id, $size)
     {
         //
+        $loai_sp = Loaisanpham::all();
+        if (Auth::check()) {
+            $sanpham = Sanpham::with('hinhanh')->find($id);
+            $size_sp = Size::where('size', $size)->where('id_sp', $id)->first();
+            $user = User::find(Auth::user()->id);
+            $user->yeuthich += 1;
+            $user->save();
+            foreach ($sanpham->hinhanh as $img) {
+                if ($img->avt == 1) {
+                    $user->sanpham()->attach([$id], ['img' => $img->name, 'size' => $size_sp->size]);
+                }
+            }
+            return back();
+        }
+        return redirect('dangnhap');
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function deleteyeuthich($id)
     {
         //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $loai_sp = Loaisanpham::all();
+        $user = User::find(Auth::user()->id);
+        $user->yeuthich -= 1;
+        $user->save();
+        $user->sanpham()->detach($id);
+        return back();
     }
 }

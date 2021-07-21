@@ -19,6 +19,10 @@ class Sanpham extends Model
     {
         return $this->belongsToMany(Phieunhap::class, 'chitietphieunhap', 'id_pn', 'id_sp')->withPivot('soluong');
     }
+    public function user()
+    {
+        return $this->belongsToMany(User::class, 'yeuthich', 'id_user', 'id_sp');
+    }
     public function loaisanpham()
     {
         return $this->belongsTo(Loaisanpham::class, 'id_lsp');

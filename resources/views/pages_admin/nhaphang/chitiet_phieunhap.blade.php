@@ -1,6 +1,6 @@
 @extends('admin.layout_admin')
 @section('home')
-<div class="container">
+<div class="container mb-5">
 
     <div class="mt-2"><a href="{{URL('/admin/dsphieunhap')}}"><i class="fas fa-2x fa-chevron-left"></i></a></div>
     @if (Session::has('success'))
@@ -12,7 +12,7 @@
         <h2 class="card-title text-center font-weight-bold">CHI TIẾT PHIẾU NHẬP</h2>
         <div class="row mt-4">
 
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <table class="table">
                     <h4 class="font-weight-bold">Thông tin phiếu nhập</h4>
                  <tr>
@@ -64,7 +64,7 @@
              </table>
         </div>
 
-        <div class="col-md-8">
+        <div class="col-md-6">
                 <table class="table">
                     <h4 class="font-weight-bold">Thông tin nhà cung cấp</h4>
                  <tr>
@@ -84,53 +84,61 @@
                      <td>{{$phieunhap->nhacungcap->sdt}}</td>
                  </tr>
              </table>
-            <div class="mt-4">
-                <h4 class="font-weight-bold">Thông tin sản phẩm</h4>
-                <div class="table-wrapper-scroll-y my-custom-scrollbar" id="table-size">
-                        <table class="table mb-0">
-                          <thead class="sticky-top">
-                            <tr>
-                              <th scope="col">Mã sản phẩm</th>
-                              <th scope="col">Tên sản phẩm</th>
-                              <th scope="col">Số lượng</th>
-                              <th scope="col">Giá nhập</th>
-
-                            </tr>
-                          </thead>
-                          <tbody>
-                              @foreach ($phieunhap->sanpham as $sp)
-                              <tr>
-                                <td>{{$sp->id}}</td>
-                                <td>{{$sp->tensp.' - '.$sp->pivot->size}}</td>
-                                <td>{{$sp->pivot->soluong}}</td>
-                                <td>{{$sp->pivot->gianhap}}</td>
-                            </tr>
-                              @endforeach
-
-                          </tbody>
-                        </table>
-                </div>
-            </div>
         </div>
 
 
     </div>
     </div>
 
-    <div class="row">
+    <div class="mt-4">
+        <h4 class="font-weight-bold">Thông tin sản phẩm</h4>
+        <div class="table-wrapper-scroll-y my-custom-scrollbar" id="table-size">
+                <table class="table mb-0">
+                  <thead class="sticky-top">
+                    <tr>
+                      <th scope="col">Mã sản phẩm</th>
+                      <th scope="col">Tên sản phẩm</th>
+                      <th scope="col">Số lượng</th>
+                      <th scope="col">Giá nhập</th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                      @foreach ($phieunhap->sanpham as $sp)
+                        <tr>
+                            <td>{{$sp->id}}</td>
+                            <td>{{$sp->tensp.' - '.$sp->pivot->size}}</td>
+                            <td>{{$sp->pivot->soluong}}</td>
+                            <td>{{$sp->pivot->gianhap}}</td>
+                       </tr>
+                      @endforeach
+                  </tbody>
+                </table>
+        </div>
+    </div>
+
+    <div class="row mb-4">
         <div class="col-md-6">
             <div class="row">
                 <div class="col-md-3">
                     @if ($phieunhap->nhapkho==0)
-                    <a href=""  data-id="{{$phieunhap->id}}" class="btn btn-outline-info btn-nhapkho">Nhập kho</a>
+                    <a href=""  data-id="{{$phieunhap->id}}" class="btn btn-info btn-nhapkho">Nhập kho</a>
                     @endif
 
                 </div>
                 <div class="col-md-9">
                     @if ($phieunhap->thanhtoan==0)
-                    <a href="" data-id="{{$phieunhap->id}}" class="btn btn-outline-info btn-thanhtoan">Thanh toán</a>
+                    <a href="" data-id="{{$phieunhap->id}}" class="btn btn-info btn-thanhtoan">Thanh toán</a>
                     @endif
-
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6">
+                </div>
+                <div class="col-md-6">
+                    <span>Tổng tiền: {{number_format($phieunhap->tongtien,0,'.','.')}}</span>
                 </div>
             </div>
         </div>

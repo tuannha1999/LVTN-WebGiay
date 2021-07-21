@@ -1,8 +1,8 @@
 
 @extends('admin.layout_admin')
 @section('home')
-<div class="col-md-12">
-<h3 class="card-title">Danh sách Phiếu Nhập</h3>
+<div class="col-md-12 mt-5">
+<h3 class="card-title">Danh sách phiếu nhập</h3>
   <div class="text-right">
       <a class="btn btn-success mb-3" href="{{ url('/admin/dsphieunhap-formadd')}}"
           id="create-new-product"> Tạo phiếu nhập</a>
@@ -36,6 +36,7 @@
                 $('#list-phieunhap').DataTable({
                    processing: true,
                    serverSide: true,
+                   oder:[[0,"desc"]],
                    ajax : '{!! route('getdsPhieuNhap') !!}',
                    columns: [
                     { data: 'id', name: 'id',orderable: false },

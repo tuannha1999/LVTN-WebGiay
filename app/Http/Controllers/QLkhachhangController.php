@@ -7,103 +7,65 @@ use App\Dondathang;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
-use Redirect;
-use Response;
-
 class QLkhachhangController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
+    public function getDanhSach(Request $req)
     {
-    if ($request->ajax()) {
-    $data = User::latest()->where('is_admin',0)->get();
-    return Datatables::of($data)    
-    ->addIndexColumn()
-    ->addColumn('action', function($row){
-
-    $action = '<a class="btn btn-info"  id="show-user" data-toggle="modal" data-id='.$row->id.'>Show</a>
-    <a class="btn btn-success" id="edit-user" data-toggle="modal" data-id='.$row->id.'>Edit </a>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <a id="delete-user" data-id='.$row->id.' class="btn btn-danger delete-user">Delete</a>';
-
-    return $action;
-
-    })
-    ->rawColumns(['action'])
-    ->make(true);
+        if ($req->ajax()) {
+            $khachhang = User::all();
+            return  DataTables::of($khachhang)
+                ->addColumn('action', function ($khachhang) {
+                    return '<a  id="edit-khachhang" data-toggle="tooltip"
+                    href="' . URL('/admin/dskhachhang-detail/' . $khachhang->id) . '"><i class="fa fa-2x fa-eye"></i></a>
+                    <a href="javascript:void(0);" id="delete-khachhang" data-id="' . $khachhang->id . ' " class="delete">
+                    <i class="fas fa-2x fa-trash-alt"></i></a>
+                    <a href="javascript:void(0);" id="edit-khachhang" data-toggle="modal" data-id=' . $khachhang->id . '>
+                    <i class="far fa-2x fa-edit"></i></a>';
+                })->rawColumns(['action'])->make(true);
+        }
+        return view('pages_admin.khachhang.list_khachhang');
     }
-
-    return view('pages_admin.khachhang.list_khachhang');
-    }
-
-    public function store(Request $request)
+    public function add(Request $req)
     {
+        $this->validate(
+            $req,
+            [
+                //kiem tra hop le
+                'email' => 'unique:users,email',
+                'sdt' => 'unique:users,sdt|regex:/(0)[3-9][0-9]{8}/|max:10',
+            ],
+            [
+                'email.unique' => 'Email đã tồn tại',
 
-    $r=$request->validate(
-    [
-    'name' => 'required',
-    'email' => 'required',
-    'sdt'=>'required',
-
-
-    ]);
-    
-
-    $uId = $request->user_id;
-    User::updateOrCreate(['id' => $uId],['name' => $request->name, 'email' => $request->email,'sdt' => $request->sdt,'password' => bcrypt(123456)]);
-    if(empty($request->user_id))
-    $msg = 'User created successfully.';
-    else
-    $msg = 'User data is updated successfully';
-    return redirect()->route('users.index')->with('success',$msg);
+                'sdt.unique' => 'Số điện thoại đã tồn tại',
+                'sdt.regex' => 'Số điện thoại không hợp lệ',
+                'sdt.max' => 'Số điện thoại không hợp lệ',
+            ]
+        );
+        User::updateOrCreate(['id' => $req->id_khachhang], [
+            'name' => $req->tenkh,
+            'email' => $req->email,
+            'sdt' => $req->sdt,
+            'yeuthich' => 0,
+            'level' => 0,
+            'password' => bcrypt(123456),
+        ]);
+        return redirect('/admin/dskhachhang');
     }
-
-    /**
-    * Display the specified resource.
-    *
-    * @param int $id
-    * @return \Illuminate\Http\Response
-    */
-
-    public function show($id)
+    public function detail($id)
     {
-    $where = array('id' => $id);
-    $user = User::where($where)->first();
-    
-    return Response::json($user);
-
-    // return view('users.show',compact('user'));
+        $khachhang = User::with('dondathang')->where('id', $id)->first();
+        return view('pages_admin.khachhang.details_khachhang', compact('khachhang'));
     }
-
-    /**
-    * Show the form for editing the specified resource.
-    *
-    * @param int $id
-    * @return \Illuminate\Http\Response
-    */
-
+    public function delete($id)
+    {
+        $delete_kh = User::find($id)->delete();
+    }
     public function edit($id)
     {
-    $where = array('id' => $id);
-    $user = User::where($where)->first();
-    return Response::json($user);
-    }
+        $where = array('id' => $id);
+        $khachhang  = User::where($where)->first();
 
-    /**
-    * Remove the specified resource from storage.
-    *
-    * @param int $id
-    * @return \Illuminate\Http\Response
-    */
-
-    public function destroy($id)
-    {
-    $user = User::where('id',$id)->delete();
-    return Response::json($user);
-    //return redirect()->route('users.index');
+        return response()->json($khachhang);
     }
 }

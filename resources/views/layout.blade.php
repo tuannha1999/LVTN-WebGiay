@@ -54,7 +54,7 @@
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">TÌM KIẾM ĐƠN HÀNG</a>
+                                <a class="nav-link" href="{{URL('/form-search-donhang')}}">TÌM KIẾM ĐƠN HÀNG</a>
                             </li>
                         </ul>
                     </div>
@@ -78,23 +78,56 @@
                             		<a class="nav-link" href="{{url('/dangnhap')}}"><i class="fas fa-user fa-2x"></i></a>
                             	    </li>
                                 @else(Auth::user()->is_admin==0)
-
                                     <li class="nav-item dropdown">
-                                    <a class="nav-link" href="{{ url('/profile' )}}"><i class="fas fa-user fa-2x"></i> </a>
-                                    <ul class="dropdown-menu">
-                                    <li><a  class="nav-link" href="{{url('/profile' )}}">{{ Auth::user()->name}}</a></li>
-                                    <li><a  class="nav-link" href="{{url('/dangxuat' )}}">Đăng xuất</a></li>
-                                    </ul>
+                                         <a class="nav-link" href="{{ url('/profile' )}}"><i class="fas fa-2x fa-user-check"></i></a>
+                                         <ul class="dropdown-menu">
+                                             <li>
+                                                 <a  class="nav-link" href="{{url('/profile' )}}">
+                                                    Hi {{ Auth::user()->name}}
+                                                    @if (Auth::user()->level==1)
+                                                        <span>(5%)</span>
+                                                    @elseif(Auth::user()->level==2)
+                                                        <span>(6%)</span>
+                                                    @elseif(Auth::user()->level==3)
+                                                        <span>(7%)</span>
+                                                    @elseif(Auth::user()->level==4)
+                                                        <span>(8%)</span>
+                                                    @elseif(Auth::user()->level==5)
+                                                        <span>(9%)</span>
+                                                    @elseif(Auth::user()->level==6)
+                                                        <span>(10%)</span>
+                                                    @else
+                                                        <span>(0%)</span>
+                                                    @endif
+                                                </a>
+                                             </li>
+                                             <li>
+                                                <a  class="nav-link" href="{{url('/profile' )}}">Lịch sử mua hàng</a></a>
+                                            </li>
+                                             <li>
+                                                <a  class="nav-link" href="{{url('chinh-sach-thanh-vien' )}}">Ưu đãi thành viên</a>
+                                            </li>
+                                             <li>
+                                                 <a  class="nav-link" href="{{url('/dangxuat' )}}">Đăng xuất</a>
+                                             </li>
+                                         </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link cart-head" style="position:relative;" href="{{url('yeuthich')}}">
+                                            <i class="fas fa-2x fa-heart"></i>
+                                            <span class="hd-cart-count">{{Auth::user()->yeuthich}}</span>
+                                        </a>
                                     </li>
                                 @endif
                             @else
                             <li class="nav-item">
                             <a class="nav-link" href="{{url('/dangnhap')}}"><i class="fas fa-user fa-2x"></i></a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link"  href="{{url('/dangnhap')}}"><i class="fas fa-2x fa-heart"></i>
+                                </a>
+                            </li>
                             @endif
-
-
-
 
 
                             <li class="nav-item">
@@ -182,11 +215,37 @@
 <!-- Bootstrap theme -->
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
 
-{{-- //zalo
-<div class="zalo-chat-widget" data-oaid="579745863508352884"
+{{-- <div class="zalo-chat-widget" data-oaid="579745863508352884"
 data-welcome-message="Rất vui khi được hỗ trợ bạn!" data-autopopup="3" data-width="350" data-height="420"></div>
 
 <script src="https://sp.zalo.me/plugins/sdk.js"></script> --}}
-<!-- JavaScript -->
+<!-- Messenger Plugin chat Code -->
+<!-- Messenger Plugin chat Code -->
+{{-- <div id="fb-root"></div>
+
+<!-- Your Plugin chat code -->
+<div id="fb-customer-chat" class="fb-customerchat">
+</div>
+
+<script>
+  var chatbox = document.getElementById('fb-customer-chat');
+  chatbox.setAttribute("page_id", "101987398844589");
+  chatbox.setAttribute("attribution", "biz_inbox");
+
+  window.fbAsyncInit = function() {
+    FB.init({
+      xfbml            : true,
+      version          : 'v11.0'
+    });
+  };
+
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script> --}}
 </body>
 </html>
