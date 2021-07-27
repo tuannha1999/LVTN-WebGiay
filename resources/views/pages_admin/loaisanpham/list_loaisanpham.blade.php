@@ -27,7 +27,8 @@
             <h4 class="modal-title" id="lspCrudModal"></h4>
         </div>
         <div class="modal-body">
-            <form action="{{URL('/admin/dsloaisanpham-add')}}" method="post" id="lspForm" >
+            <div class="alert alert-danger" style="display:none"></div>
+            <form action="" method="post" id="lspForm" >
                 @csrf
                 <div class="form-group">
                     <label for="name" class="col-sm-5 control-label">Mã loại</label>
@@ -81,6 +82,43 @@
                $('#ajax-lsp-modal').modal('show');
             });
 
+
+            $('#btn-save').click(function(e){
+                e.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: "{{ url('/admin/dsloaisanpham-add')}}",
+                    method: 'post',
+                    data: {
+                        id: $('#id_loai').val(),
+                        tenloai: $('#tenloai').val(),
+                    },
+                    success: function(result){
+                        if(result.errors)
+                        {
+                            $('.alert-danger').html('');
+
+                            $.each(result.errors, function(key, value){
+                                $('.alert-danger').show();
+                                $('.alert-danger').append('<li>'+value+'</li>');
+                            });
+                            //tắt thông báo sau 3s
+                            setTimeout(function(){
+                                $('.alert-danger').hide('');
+                            }, 3000);;
+                        }
+                        else
+                        {
+                            location.reload('/admin/dsloaisanpham');
+                        }
+                    }
+                });
+            });
+
  //Show form sửa
            $('body').on('click', '#edit-lsp', function () {
              var id = $(this).data('id');
@@ -103,10 +141,11 @@
                       success: function (data) {
                       var oTable = $('#lsp-list').dataTable();
                       oTable.fnDraw(false);
-                     //console.log(product_id);
+                      alertify.success("Đã xóa loại sản phẩm!");
                       },
                        error: function (data) {
-                           console.log('Error:', data);
+                           //console.log('Error:', data);
+                           alertify.error("Không thể xóa loại sản phẩm này!");
                        }
                 });
             }

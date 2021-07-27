@@ -10,11 +10,14 @@ use App\User;
 use App\Size;
 use App\Hinhanh;
 use App\Cart;
+use App\Imports\Importproducts;
+use App\Imports\Importsanpham;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 
@@ -27,7 +30,7 @@ class PhieunhapController extends Controller
             $pn = Phieunhap::all();
             return  DataTables::of($pn)
                 ->addColumn('action', function ($pn) {
-                    return '<a href="' . URL('/admin/dsphieunhap-detail/' . $pn->id) . '" class="link text-primary">
+                    return '<a href="' . URL('/admin/dsphieunhap-detail/' . $pn->id) . '" class="link">
                     <i class="far fa-2x fa-eye"></i></a>
                     <a href="javascript:void(0);" id="delete" data-toggle="tooltip"
                     data-original-title="Delete" data-id="' . $pn->id . ' " class="delete">
@@ -108,9 +111,8 @@ class PhieunhapController extends Controller
     }
     public function addPhieuNhap(Request $req)
     {
-        // //print_r($req->thanhtoan);
-        // dd($req->thanhtoan);
 
+        $req->old('ngaynhap', 'thanhtoan', 'nhapkho', 'ghichu');
         $this->validate(
             $req,
             [
@@ -154,6 +156,7 @@ class PhieunhapController extends Controller
                 }
 
                 $req->session()->forget('Cart');
+                $req->session()->flash('success', 'Tạo phiếu nhập thành công!');
                 return redirect('/admin/dsphieunhap');
             }
 
@@ -194,6 +197,11 @@ class PhieunhapController extends Controller
         return view('pages_admin.nhaphang.add_phieunhap');
     }
 
+    // public function import()
+    // {
+    //     Excel::import(new Importsanpham, request()->file('file'));
+    //     return back();
+    // }
     public function dsNhaCungCap(Request $request)
     {
         if ($request->ajax()) {

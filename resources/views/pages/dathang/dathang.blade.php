@@ -6,6 +6,7 @@
 @endsection
 
 <div class="container">
+
     <h3 class="mt-4">ĐẶT HÀNG</h3>
     @if (Auth::check()==null)
     <span><a href="{{URL('dangnhap')}}">Đăng nhập</a> để nhận được ưu đãi thành viên cho đơn hàng <a href="{{URL('/chinh-sach-thanh-vien')}}">xem chi tiết</a></span><br>
@@ -53,41 +54,34 @@
                     @enderror
                 </div>
 
-                {{-- <label for="basic-url">Tỉnh thành</label>
-                <select class="form-control @error('lsp') is-invalid @enderror" id="list-prov" name="prov">
-                    <option value="">- Chọn tỉnh thành-</option>
-                    @foreach ($provinces as $item)
-                     <option value="{{$item->id}}" >{{$item->name}}</option>
-                     @endforeach
-                     @error('lsp')
-                     <span class="invalid-feedback" role="alert">
-                         <strong>{{ $message }}</strong>
-                     </span>
-                     @enderror
-                </select>
-
-                <label for="basic-url">Quận huyện</label>
-                <select class="form-control " id="list-dist" name="dist">
-                    <option value="">- Chọn quận huyện-</option>
-                     <option value="0" ></option>
-                     @error('lsp')
-                     <span class="invalid-feedback" role="alert">
-                         <strong>{{ $message }}</strong>
-                     </span>
-                     @enderror
-                </select>
-
-                <label for="basic-url">Phường xã</label>
-                <select class="form-control" id="list-ward" name="ward">
-                    <option value="">- Chọn phường xã-</option>
-                     <option value="0" ></option>
-
-                </select> --}}
-
                 <label for="basic-url">Ghi chú</label>
                 <div class="input-group mb-3">
                     <textarea name="ghichu" id="" cols="200" rows="3">{{old('ghichu')}}</textarea>
                 </div>
+
+                <hr>
+                <div class="input-group">
+                     <label for=""> <input type="radio" name="thanhtoan" value="0" checked >  Thanh toán khi nhận hàng </label>
+                </div>
+                <div class="input-group">
+                    <label for=""> <input type="radio" value="1" name="thanhtoan" >  Thanh toán chuyển khoản ngân hàng </label>
+               </div>
+
+                <div class="input-group">
+                        <p class="font-italic"> (Thực hiện thanh toán vào tài khoản ngân hàng của chúng tôi. Vui lòng sử dụng mã đơn hàng của bạn
+                            trong phần nội dung thanh toán. Đơn hàng sẽ được giao sau khi tiền đã được chuyển.)
+                        </p>
+                </div>
+
+                <div class="row mt-5">
+                    <div class="col-md-9">
+                        <a href="{{URL('/cart')}}" class="link text-info"><i class="fas fa-chevron-left"></i> <span>Quay về giỏ hàng</span></a>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary">Đặt hàng</button>
+                    </div>
+                </div>
+            </form>
 
         </div>
         <div class="col-md-6 mt-5">
@@ -117,6 +111,16 @@
             </div>
 
             <hr>
+            @if (session('success'))
+            <div class="alert alert-success mt-3">
+                {{ session('success') }}
+            </div>
+            @endif
+            @if (session('error'))
+            <div class="alert alert-warning mt-3">
+                {{ session('error') }}
+            </div>
+            @endif
             <div class="row">
                 <div class="col-md-9">
                     <label for="">Tạm tính</label>
@@ -134,104 +138,61 @@
                     <label for="">Miễn phí</label>
                 </div>
             </div>
-
+            @if (Auth::check())
             <div class="row">
                 <div class="col-md-9">
-                    <label for="" class="font-weight-bold">Sau giảm giá:</label>
+                    <label for="" class="">Ưu đãi thành viên:</label>
                 </div>
                 <div class="col-md-3">
-                   <label for="" class="h6">{{number_format($total,0,',',',')}}đ</label>
-                   <input type="number" hidden name="tongtien" value="{{$total}}">
+                   <label for="" class="h6">- {{number_format(session()->get('tiengiamtv'),0,',',',')}}đ</label>
                 </div>
             </div>
+            @endif
+
+            @if(session()->has('daapdung'))
+            <div class="row">
+                <div class="col-md-9">
+                    <label for="" class="">Mã giảm giá ({{session()->get('macode')}}):<a href="{{URL('/delete-coupons')}}" class="link"> <i class="fas fa-trash-alt"></i></a></label>
+                </div>
+                <div class="col-md-3">
+                   <label for="" class="h6">- {{number_format(session()->get('tiengiamma'),0,',',',')}}đ</label>
+                </div>
+            </div>
+            @endif
 
             <div class="row">
                 <div class="col-md-9">
                     <label for="" class="font-weight-bold">Tổng cộng:</label>
                 </div>
                 <div class="col-md-3">
-                   <label for="" class="text-danger h5">{{number_format($total,0,',',',')}}đ</label>
+                   <label for="" class="text-danger h5">{{number_format(session()->get('tongtien'),0,',',',')}}đ</label>
                 </div>
             </div>
-
-
             <hr>
-            <div class="input-group">
-                 <label for=""> <input type="radio" name="thanhtoan" value="0" checked >  Thanh toán khi nhận hàng </label>
-            </div>
-            <div class="input-group">
-                <label for=""> <input type="radio" value="1" name="thanhtoan" >  Thanh toán chuyển khoản ngân hàng </label>
-           </div>
-
-            <div class="input-group">
-                    <p class="font-italic"> (Thực hiện thanh toán vào tài khoản ngân hàng của chúng tôi. Vui lòng sử dụng mã đơn hàng của bạn
-                        trong phần nội dung thanh toán. Đơn hàng sẽ được giao sau khi tiền đã được chuyển.)
-                    </p>
-            </div>
-
-            <div class="row mt-5">
-                <div class="col-md-9">
-                    <a href="{{URL('/cart')}}" class="link text-info"><i class="fas fa-chevron-left"></i> <span>Quay về giỏ hàng</span></a>
-                </div>
-                <div class="col-md-3">
-                    <button type="submit" class="btn btn-primary">Đặt hàng</button>
-                </div>
-            </div>
+            @if (session()->has('daapdung')==false)
+            <form action="{{URL('/check-coupons')}}" method="POST">
+                @csrf
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="macode" aria-describedby="basic-addon3" placeholder="Nhập mã giảm giá">
+                      <div class="input-group-prepend">
+                          <button type="submit" class="btn btn-info">Áp dụng</button>
+                      </div>
+                  </div>
+            </form>
+            @endif
         </div>
     </div>
-    </form>
 </div>
 
-{{-- <script >
-$(document).ready(function(){
-
-$("#list-prov").change(function(){
-
-      var id_prov= $(this).val();
-      console.log(id_prov);
-      if(id_prov != '0')
-      {
-         $.ajax({
-            type: 'GET',
-            url: '/change-province/'+id_prov,
-            success: function(data){
-              var len=data.length;
-              $("#list-dist").empty();
-              for( var i = 0; i<len; i++){
-              var id = data[i]['id'];
-              var name = data[i]['name'];
-              $("#list-dist").append("<option value='"+id+"'>"+name+"</option>");
-          }
-            }
-         });
-      }
-
-});
-});
-
-$(document).ready(function(){
-$("#list-dist").change(function(){
-
-      var id_dist= $(this).val();
-      console.log(id_dist);
-      if(id_dist != '0')
-      {
-         $.ajax({
-            type: 'GET',
-            url: '/change-district/'+id_dist,
-            success: function(data){
-              var len=data.length;
-              $("#list-ward").empty();
-              for( var i = 0; i<len; i++){
-              var id = data[i]['id'];
-              var name = data[i]['name'];
-              $("#list-ward").append("<option value='"+id+"'>"+name+"</option>");
-          }
-            }
-         });
-      }
-});
-
-});
-</script> --}}
+<script >
+//tắt thông báo sau 3s
+window.setTimeout(function() {
+    $(".alert-success").fadeTo(500, 0).slideUp(500, function(){
+    $(this).remove();});
+ },4000);
+ window.setTimeout(function() {
+    $(".alert-warning").fadeTo(500, 0).slideUp(500, function(){
+    $(this).remove();});
+ },4000);
+    </script>
 @endsection

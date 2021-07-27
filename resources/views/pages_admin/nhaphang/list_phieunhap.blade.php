@@ -2,6 +2,11 @@
 @extends('admin.layout_admin')
 @section('home')
 <div class="col-md-12 mt-5">
+    @if (Session::has('success'))
+    <div class="alert alert-success mt-3" id="alert-success">
+        <span>{{Session::get('success')}}</span>
+    </div>
+    @endif
 <h3 class="card-title">Danh sách phiếu nhập</h3>
   <div class="text-right">
       <a class="btn btn-success mb-3" href="{{ url('/admin/dsphieunhap-formadd')}}"
@@ -69,6 +74,13 @@
                });
              }
         });
+
+//alert thông báo
+ window.setTimeout(function() {
+          $(".alert").fadeTo(500, 0).slideUp(500, function(){
+              $(this).remove();
+          });
+},              3000);
 
 </script>
 @endpush

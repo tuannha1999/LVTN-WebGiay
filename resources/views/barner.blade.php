@@ -9,16 +9,11 @@
 
     <!-- The slideshow -->
     <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="{{asset ('/img/barner/NT Store.png') }}" alt="Los Angeles">
+        @foreach ($banner as $key=>$value)
+        <div class="carousel-item @if($key==0) active @endif">
+            <img src="{{asset ('storage/'.$value->name) }}" style="height:400px;width:100%" alt="">
           </div>
-      <div class="carousel-item">
-        <img src="{{asset ('/img/barner/NT Store banner .png') }}" alt="Los Angeles">
-      </div>
-      <div class="carousel-item">
-        <img src="{{asset ('/img/barner/Sale-Banner-Sneakers.jpg') }}" alt="Los Angeles">
-      </div>
-
+        @endforeach
     </div>
 
     <!-- Left and right controls -->

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Dondathang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 
 class QLkhachhangController extends Controller
@@ -17,22 +18,23 @@ class QLkhachhangController extends Controller
                 ->addColumn('action', function ($khachhang) {
                     return '<a  id="edit-khachhang" data-toggle="tooltip"
                     href="' . URL('/admin/dskhachhang-detail/' . $khachhang->id) . '"><i class="fa fa-2x fa-eye"></i></a>
-                    <a href="javascript:void(0);" id="delete-khachhang" data-id="' . $khachhang->id . ' " class="delete">
-                    <i class="fas fa-2x fa-trash-alt"></i></a>
                     <a href="javascript:void(0);" id="edit-khachhang" data-toggle="modal" data-id=' . $khachhang->id . '>
-                    <i class="far fa-2x fa-edit"></i></a>';
+                    <i class="far fa-2x fa-edit"></i></a>
+                    <a href="javascript:void(0);" id="delete-khachhang" data-id="' . $khachhang->id . ' " class="delete">
+                    <i class="fas fa-2x fa-trash-alt"></i></a>';
                 })->rawColumns(['action'])->make(true);
         }
         return view('pages_admin.khachhang.list_khachhang');
     }
+
     public function add(Request $req)
     {
-        $this->validate(
-            $req,
+        $validator = Validator::make(
+            $req->all(),
             [
                 //kiem tra hop le
-                'email' => 'unique:users,email',
-                'sdt' => 'unique:users,sdt|regex:/(0)[3-9][0-9]{8}/|max:10',
+                'email' => 'unique:users,email,' . $req->id,
+                'sdt' => 'unique:users,sdt,' . $req->id . '|regex:/(0)[3-9][0-9]{8}/|max:10',
             ],
             [
                 'email.unique' => 'Email đã tồn tại',
@@ -42,7 +44,11 @@ class QLkhachhangController extends Controller
                 'sdt.max' => 'Số điện thoại không hợp lệ',
             ]
         );
-        User::updateOrCreate(['id' => $req->id_khachhang], [
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()->all()]);
+        }
+        User::updateOrCreate(['id' => $req->id], [
             'name' => $req->tenkh,
             'email' => $req->email,
             'sdt' => $req->sdt,
@@ -52,11 +58,13 @@ class QLkhachhangController extends Controller
         ]);
         return redirect('/admin/dskhachhang');
     }
+
     public function detail($id)
     {
         $khachhang = User::with('dondathang')->where('id', $id)->first();
         return view('pages_admin.khachhang.details_khachhang', compact('khachhang'));
     }
+
     public function delete($id)
     {
         $delete_kh = User::find($id)->delete();

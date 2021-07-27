@@ -31,6 +31,26 @@
                     <td>Tổng giao dịch:</td>
                     <td>{{$khachhang->tonggd}}</td>
                 </tr>
+                <tr>
+                    <td>Ưu đãi cho mỗi đơn hàng:</td>
+                    <td>
+                        @if ($khachhang->level==1)
+                            <span>5%</span>
+                        @elseif($khachhang->level==2)
+                            <span>6%</span>
+                        @elseif($khachhang->level==3)
+                            <span>7%</span>
+                        @elseif($khachhang->level==4)
+                            <span>8%</span>
+                        @elseif($khachhang->level==5)
+                            <span>9%</span>
+                        @elseif($khachhang->level==6)
+                            <span>10%</span>
+                        @else
+                            <span>0%</span>
+                        @endif
+                    </td>
+                </tr>
              </table>
             </div>
 
@@ -78,60 +98,9 @@
     </div>
 </div>
 
-    {{-- <div class="row">
-        <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-3">
-                    @if ($phieunhap->nhapkho==0)
-                    <a href=""  data-id="{{$phieunhap->id}}" class="btn btn-outline-info btn-nhapkho">Nhập kho</a>
-                    @endif
-
-                </div>
-                <div class="col-md-9">
-                    @if ($phieunhap->thanhtoan==0)
-                    <a href="" data-id="{{$phieunhap->id}}" class="btn btn-outline-info btn-thanhtoan">Thanh toán</a>
-                    @endif
-
-                </div>
-            </div>
-        </div>
-    </div> --}}
 </div>
 <script>
 
-  //nhapkho
-  $('.btn-nhapkho').on('click',function(){
-               // console.log(product_id);
-               if(confirm("Bạn có chắc muốn nhập kho?")){
-                $.ajax({
-                        url:'/admin/dsphieunhap-nhapkho/'+$(this).data("id"),
-                        type:'GET',
-                        success: function (data) {
-                            location.reload();
-                   },
-                    error: function (data) {
-                        console.log('Error:', data);
-                    }
-                 })
-               }
-             });
-
-//thanhtoan
-  $('.btn-thanhtoan').on('click',function(){
-               // console.log(product_id);
-               if(confirm("Bạn có chắc muốn xác nhận đã thanh toán?")){
-                $.ajax({
-                        url:'/admin/dsphieunhap-thanhtoan/'+$(this).data("id"),
-                        type:'GET',
-                        success: function (data) {
-                            location.reload();
-                   },
-                    error: function (data) {
-                        console.log('Error:', data);
-                    }
-                 })
-               }
-             })
 
 
 </script>

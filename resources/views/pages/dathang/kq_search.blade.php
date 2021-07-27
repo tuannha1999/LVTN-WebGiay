@@ -74,43 +74,43 @@ Tìm kiếm đơn hàng
                     @endif
                 </td>
             </tr>
+
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLongTitle">Chọn lý do hủy hàng</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                        <form action="{{URL('huy-donhang/'.$dh->id)}}" method="get">
+                        <div class="modal-body">
+                            <input type="radio" name="lydo" value="Muốn thay đổi sản phẩm trong đơn hàng"> Muốn thay đổi sản phẩm trong đơn hàng <br>
+                            <input type="radio" name="lydo" value="Tìm thấy giá rẻ hơn ở nơi khác"> Tìm thấy giá rẻ hơn ở nơi khác <br>
+                            <input type="radio" name="lydo" value="Đổi ý không muốn mua nữa"> Đổi ý không muốn mua nữa <br>
+                            <input type="radio" name="lydo" value="Lý do khác"> Lý do khác
+                        </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-info btn-huy">Hủy đơn hàng</button>
+                          </div>
+                        </form>
+
+                  </div>
+                </div>
+              </div>
+            @endforeach
         </tbody>
     </table>
 
     {{-- //modal --}}
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Chọn lý do hủy hàng</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-                <form action="{{URL('huy-donhang/'.$dh->id)}}" method="get">
-                <div class="modal-body">
-                    <input type="radio" name="lydo" value="Muốn thay đổi sản phẩm trong đơn hàng"> Muốn thay đổi sản phẩm trong đơn hàng <br>
-                    <input type="radio" name="lydo" value="Tìm thấy giá rẻ hơn ở nơi khác"> Tìm thấy giá rẻ hơn ở nơi khác <br>
-                    <input type="radio" name="lydo" value="Đổi ý không muốn mua nữa"> Đổi ý không muốn mua nữa <br>
-                    <input type="radio" name="lydo" value="Lý do khác"> Lý do khác
-                </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                    <button type="submit" class="btn btn-info">Hủy đơn hàng</button>
-                  </div>
-                </form>
 
-          </div>
-        </div>
-      </div>
 </div>
-@endforeach
 @else
 <h4>Không tìm thấy đơn hàng!</h4>
 @endif
 </div>
-
-<!--Container-->
 
 @endsection
 

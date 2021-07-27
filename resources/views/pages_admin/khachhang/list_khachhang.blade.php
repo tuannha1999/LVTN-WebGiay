@@ -29,7 +29,8 @@
             <h4 class="modal-title" id="khachhangCrudModal"></h4>
         </div>
         <div class="modal-body">
-            <form action="{{URL('/admin/dskhachhang-add')}}" method="post" id="khachhangForm" >
+            <div class="alert alert-danger" style="display:none"></div>
+            <form action="" method="POST" id="khachhangForm" >
                 @csrf
                 <div class="form-group">
                     <label for="id_khachhang" class="col-sm-5 control-label">Mã khách hàng</label>
@@ -41,33 +42,18 @@
                     <label for="tenkh" class="col-sm-5 control-label">Tên khách hàng(*)</label>
                     <div class="col-sm-12">
                         <input type="text" class="form-control" id="tenkh" name="tenkh" value="" maxlength="50" required >
-                        @if($errors->has('tenkh'))
-                        <div class="text-danger">
-                        {{$errors->first('tenkh')}}
-                        </div>
-                        @endif
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="sdt" class="col-sm-5 control-label">Số điện thoại(*)</label>
                     <div class="col-sm-12">
                         <input type="number" class="form-control" id="sdt" name="sdt" value=""  max="" required >
-                        @if($errors->has('sdt'))
-                        <div class="text-danger">
-                        {{$errors->first('sdt')}}
-                        </div>
-                        @endif
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="email" class="col-sm-5 control-label">Email(*)</label>
                     <div class="col-sm-12">
                         <input type="email" class="form-control" id="email" name="email" value="" maxlength="50" required>
-                        @if($errors->has('email'))
-                        <div class="text-danger">
-                        {{$errors->first('email')}}
-                        </div>
-                        @endif
                     </div>
                 </div>
                 <div class="col-sm-offset-2 col-sm-10">
@@ -76,13 +62,11 @@
             </form>
         </div>
         <div class="modal-footer">
-
         </div>
     </div>
     </div>
-    </div>
 
-
+</div>
 
 @endsection
 
@@ -108,15 +92,56 @@
 
                    ]
                });
-//Show form Thêm
-               $('#create-khachhang').click(function () {
+
+//show form thêm
+                $('#create-khachhang').click(function () {
                $('#btn-save').val("create-khachhang");
                $('#khachhangForm').trigger("reset");
                $('#khachhangCrudModal').html("Thêm Khách Hàng");
                $('#ajax-khachhang-modal').modal('show');
             });
 
- //Show form sửa
+//btn-save
+               $('#btn-save').click(function(e){
+                e.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: "{{ url('/admin/dskhachhang-add')}}",
+                    method: 'post',
+                    data: {
+                        id: $('#id_khachhang').val(),
+                        tenkh: $('#tenkh').val(),
+                        sdt: $('#sdt').val(),
+                        email: $('#email').val(),
+                    },
+                    success: function(result){
+                        if(result.errors)
+                        {
+                            $('.alert-danger').html('');
+
+                            $.each(result.errors, function(key, value){
+                                $('.alert-danger').show();
+                                $('.alert-danger').append('<li>'+value+'</li>');
+                            });
+                            //tắt thông báo sau 3s
+                            setTimeout(function(){
+                                $('.alert-danger').hide('');
+                            }, 3000);
+                        }
+                        else
+                        {
+                            location.reload('/admin/dskhachhang');
+                        }
+                    }
+                });
+            });
+
+
+//Show form sửa
            $('body').on('click', '#edit-khachhang', function () {
              var id = $(this).data('id');
              $.get('/admin/dskhachhang-edit/'+id, function (data) {
@@ -130,7 +155,8 @@
              })
           });
 
-//Xóa Thương hiệu
+
+//Xóa khách hàng
             $('body').on('click', '#delete-khachhang', function () {
                 var id = $(this).data("id");
                 if(confirm("Bạn có chắc muốn xóa khách hàng!")){
@@ -148,7 +174,7 @@
                 });
             }
         });
- });
+});
 
 </script>
 @endpush

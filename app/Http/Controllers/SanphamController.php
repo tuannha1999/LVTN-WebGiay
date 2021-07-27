@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Coupons;
 use App\Loaisanpham;
 use App\Dondathang;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use App\Sanpham;
 use App\Hinhanh;
+use App\Nhacungcap;
 use App\Size;
 use App\Phieunhap;
+use App\Thongke;
 use App\Thuonghieu;
 use App\User;
+use Carbon\Carbon;
 use Cart;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Auth;
@@ -108,23 +112,33 @@ class SanphamController extends Controller
     public function store(Request $request)
     {
 
-        //DD($request->file('hinhanh'));
+        //dd($request->nosize);
+        $request->old('tensp', 'giaban', 'lsp', 'trangthai', 'th', 'tags', 'nosize');
         $this->validate(
             $request,
             [
                 'tensp' => 'required',
-                'giaban' => 'required|gt:giakm',
+                'giaban' => 'required|gt:giakm|min:1000|max:100000000',
+                'giakm' => 'required',
                 'hinhanh' => 'required',
+                'hinhanh.*' => 'mimes:jpeg,jpg,png',
                 'lsp' => 'required',
 
-            ],
+                'tags' => 'required_if:nosize,""'
 
+            ],
             [
-                'tensp.required' => 'Vui lòng nhập tên sản phẩm',
-                'giaban.required' => 'Không được để trống',
+                'tensp.required' => 'Tên sản phẩm không được để trống',
+                'giaban.required' => 'Giá bán không được để trống',
+                'hinhanh.required' => 'Hình ảnh không được để trống',
+                'lsp.required' => 'Loại sản phẩm Không được để trống',
+                'giakm.required' => 'Giá khuyến mãi Không được để trống',
+
+                'hinhanh.*.mimes' => 'Hình ảnh không Đúng định dạng:jpeg,jpg,png',
                 'giaban.gt' => 'Giá bán phải lớn hơn giá khuyến mãi',
-                'hinhanh.required' => 'Không được để trống',
-                'lsp.required' => 'Không được để trống',
+                'giaban.min' => 'Giá bán phải lớn hơn 1000',
+                'giaban.max' => 'Giá bán phải nhỏ hơn 100000000',
+                'tags.required_if' => 'Nhập size hoặc chọn sản phẩm không có size',
 
             ]
         );
@@ -148,6 +162,11 @@ class SanphamController extends Controller
                 $new_size->soluong = 0;
                 $new_product->size()->save($new_size);
             }
+        } else {
+            $new_size = new Size();
+            $new_size->size = '';
+            $new_size->soluong = 0;
+            $new_product->size()->save($new_size);
         }
 
         if ($request->hasFile('hinhanh')) {
@@ -161,52 +180,44 @@ class SanphamController extends Controller
                 $new_product->Hinhanh()->save($newImage);
             }
         }
-
+        $request->session()->flash('success', 'Tạo phiếu nhập thành công!');
         return redirect('/admin/danhsachsanpham');
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
 
     public function chitietSanphamAdmin($id)
     {
         //
         $chitiet_sp = Sanpham::with('size')->with('thuonghieu')->with('loaisanpham')->with('hinhanh')->where('id', $id)->first();
         $total_sp = Size::with('sanpham')->where('id_sp', $id)->sum('soluong');
-        //$loai_sp = Loaisanpham::where('id', $chitiet_sp->id_lsp)->first();
         $all_loai = Loaisanpham::all()->whereNotIn('id', $chitiet_sp->id_lsp);
-        //$thuonghieu_sp = Thuonghieu::where('id', $chitiet_sp->id_th)->first();
         $thuonghieu = Thuonghieu::all()->whereNotIn('id', $chitiet_sp->id_th);
-        // $thuonghieu = Thuonghieu::where('id', $chitiet_sp->id_th)->first();
         return view(
             'pages_admin.sanpham.details_sanpham',
             compact('chitiet_sp', 'total_sp', 'all_loai', 'thuonghieu')
         );
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit(Request $request)
     {
         $this->validate(
             $request,
             [
                 'tensp' => 'required',
-                'giaban' => 'required|gt:giakm',
-            ],
+                'giaban' => 'required|gt:giakm|min:1000|max:100000000',
+                'giakm' => 'required',
+                'hinhanh.*' => 'mimes:jpeg,jpg,png',
 
+            ],
             [
-                'tensp.required' => 'Vui lòng nhập tên sản phẩm',
-                'giaban.required' => 'Không được để trống',
+                'tensp.required' => 'Tên sản phẩm không được để trống',
+                'giaban.required' => 'Giá bán không được để trống',
+                'giakm.required' => 'Giá khuyến mãi Không được để trống',
+
+                'hinhanh.*.mimes' => 'Hình ảnh không Đúng định dạng:jpeg,jpg,png',
                 'giaban.gt' => 'Giá bán phải lớn hơn giá khuyến mãi',
+                'giaban.min' => 'Giá bán phải lớn hơn 1000',
+                'giaban.max' => 'Giá bán phải nhỏ hơn 100000000',
 
             ]
         );
@@ -290,8 +301,17 @@ class SanphamController extends Controller
      */
     public function update()
     {
-        $loai_sp = Loaisanpham::all();
-        return view("khachhang.chinhsach_thanhvien", compact('loai_sp'));
+        $range = Carbon::now()->subDays(7);
+        $thongke = Thongke::where('ngaydat', '>=', $range)->get();
+        return $thongke;
+        //session()->forget(['tongtien', 'tiengiamma', 'daapdung', 'tiengiamma', 'dagiamtv']);
+        // $de = Nhacungcap::where('id', 1000006)->delete();
+        //session()->forget('Phieutra');
+        //dd(session()->get('Phieutra'));
+        //dd(session()->get('tongtien'));
+        // foreach (Session::get('Phieutra')->products as $k => $item) {
+        //     echo $k;
+        // }
     }
 
     public function locLoaisp($loai)
@@ -333,12 +353,6 @@ class SanphamController extends Controller
         return view("pages.sanpham.loc_gia", compact('loai_sp', 'loc_gia', 'thuonghieu'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $sp = Sanpham::where('id', $id)->delete();

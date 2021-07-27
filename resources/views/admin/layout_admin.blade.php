@@ -111,7 +111,7 @@
   </button>
   <div id="demoAcc1" class="w3-hide w3-white w3-card">
     <a href="{{ url('/admin/dsdonhang') }}" class="btn w3-bar-item">Danh sách đơn hàng</a>
-    <a href="#" class="btn w3-bar-item">Trả hàng</a>
+    <a href="{{ url('/admin/dsphieutra') }}" class="btn w3-bar-item">Trả hàng</a>
   </div>
 
   <button class="btn btn-secondary w3-block w3-left-align" onclick="myAccFunc()">
@@ -128,6 +128,8 @@
 
   <a href="{{ url('/admin/dskhachhang') }}" class="btn btn-secondary w3-bar-item">Khách hàng</a>
   <a href="{{ url('/admin/dsnhacungcap') }}" class="btn btn-secondary w3-bar-item">Nhà cung cấp</a>
+  <a href="{{ url('/admin/dsbanner') }}" class="btn btn-secondary w3-bar-item">Banner</a>
+  <a href="{{ url('/admin/thongke') }}" class="btn btn-secondary w3-bar-item">Thống kê</a>
   <a href="{{ url('/admin/dskhuyenmai') }}" class="btn btn-secondary w3-bar-item">Khuyến mãi</a>
 
 </div>
@@ -195,6 +197,13 @@ function myAccFunc1() {
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <!-- sidebar -->
+
+{{-- thư viện moris --}}
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+
 @stack('scripts')
 
 </body>

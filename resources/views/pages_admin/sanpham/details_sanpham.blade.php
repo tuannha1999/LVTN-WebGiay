@@ -8,6 +8,15 @@
         <span>{{Session::get('success')}}</span>
     </div>
     @endif
+    @if (count($errors) > 0)
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
     <div class="col-md-12">
         <h2 class="card-title text-center font-weight-bold">CHI TIẾT SẢN PHẨM</h2>
         <form action="{{URL('/admin/danhsachsanpham/edit-sp/')}}" method="POST" enctype="multipart/form-data">
@@ -18,23 +27,15 @@
             </div>
             <label for="basic-url">Tên sản phẩm</label>
             <div class="input-group mb-3">
-              <input type="text" class="form-control @error('tensp') is-invalid @enderror" name="tensp" id="basic-url" aria-describedby="basic-addon3" value="{{$chitiet_sp->tensp}}">
-                 @error('tensp')
-                    <span class="invalid-feedback" role="alert">
-                     <strong>{{ $message }}</strong>
-                    </span>
-                 @enderror
+              <input type="text" class="form-control " name="tensp" id="basic-url" aria-describedby="basic-addon3" value="{{$chitiet_sp->tensp}}">
+
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <label for="basic-url">Giá bán</label>
                     <div class="input-group mb-3">
-                      <input type="number" class="form-control @error('giaban') is-invalid @enderror" name="giaban" id="basic-url" aria-describedby="basic-addon3" value="{{$chitiet_sp->giaban}}">
-                      @error('giaban')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                        @enderror
+                      <input type="number" class="form-control" name="giaban" id="basic-url" aria-describedby="basic-addon3" value="{{$chitiet_sp->giaban}}">
+
                     </div>
                 </div>
                 {{-- <div class="col-md-4">
@@ -51,12 +52,8 @@
                 <div class="col-md-6">
                     <label for="basic-url">Giá khuyến mãi</label>
                     <div class="input-group mb-3">
-                      <input type="number" class="form-control @error('giakm') is-invalid @enderror" name="giakm" id="basic-url" aria-describedby="basic-addon3" value="{{$chitiet_sp->giakm}}">
-                      @error('giakm')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                         @enderror
+                      <input type="number" class="form-control" name="giakm" id="basic-url" aria-describedby="basic-addon3" value="{{$chitiet_sp->giakm}}">
+
                     </div>
                 </div>
             </div>
@@ -114,14 +111,10 @@
                     <div class="input-group mb-3">
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">Hình ảnh</label>
-                            <input type="file"  id="basic-url" class="form-control @error('hinhanh') is-invalid @enderror"
+                            <input type="file"  id="basic-url" class="form-control "
                              aria-describedby="basic-addon3" value="" name="hinhanh[]"
                               multiple="multiple">
-                              @error('hinhanh')
-                                    <span class="invalid-feedback " role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+
                         </div>
                           <div class="owl-carousel owl-theme mt-3">
                             @foreach ($chitiet_sp->Hinhanh as $img)
@@ -145,6 +138,9 @@
                     </div>
 
                 </div>
+
+            @if($chitiet_sp->loaisanpham->slug=='giay')
+
                 <div class="col-md-6">
                     <label for="basic-url">Bảng size</label>
                     <div class="input-group mb-3">
@@ -177,12 +173,14 @@
                         </table>
                     </div>
                 </div>
+                @endif
             </div>
             <div class="mb-3">
                 <button type="submit" class="btn btn-success">Lưu</button>
             </div>
         </form>
     </div>
+
 </div>
 <script src="{{ asset ('/js/owl.carousel.min.js') }}" type="text/javascript"></script>
 <script>

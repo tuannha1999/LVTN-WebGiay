@@ -27,7 +27,8 @@
             <h4 class="modal-title" id="thuonghieuCrudModal"></h4>
         </div>
         <div class="modal-body">
-            <form action="{{URL('/admin/dsthuonghieu-add')}}" method="post" id="thuonghieuForm" >
+            <div class="alert alert-danger" style="display:none"></div>
+            <form action="" method="post" id="thuonghieuForm" >
                 @csrf
                 <div class="form-group">
                     <label for="name" class="col-sm-5 control-label">Mã thương hiệu</label>
@@ -81,6 +82,44 @@
                $('#ajax-thuonghieu-modal').modal('show');
             });
 
+
+
+            $('#btn-save').click(function(e){
+                e.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: "{{ url('/admin/dsthuonghieu-add')}}",
+                    method: 'post',
+                    data: {
+                        id: $('#id_th').val(),
+                        ten: $('#tenth').val(),
+                    },
+                    success: function(result){
+                        if(result.errors)
+                        {
+                            $('.alert-danger').html('');
+
+                            $.each(result.errors, function(key, value){
+                                $('.alert-danger').show();
+                                $('.alert-danger').append('<li>'+value+'</li>');
+                            });
+                            //tắt thông báo sau 3s
+                            setTimeout(function(){
+                                $('.alert-danger').hide('');
+                            }, 3000);
+                        }
+                        else
+                        {
+                            location.reload('/admin/dsthuonghieu');
+                        }
+                    }
+                });
+            });
+
  //Show form sửa
            $('body').on('click', '#edit-thuonghieu', function () {
              var id = $(this).data('id');
@@ -105,7 +144,8 @@
                              oTable.fnDraw(false);
                       },
                        error: function (data) {
-                           console.log('Error:', data);
+                        //    console.log('Error:', data);
+                        alertify.error("Không thể xóa thương hiệu này!");
                        }
                 });
             }

@@ -31,6 +31,10 @@
                      <td>Số điện thoại:</td>
                      <td>{{$nhacungcap->sdt}}</td>
                  </tr>
+                 <tr>
+                    <td>Nợ nhà cung cấp:</td>
+                    <td>{{number_format($total,0,'.','.')}}đ</td>
+                </tr>
              </table>
             </div>
 

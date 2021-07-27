@@ -83,7 +83,7 @@
                                          <ul class="dropdown-menu">
                                              <li>
                                                  <a  class="nav-link" href="{{url('/profile' )}}">
-                                                    Hi {{ Auth::user()->name}}
+                                                   {{ Auth::user()->name}}
                                                     @if (Auth::user()->level==1)
                                                         <span>(5%)</span>
                                                     @elseif(Auth::user()->level==2)
@@ -215,37 +215,11 @@
 <!-- Bootstrap theme -->
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
 
-{{-- <div class="zalo-chat-widget" data-oaid="579745863508352884"
-data-welcome-message="Rất vui khi được hỗ trợ bạn!" data-autopopup="3" data-width="350" data-height="420"></div>
 
-<script src="https://sp.zalo.me/plugins/sdk.js"></script> --}}
-<!-- Messenger Plugin chat Code -->
-<!-- Messenger Plugin chat Code -->
-{{-- <div id="fb-root"></div>
+<div class="zalo-chat-widget" data-oaid="2367716043029936124"
+data-welcome-message="Rất vui khi được hỗ trợ bạn!" data-autopopup="4" data-width="350" data-height="420"></div>
 
-<!-- Your Plugin chat code -->
-<div id="fb-customer-chat" class="fb-customerchat">
-</div>
+<script src="https://sp.zalo.me/plugins/sdk.js"></script>
 
-<script>
-  var chatbox = document.getElementById('fb-customer-chat');
-  chatbox.setAttribute("page_id", "101987398844589");
-  chatbox.setAttribute("attribution", "biz_inbox");
-
-  window.fbAsyncInit = function() {
-    FB.init({
-      xfbml            : true,
-      version          : 'v11.0'
-    });
-  };
-
-  (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-</script> --}}
 </body>
 </html>

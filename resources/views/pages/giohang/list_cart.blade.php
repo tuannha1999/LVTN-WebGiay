@@ -67,7 +67,7 @@ Giỏ hàng
                 </div>
                     <div class="text-right">
                       <a href="{{URL('/')}}"><button type="button" class="btn btn-secondary">Tiếp tục mua hàng</button></a>
-                      <a href="{{URL('/form-dathang')}}" class="btn btn-danger btn-thanhtoan">Thanh toán</a>
+                      <a href="{{URL('/chuyen-form-dathang')}}" class="btn btn-danger btn-thanhtoan">Thanh toán</a>
                     </div>
             </div>
     </form>
@@ -84,7 +84,7 @@ Giỏ hàng
 <script>
 
     //update cart
-    @foreach (Cart::content() as $item)
+@foreach (Cart::content() as $item)
     $("#qtyminus{{$item->rowId}}").on("click",function(){
         var id=$(this).data("id");
             $.ajax({

@@ -3,18 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Cart as AppCart;
-use App\Districts;
 use App\Dondathang;
 use App\Hinhanh;
+use App\Khuyenmai;
 use App\Sanpham;
 use App\Size;
 use App\Loaisanpham;
-use App\Provinces;
-use App\Wards;
 use Illuminate\Http\Request;
 use Cart;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Facades\Auth;
 
 class DondathangController extends Controller
@@ -60,8 +59,16 @@ class DondathangController extends Controller
         return view('pages_admin.donhang.list_donhang');
     }
 
-    public function getformDatHang()
+    public function chuyenformDatHang()
     {
+        session()->forget(['tongtien', 'tiengiamma', 'daapdung', 'tiengiamtv', 'dagiamtv', 'macode']);
+        return redirect('/form-dathang');
+    }
+
+    public function getformDatHang(Request $req)
+    {
+
+        //dd(session()->get('tongtien'));
         $total_cart = str_replace(array(','), '', Cart::subtotal());
         $total = $total_cart;
         if (Auth::check()) {
@@ -78,24 +85,16 @@ class DondathangController extends Controller
             } else if (Auth::user()->level == 6) {
                 $total = $total_cart - 0.1 * $total_cart;
             }
+            if (session()->has('dagiamtv') == null) {
+                session()->put(['tongtien' => $total, 'tiengiamtv' => $total_cart - $total, 'dagiamtv' => 1]);
+            }
+        }
+        if (session()->has('daapdung') == null) {
+            session()->put(['tongtien' => $total]);
         }
         $loai_sp = Loaisanpham::all();
         return view("pages.dathang.dathang", compact('loai_sp', 'total'));
     }
-    // public function changeProvinces($id)
-    // {
-    //     //
-    //     $dist = Districts::all()->where('province_id', $id);
-    //     //dd($dist);
-    //     return response()->json($dist);
-    // }
-    // public function changeDistrict($id)
-    // {
-    //     //
-    //     $ward = Wards::all()->where('district_id', $id);
-    //     //dd($dist);
-    //     return response()->json($ward);
-    // }
     public function formSuccess($sdt)
     {
         //
@@ -129,30 +128,14 @@ class DondathangController extends Controller
         $req->session()->flash('diachi', $req->diachi);
         $req->session()->flash('ghichu', $req->ghichu);
         $req->session()->flash('thanhtoan', $req->thanhtoan);
-        $req->session()->flash('tongtien', $req->tongtien);
         $loai_sp = Loaisanpham::all();
         return view("pages.dathang.hoantat_dathang", compact('loai_sp'));
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $req)
+    public function dathang(Request $req)
     {
         //
         if (Cart::count() != null) {
+            $total_cart = str_replace(array(','), '', Cart::subtotal());
             $new_dh = new Dondathang();
             $new_dh->hoten = $req->hoten;
             $new_dh->diachi = $req->diachi;
@@ -160,8 +143,10 @@ class DondathangController extends Controller
             $new_dh->trangthai = 0;
             $new_dh->ptthanhtoan = $req->thanhtoan;
             $new_dh->dathanhtoan = 0;
-            $new_dh->tongtien = $req->tongtien;
+            $new_dh->tongtien = $req->Session()->get('tongtien');
+            $new_dh->created_at = Carbon::now('Asia/Ho_Chi_Minh');
             $new_dh->ghichu = $req->ghichu;
+            $new_dh->ngaydat = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
             $new_dh->save();
             foreach (Cart::content() as $item) {
                 $hinhanh = Hinhanh::where('id_sp', $item->id)->get();
@@ -171,8 +156,9 @@ class DondathangController extends Controller
                         $img = $anh->name;
                     }
                 }
+                $price = $item->price - (($total_cart - session()->get('tongtien')) / $total_cart) * $item->price;
                 $new_dh->sanpham()->attach($item->id, [
-                    'soluong' => $item->qty, 'giaban' => $item->price,
+                    'soluong' => $item->qty, 'giaban' => $price,
                     'size' => $item->options->size->size, 'img' => $img
                 ]);
                 $sl = Size::where('size', $item->options->size->size)->where('id_sp', $item->id)->first();
@@ -180,9 +166,45 @@ class DondathangController extends Controller
                 $sl->save();
                 Cart::destroy($item->rowId);
             }
+            session()->forget(['tongtien', 'tiengiamma', 'daapdung', 'tiengiamtv', 'dagiamtv', 'macode']);
             return redirect('dathang-thanhcong/' . $req->sdt);
         }
         return redirect('/');
+    }
+    public function checkCoupons(Request $req)
+    {
+
+        //dd($req->macode);
+        $total_cart = str_replace(array(','), '', Cart::subtotal());
+        $khuyenmai = Khuyenmai::where('macode', $req->macode)->first();
+        $tongtien = session()->get('tongtien');
+        if (!empty($khuyenmai) && session()->get('daapdung') == 0) {
+            if ($khuyenmai->ngaykt < Carbon::now() || $khuyenmai->trangthai == 0) {
+                return back()->with('error', 'Mã giảm giá không tồn tại');
+            } else if ($khuyenmai->dieukien > $total_cart) {
+                return back()->with('error', 'Đơn hàng chưa đủ điều kiện');
+            } else {
+                session()->put([
+                    'tongtien' => $tongtien - $khuyenmai->tiengiam,
+                    'daapdung' => 1, 'tiengiamma' => $khuyenmai->tiengiam,
+                    'macode' => $req->macode,
+                ]);
+            }
+        } else if (empty($khuyenmai)) {
+            return back()->with('error', 'Mã giảm giá không tồn tại');
+        }
+        return back()->with('success', 'Đã áp dụng mã giảm giá!');
+    }
+    public function deleteCoupons()
+    {
+
+        session()->forget('daapdung');
+        $tongtien = session()->get('tongtien');
+        session()->put([
+            'tongtien' => $tongtien + session()->get('tiengiamma'),
+        ]);
+        session()->forget(['tiengiamma', 'macode']);
+        return back();
     }
     public function huyDonHang(Request $req, $id)
     {

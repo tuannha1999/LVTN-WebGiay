@@ -8,6 +8,7 @@ use App\Sanpham;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 
@@ -30,14 +31,25 @@ class ThuonghieuController extends Controller
     }
     public function add(Request $req)
     {
-        Thuonghieu::updateOrCreate(['id' => $req->id_th], [
-            'ten' => $req->tenth,
-            'slug' => Str::slug($req->tenth, '-')
+
+        $validator = Validator::make(
+            $req->all(),
+            [
+                //kiem tra hop le
+                'ten' => 'unique:thuonghieu,ten,' . $req->id,
+            ],
+            [
+                'ten.unique' => 'Thương hiệu đã tồn tại',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()->all()]);
+        }
+        Thuonghieu::updateOrCreate(['id' => $req->id], [
+            'ten' => $req->ten,
+            'slug' => Str::slug($req->ten, '-')
         ]);
-        // $new_thuonghieu = new Thuonghieu();
-        // $new_thuonghieu->ten = $req->tenth;
-        // $new_thuonghieu->slug = Str::slug($req->tenth, '-');
-        // $new_thuonghieu->save();
         return redirect('/admin/dsthuonghieu');
     }
     public function delete($id)

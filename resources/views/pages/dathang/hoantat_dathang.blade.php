@@ -93,26 +93,38 @@
                    <label for="">{{Cart::subtotal()}}đ</label>
                 </div>
             </div>
-
+            @if (Auth::check())
             <div class="row">
                 <div class="col-md-9">
-                    <label for="">Sau giảm giá</label>
+                    <label for="">Ưu đãi thành viên:</label>
                 </div>
                 <div class="col-md-3">
-                    <label for="">{{number_format(Session::get('tongtien'),0,',',',')}} đ</label>
+                    <label for="">- {{number_format(session()->get('tiengiamtv'),0,',',',')}}đ</label>
                 </div>
             </div>
+            @endif
+
+
+            @if(session()->has('daapdung'))
+            <div class="row">
+                <div class="col-md-9">
+                    <label for="" class="">Mã giảm giá ({{session()->get('macode')}}):</label>
+                </div>
+                <div class="col-md-3">
+                   <label for="" class="h6">- {{number_format(session()->get('tiengiamma'),0,',',',')}}đ</label>
+                </div>
+            </div>
+            @endif
 
             <div class="row">
                 <div class="col-md-9">
                     <label for="" class="font-weight-bold">Tổng tiền phải thanh toán:</label>
                 </div>
                 <div class="col-md-3">
-                   <label for="" class="text-info h5">{{number_format(Session::get('tongtien'),0,',',',')}}đ</label>
-                   <input type="number" hidden name="tongtien" value="{{Session::get('tongtien')}}">
+                   <label for="" class="text-danger h5">{{number_format(session()->get('tongtien'),0,',',',')}}đ</label>
                 </div>
             </div>
-
+        </div>
             <div class="row mt-5">
                 <div class="col-md-9">
                     <a href="{{URL('/form-dathang')}}" class="link text-info"><i class="fas fa-chevron-left"></i> <span>Quay lại</span></a>

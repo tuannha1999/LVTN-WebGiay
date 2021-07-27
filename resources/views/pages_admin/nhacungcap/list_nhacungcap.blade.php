@@ -29,7 +29,8 @@
             <h4 class="modal-title" id="nccCrudModal"></h4>
         </div>
         <div class="modal-body">
-            <form action="{{URL('/admin/dsnhacungcap-add')}}" method="post" id="nccForm" >
+            <div class="alert alert-danger" style="display:none"></div>
+            <form action="" method="post" id="nccForm" >
                 @csrf
                 <div class="form-group">
                     <label for="name" class="col-sm-5 control-label">Mã nhà cung cấp</label>
@@ -102,6 +103,47 @@
                $('#nccCrudModal').html("Thêm Nhà Cung Cấp");
                $('#ajax-ncc-modal').modal('show');
             });
+
+//btn-save
+$('#btn-save').click(function(e){
+                e.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: "{{ url('/admin/dsnhacungcap-add')}}",
+                    method: 'post',
+                    data: {
+                        id: $('#id_ncc').val(),
+                        tenncc: $('#tenncc').val(),
+                        sdt: $('#sdt').val(),
+                        email: $('#email').val(),
+                        diachi: $('#diachi').val(),
+                    },
+                    success: function(result){
+                        if(result.errors)
+                        {
+                            $('.alert-danger').html('');
+
+                            $.each(result.errors, function(key, value){
+                                $('.alert-danger').show();
+                                $('.alert-danger').append('<li>'+value+'</li>');
+                            });
+                            //tắt thông báo sau 3s
+                            setTimeout(function(){
+                                $('.alert-danger').hide('');
+                            }, 3000);;
+                        }
+                        else
+                        {
+                            location.reload('/admin/dsnhacungcap');
+                        }
+                    }
+                });
+            });
+
 
  //Show form sửa
            $('body').on('click', '#edit-nhacungcap', function () {

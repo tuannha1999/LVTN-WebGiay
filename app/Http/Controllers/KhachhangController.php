@@ -62,6 +62,8 @@ class KhachhangController extends Controller
     {
         //
         Auth::logout();
+        session()->forget(['dagiamtv']);
+        session()->put('tongtien', session()->get('tongtien') + session()->get('tiengiamtv'));
         return redirect()->route('trangchu');
     }
 

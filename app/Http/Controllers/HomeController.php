@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Banner;
 use Illuminate\Http\Request;
 use App\Sanpham;
 use App\Loaisanpham;
@@ -16,12 +17,13 @@ class HomeController extends Controller
     //
     public function index()
     {
+        $banner = Banner::where('trangthai', 1)->orderBy('id', 'desc')->get();
         $loai_sp = Loaisanpham::all();
         $sp = Sanpham::with('Hinhanh')->with('size')->with('loaisanpham')->where('trangthai', 1)->orderby('id', 'desc')->paginate(8);
         //dd($sp);
         $sp_banchay = Sanpham::with('Hinhanh')->with('loaisanpham')->with('size')
             ->where('trangthai', 1)->orderby('daban', 'desc')->paginate(8);
-        return view('pages.home', compact('sp', 'sp_banchay', 'loai_sp'));
+        return view('pages.home', compact('sp', 'sp_banchay', 'loai_sp', 'banner'));
     }
     public function search(Request $request)
     {

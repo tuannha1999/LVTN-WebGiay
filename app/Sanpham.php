@@ -9,6 +9,9 @@ class Sanpham extends Model
     //
     protected $table = 'sanpham';
     protected $primaryKey = 'id';
+    protected $fillable = [
+        'tensp', 'giaban', 'gianhap', 'giakm', 'trangthai', 'daban', 'id_lsp', 'id_th'
+    ];
     //public $timestamps = false;
 
     public function thuonghieu()
@@ -18,6 +21,10 @@ class Sanpham extends Model
     public function phieunhap()
     {
         return $this->belongsToMany(Phieunhap::class, 'chitietphieunhap', 'id_pn', 'id_sp')->withPivot('soluong');
+    }
+    public function phieutra()
+    {
+        return $this->belongsToMany(Phieutra::class, 'chitietphieutra', 'id_pt', 'id_sp')->withPivot('soluong');
     }
     public function user()
     {

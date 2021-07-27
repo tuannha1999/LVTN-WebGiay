@@ -87,6 +87,11 @@ Route::middleware('checkloginadmin')->group(function () {
     Route::get('admin/danhsachsanpham-detail/{id}', 'SanphamController@chitietSanphamAdmin');
     Route::get('admin/khohang', 'SanphamController@khohang')->name('khohang');
 
+    //size
+    Route::get('admin/add-size/{id}/{size}', 'SizeController@create');
+    Route::get('admin/list-size/{id}', 'SizeController@index');
+    Route::get('admin/delete-size/{id}', 'SizeController@destroy');
+
     //hinhanh
     Route::get('delete/{id}', 'HinhanhController@delete');
     Route::get('avatar/{id}/{id_sp}', 'HinhanhController@avatar');
@@ -109,6 +114,9 @@ Route::middleware('checkloginadmin')->group(function () {
     Route::get('admin/dsphieunhap-updatesanpham/{id}/{qty}/{price}', 'PhieunhapController@updateCart');
     Route::get('admin/dsphieunhap-nhapkho/{id}', 'PhieunhapController@nhapkho');
     Route::get('admin/dsphieunhap-thanhtoan/{id}', 'PhieunhapController@thanhtoan');
+    Route::post('admin/dsphieunhap-import', 'PhieunhapController@import');
+
+
 
     //thuonghieu
     Route::get('/admin/dsthuonghieu', 'ThuonghieuController@getDanhSach')->name('getThuonghieu');
@@ -131,14 +139,44 @@ Route::middleware('checkloginadmin')->group(function () {
 
 
 
+    //banner
+    Route::get('admin/dsbanner/', 'BannerController@getBanner')->name('getBanner');
+    Route::get('admin/dsbanner-stop/{id}', 'BannerController@stopBanner');
+    Route::get('admin/dsbanner-run/{id}', 'BannerController@runBanner');
+    Route::post('admin/dsbanner-add/', 'BannerController@addBanner');
+    Route::get('admin/dsbanner-delete/{id}', 'BannerController@deleteBanner');
+
+
+    //thống kê
+    Route::get('admin/thongke', 'ThongkeController@thongke');
+    Route::get('admin/thongke-locngay/{ngaybd}/{ngaykt}', 'ThongkeController@locngay');
+    Route::get('admin/thongke-7ngay', 'ThongkeController@loc7ngay');
+
+
+
+    //phieutra
+    Route::get('admin/dsphieutra/', 'PhieutraController@getPhieuTra')->name('getPhieutra');
+    Route::post('admin/dsphieutra-add/', 'PhieutraController@AddPhieuTra');
+    Route::get('admin/dsphieutra-detail/{id}', 'PhieutraController@detailPhieuTra');
+    Route::get('admin/dsphieutra-nhanhang/{id}', 'PhieutraController@nhanhang');
+    Route::get('admin/dsphieutra-hoantien/{id}', 'PhieutraController@hoantien');
+    Route::get('admin/dsphieutra-delete/{id}', 'PhieutraController@deletePhieuTra');
+    Route::get('admin/dsphieutra-getdonhang/', 'PhieutraController@getDonhang')->name('getDonhangPT');
+    Route::get('admin/dsphieutra-addphieutra/{id}', 'PhieutraController@formAddPhieuTra');
+    Route::get('admin/dsphieutra-addsanphamtra/{id}', 'PhieutraController@addSanPhamTra');
+    Route::get('admin/dsphieutra-deletesanphamtra/{id}', 'PhieutraController@deleteSanPhamTra');
+    Route::get('admin/dsphieutra-minus-sanphamtra/{id}', 'PhieutraController@minusSanPhamTra');
+    Route::get('admin/dsphieutra-plus-sanphamtra/{id}', 'PhieutraController@plusSanPhamTra');
+
+
     //khuyenmai
     Route::get('admin/dskhuyenmai/', 'KhuyenmaiController@getdsKhuyenMai')->name('getkhuyenmai');
-
-
-    //size
-    Route::get('admin/add-size/{id}/{size}', 'SizeController@create');
-    Route::get('admin/list-size/{id}', 'SizeController@index');
-    Route::get('admin/delete-size/{id}', 'SizeController@destroy');
+    Route::get('admin/dskhuyenmai-form-tangsp', 'KhuyenmaiController@getformMaGiamGia');
+    Route::get('admin/dskhuyenmai-delete/{id}', 'KhuyenmaiController@deleteKhuyenmai');
+    Route::get('admin/dskhuyenmai-detail/{id}', 'KhuyenmaiController@detailKhuyenmai');
+    Route::get('admin/dskhuyenmai-stop/{id}', 'KhuyenmaiController@stopKhuyenmai');
+    Route::get('admin/dskhuyenmai-run/{id}', 'KhuyenmaiController@runKhuyenmai');
+    Route::post('admin/dskhuyenmai-add-khuyenmai', 'KhuyenmaiController@addKhuyenmai');
 });
 
 //Admin
@@ -156,10 +194,15 @@ Route::get('loc-thuonghieu/{loai}', 'SanphamController@locthuonghieu');
 
 
 //dat hang
+Route::get('/chuyen-form-dathang', 'DondathangController@chuyenformDatHang');
 Route::get('/form-dathang', 'DondathangController@getformDatHang');
 Route::post('/hoantat-dathang', 'DondathangController@getformHoanTat');
 Route::get('dathang-thanhcong/{sdt}', 'DondathangController@formSuccess');
-Route::post('/dathang', 'DondathangController@store');
+Route::post('/dathang', 'DondathangController@dathang');
+Route::post('/check-coupons', 'DondathangController@checkCoupons');
+Route::get('/delete-coupons', 'DondathangController@deleteCoupons');
+
+
 //huydonhang
 Route::get('huy-donhang/{id}', 'DondathangController@huyDonHang');
 Route::get('chitiet-donhang/{id}', 'DondathangController@chitietDonHang');

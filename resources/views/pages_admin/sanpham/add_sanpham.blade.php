@@ -3,6 +3,15 @@
 <div class="container">
     <div class="mt-2"><a href="{{URL('/admin/danhsachsanpham')}}"><i class="fas fa-2x fa-chevron-left"></i></a></div>
         <div class="col-md-12">
+            @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <h2 class="card-title text-center font-weight-bold">THÊM SẢN PHẨM</h2>
             <form action="{{URL('/admin/danhsachsanpham/add-sp')}}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -12,19 +21,15 @@
                 </div>
                 <label for="basic-url">Tên sản phẩm*</label>
                 <div class="input-group mb-3">
-                  <input type="text" class="form-control @error('tensp') is-invalid @enderror" id="basic-url" aria-describedby="basic-addon3" value="" name="tensp">
-                  @error('tensp')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                    @enderror
+                  <input type="text" class="form-control " id="basic-url" aria-describedby="basic-addon3" value="{{old('tensp')}}" name="tensp">
+
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <label for="basic-url">Giá bán</label>
                         <div class="input-group mb-3">
-                          <input type="number" class="form-control @error('giaban') is-invalid @enderror"
-                           id="basic-url" aria-describedby="basic-addon3" min="1000" max="100000000" value="0" name="giaban">
+                          <input type="number" class="form-control"
+                           id="basic-url" aria-describedby="basic-addon3" value="{{old('giaban')}}" name="giaban">
                           @error('giaban')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -47,13 +52,8 @@
                     <div class="col-md-6">
                         <label for="basic-url">Giá khuyến mãi</label>
                         <div class="input-group mb-3">
-                          <input type="number" class="form-control  @error('giakm') is-invalid @enderror"
+                          <input type="number" class="form-control  "
                           min="0" max="giaban" id="basic-url" aria-describedby="basic-addon3" value="0" name="giakm">
-                          @error('giakm')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                            @enderror
                         </div>
                     </div>
                 </div>
@@ -62,28 +62,23 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                <label for="list-lsp">Loại sản phẩm</label>
-                                 <select class="form-control @error('lsp') is-invalid @enderror" id="list-lsp" name="lsp" required>
+                                <label for="list-lsp">Loại sản phẩm</label> <a href="{{URL('/admin/dsloaisanpham')}}"><i class="fas fa-plus"></i></a>
+                                 <select class="form-control " id="list-lsp" name="lsp">
                                     <option value="">- Chọn loại sản phẩm-</option>
                                     @foreach ($loai_sp as $item)
-                                     <option value="{{$item->id}}" >{{$item->tenloai}}</option>
+                                     <option @if (old('lsp') ==$item->id) selected="selected" @endif value="{{$item->id}}" >{{$item->tenloai}}</option>
                                      @endforeach
-                                     @error('lsp')
-                                     <span class="invalid-feedback" role="alert">
-                                         <strong>{{ $message }}</strong>
-                                     </span>
-                                     @enderror
                                 </select>
 
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                <label for="list-th">Thương hiệu</label>
+                                <label for="list-th">Thương hiệu</label> <a href="{{URL('/admin/dsthuonghieu')}}"><i class="fas fa-plus"></i></a>
                                  <select class="form-control" id="list-th" name="th">
                                    <option value="">- Chọn thương hiệu-</option>
                                     @foreach ($thuonghieu as $item)
-                                     <option value="{{$item->id}}" >{{$item->ten}}</option>
+                                     <option @if (old('th') ==$item->id) selected="selected" @endif value="{{$item->id}}" >{{$item->ten}}</option>
                                      @endforeach
                                 </select>
                                 </div>
@@ -93,24 +88,25 @@
                     <div class="col-md-6">
                         <label for="basic-url">Hình ảnh</label>
                         <div class="input-group mb-3">
-                            <input type="file"  id="basic-url" class="form-control @error('hinhanh') is-invalid @enderror"
+                            <input type="file"  id="basic-url" class="form-control "
                              aria-describedby="basic-addon3" value="" name="hinhanh[]"
                               multiple="multiple">
-                              @error('hinhanh')
-                              <span class="invalid-feedback" role="alert">
-                                  <strong>{{ $message }}</strong>
-                              </span>
-                             @enderror
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
+                        <div class="mb-2">
+                            <input type="checkbox" @if (old('trangthai') ==1) checked
+                            @endif id="basic-url" @if (old('nosize') ==1) checked  @endif name="nosize" value="1"> Chọn nếu sản phẩm không có size (vd: dây giày...)
+                         </div>
                         <label for="basic-url">Size</label>
-                            <input type="text"  required placeholder="Nhập size và nhấn enter" id="basic-url" name="tags" aria-describedby="basic-addon3" value="">
+                            <input type="text"  class="form-control" placeholder="Nhập size và nhấn enter" id="basic-url"
+                             name="tags" aria-describedby="basic-addon3" value="{{old('tags')}}">
+
                     </div>
                     <div class="col-md-6 mt-5">
-                        <input type="checkbox" id="basic-url" name="trangthai" value="1"> Cho phép bán
+                        <input type="checkbox" @if (old('trangthai') ==1) checked  @endif id="basic-url" name="trangthai" value="1"> Cho phép bán
                     </div>
                 </div>
                 <div class="mt-5">
@@ -133,31 +129,10 @@ tagify = new Tagify( input );
 
 $('[name=tags]').tagify({duplicates : false,maxTags:Infinity});
 
-//Chọn loại sản phẩm
-// $(document).ready(function(){
-
-//       $("#list-lsp").change(function(){
-
-//             var id_lsp= $(this).val();
-//             console.log(id_lsp);
-//             if(id_lsp != '0')
-//             {
-//                $.ajax({
-//                   type: 'GET',
-//                   url: '/admin/changelist/'+id_lsp,
-//                   success: function(data){
-//                     var len=data.length;
-//                     $("#list-th").empty();
-//                     for( var i = 0; i<len; i++){
-//                     var id = data[i]['id'];
-//                     var name = data[i]['ten'];
-//                     $("#list-th").append("<option value='"+id+"'>"+name+"</option>");
-//                 }
-//                   }
-//                });
-//             }
-//       });
-
-//    });
+//tắt thông báo sau 3s
+window.setTimeout(function() {
+    $(".alert-danger").fadeTo(500, 0).slideUp(500, function(){
+    $(this).remove();});
+ },4000);
     </script>
 @endsection

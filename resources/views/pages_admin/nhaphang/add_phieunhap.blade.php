@@ -19,6 +19,9 @@
 
                     <div class="col-md-6">
                         <h4>Chọn nhà cung cấp</h4>
+                        <div class="text-right">
+                            <a class="btn btn-outline-success mb-2" href="{{URL('/admin/dsnhacungcap')}}">add</a>
+                        </div>
                         <div class="">
                             <table class="display" id="list-ncc" style="width:100%">
                                 <thead>
@@ -65,6 +68,14 @@
                 </div>
 
                 <h4>Chọn sản phẩm nhập hàng</h4>
+
+
+
+                <div class="text-right">
+                    <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModalCenter">
+                        Nhập nhiều sản phẩm</button>
+                    <a class="btn btn-outline-success mb-2" href="{{URL('admin/danhsachsanpham-formadd')}}">add</a>
+                </div>
                 <div class="">
                     <table class="display" id="list-pro" style="width:100%">
                         <thead>
@@ -118,11 +129,11 @@
                             <div class="row mt-3">
                                 <div class="col-md-6">
                                     <Span class="font-weight-bold">Thanh toán</Span><br><br>
-                                    <input type="checkbox" name="thanhtoan" value="1"> Đã thanh toán
+                                    <input type="checkbox" name="thanhtoan" @if(old('thanhtoan')==1) checked @endif value="1"> Đã thanh toán
                                 </div>
                                 <div class="col-md-6">
                                     <Span class="font-weight-bold">Nhập kho</Span><br><br>
-                                    <input type="checkbox" name="nhapkho" value="1"> Nhập kho
+                                    <input type="checkbox" name="nhapkho" @if(old('nhapkho')==1) checked @endif value="1"> Nhập kho
                                 </div>
                             </div>
                         </div>
@@ -139,7 +150,7 @@
                     <div class="col-md-6">
                         <Span class="font-weight-bold">Ngày nhập hàng</Span><br>
                         <div class="input-group mb-3">
-                            <input class="form-control @error('ngaynhap') is-invalid @enderror" type="date" name="ngaynhap">
+                            <input class="form-control @error('ngaynhap') is-invalid @enderror" type="date" value="{{old('ngaynhap')}}" name="ngaynhap">
                             @error('ngaynhap')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -149,7 +160,7 @@
                     </div>
                     <div class="col-md-6">
                         <Span class="font-weight-bold">Ghi chú</Span><br>
-                        <textarea name="ghichu" id="" cols="50" rows="3"></textarea>
+                        <textarea name="ghichu" id="" cols="50" rows="3">{{old('ghichu')}}</textarea>
                     </div>
                 </div>
                 <div class="mt-4">
@@ -159,7 +170,33 @@
 
 
         </div>
-    </div>
+
+        {{-- <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Chọn file Excel</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form action="{{ url('admin/dsphieunhap-import') }}" method="POST" name="importform"
+                enctype="multipart/form-data">
+             @csrf
+             <div class="form-group">
+             <label for="file">File:</label>
+             <input id="file" type="file" name="file" class="form-control">
+             </div>
+             <div class="form-group">
+             <a class="btn btn-info" href="{{ url('export') }}">Export File</a>
+             </div>
+             <button class="btn btn-success">Import File</button>
+             </form>
+
+              </div>
+            </div>
+          </div>
+    </div> --}}
 
 
 <script type="text/javascript">
