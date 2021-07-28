@@ -78,16 +78,20 @@
                             <td>{{$dh->created_at->toDateString()}}</td>
 
                             <td>
-                                @if ($dh->trangthai==2)
-                                    <span class="text-success">Hoàn thành</span>
+                            @if ($dh->trangthai==0)
+                                    <span class="text-warning">Chờ xử lý</span>
                                 @elseif ($dh->trangthai==1)
-                                <span class="text-success">Chờ giao hàng</span>
+                                    <span class="text-info">Đã thanh toán</span>
+                                @elseif ($dh->trangthai==2)
+                                    <span class="text-primary">Đang giao hàng</span>
+                                @elseif ($dh->trangthai==3)
+                                    <span class="text-success">Hoàn thành</span>
                                 @else
-                                <span class="text-warning">Chờ duyệt</span>
+                                    <span class="text-danger">Đã hủy</span>
                                 @endif
                             </td>
                             <td>
-                                <a href="{{URL('/admin/dsphieunhap-detail/' . $dh->id)}}" class="btn btn-outline-primary">Chi tiết </a>
+                                <a href="{{URL('/admin/dsdonhang-detail/' . $dh->id)}}" class="btn btn-outline-primary">Chi tiết </a>
                             </td>
                         </tr>
                           @endforeach

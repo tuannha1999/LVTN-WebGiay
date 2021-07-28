@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Cart as AppCart;
 use App\Dondathang;
+use App\Chitietdondathang;
 use App\Hinhanh;
 use App\Khuyenmai;
 use App\Sanpham;
@@ -33,28 +34,54 @@ class DondathangController extends Controller
             return  DataTables::of($donhang)
                 ->addColumn('action', function ($donhang) {
                     if ($donhang->trangthai == 0) {
-                        return '<a href="#" class="btn btn-info">Duyệt</a>
-                    <a href="javascript:void(0);" id="delete-lsp" data-id="' . $donhang->id . ' " class="delete">
+                        return '<a href="' . URL('admin/dsdonhang-edit/'.$donhang->id) . '" class="btn btn-success">Duyệt</a>
+                    <a class="btn" href="javascript:void(0);" id="delete-dh" data-id="' . $donhang->id . ' " class="delete">
+                    <i class="fas fa-2x fa-trash-alt"></i></a>';
+                    }elseif ($donhang->trangthai == 1) {
+                        return '<a href="' . URL('admin/dsdonhang-edit/'.$donhang->id) . '" class="btn btn-success">Duyệt</a>
+                    <a class="btn" href="javascript:void(0);" id="delete-dh" data-id="' . $donhang->id . ' " class="delete">
+                    <i class="fas fa-2x fa-trash-alt"></i></a>';
+                    }elseif ($donhang->trangthai == 2) {
+                        return '<a href="' . URL('admin/dsdonhang-edit/'.$donhang->id) . '" class="btn btn-success">Duyệt</a>
+                    <a class="btn" href="javascript:void(0);" id="delete-dh" data-id="' . $donhang->id . ' " class="delete">
+                    <i class="fas fa-2x fa-trash-alt"></i></a>';
+                    }elseif($donhang->trangthai == 3){
+                        return '<a href="' . URL('admin/dsdonhang-detail/'.$donhang->id) . '" class="btn btn-info">Xem</a>
+                    <a class="btn" href="javascript:void(0);" id="delete-dh" data-id="' . $donhang->id . ' " class="delete">
+                    <i class="fas fa-2x fa-trash-alt"></i></a>';
+                    }else{
+                        return '<a href="' . URL('admin/dsdonhang-detail/'.$donhang->id) . '" class="btn btn-info">Xem</a>
+                    <a class="btn" href="javascript:void(0);" id="delete-dh" data-id="' . $donhang->id . ' " class="delete">
                     <i class="fas fa-2x fa-trash-alt"></i></a>';
                     }
-                    return '<a href="#" class="btn btn-success">Xem</a>
-                    <a href="javascript:void(0);" id="delete-lsp" data-id="' . $donhang->id . ' " class="delete">
-                    <i class="fas fa-2x fa-trash-alt"></i></a>';
+
                 })->editColumn('trangthai', function ($donhang) {
                     if ($donhang->trangthai == 0) {
-                        return '<span class="text-warning">Đơn hàng mới</span>';
+                        return '<span class="text-warning">Chờ xử lý</span>';
                     } else if ($donhang->trangthai == 1) {
-                        return '<span class="text-warning">Chờ giao hàng</span>';
+                        return '<span class="text-info">Đã thanh toán</span>';
                     } else if ($donhang->trangthai == 2) {
-                        return '<span class="text-info">Đang giao hàng</span>';
+                        return '<span class="text-primary">Đang giao hàng</span>';
                     } else if ($donhang->trangthai == 3) {
                         return '<span class="text-success">Hoàn thành</span>';
-                    } else {
-                        return '<span class="text-warning">Đã hủy</span>';
+                    } else{
+                        return '<span class="text-danger">Đã hủy</span>';
                     }
+                })->editColumn('ptthanhtoan', function ($donhang) {
+                    if ($donhang->ptthanhtoan == 0) {
+                        return '<span class="text-secondary"><b>Thanh toán khi nhận hàng</b></span>';
+                    } else{
+                        return '<span><b>Chuyển khoản ngân hàng</b></span>';
+                    }
+                                   
                 })->editColumn('created_at', function ($donhang) {
-                    return $donhang->created_at->toDateTimeString();
-                })->rawColumns(['action', 'trangthai', 'created_at'])->make(true);
+                    $date = date("d-m-Y", strtotime($donhang->created_at));
+                    return $date;
+                /* })->addColumn('name', function ($dh) {
+                    $kh = User::find($dh->id_kh);
+                    return $kh->hoten; */
+                })->rawColumns(['action', 'trangthai', 'created_at','ptthanhtoan'])->make(true);
+
         }
         return view('pages_admin.donhang.list_donhang');
     }
@@ -219,5 +246,109 @@ class DondathangController extends Controller
         $loai_sp = Loaisanpham::all();
         $donhang = Dondathang::find($id);
         return view("pages.dathang.chitiet_donhang", compact('donhang', 'loai_sp'));
+    }
+    public function getChitietdonhangAdmin($id)
+    {
+        $loai_sp = Loaisanpham::all();
+        $donhang = Dondathang::find($id);
+        return view("pages_admin.donhang.details_donhang", compact('donhang', 'loai_sp'));
+    }
+
+    public function getDuyetdonhang($id)
+    {
+        $loai_sp = Loaisanpham::all();
+        $donhang = Dondathang::find($id);
+        return view("pages_admin.donhang.edit_donhang", compact('donhang', 'loai_sp'));
+    }
+
+    public function actionDonhang($id)
+    {
+        $donhang = Dondathang::find($id);
+        $donhang_details= Chitietdondathang::with('sanpham')->with('dondathang')->where('id_dh',$id)->get();
+        if($donhang->ptthanhtoan==0)
+        {
+            if($donhang->trangthai==0){
+                if($donhang_details)
+                {
+                    //tang sp da ban
+                    foreach($donhang_details as $donhang_detail)
+                    {
+                        $sp=Sanpham::find($donhang_detail->id_sp);
+                        $sp->daban ++;
+                        $sp->save();
+                    }
+                }
+                $donhang->trangthai=Dondathang::dang_giao_hang;/////////
+            }elseif($donhang->trangthai==2){
+                if($donhang_details)
+                {
+                    //da thanh toan
+                    foreach($donhang_details as $donhang_detail)
+                    {
+                        $thanhtoan= Dondathang::find($donhang_detail->id_dh);
+                        $thanhtoan->dathanhtoan ++;
+                        $thanhtoan->save();                       
+                    }
+                }
+                $donhang->trangthai=Dondathang::hoan_thanh;
+            }elseif($donhang->trangthai==3){
+                if($donhang_details)
+                {
+                    //bo thanh toan, tru sp da ban
+                    foreach($donhang_details as $donhang_detail)
+                    {
+                        $sanpham=Sanpham::find($donhang_detail->id_sp);
+                        $thanhtoan= Dondathang::find($donhang_detail->id_dh);
+                        $sanpham->daban --;
+                        $thanhtoan->dathanhtoan --;
+                        $thanhtoan->save();                       
+                    }
+                }
+                $donhang->trangthai=Dondathang::da_huy;
+            }
+        }else{
+            if($donhang->trangthai==0){
+                if($donhang_details)
+                {
+                    //da thanh toan,tang sp da ban
+                    foreach($donhang_details as $donhang_detail)
+                    {
+                        $sanpham=Sanpham::find($donhang_detail->id_sp);
+                        $thanhtoan= Dondathang::find($donhang_detail->id_dh);
+                        $sanpham->daban ++;
+                        $thanhtoan->dathanhtoan ++;
+                        $thanhtoan->save();                       
+                    }
+                }
+                $donhang->trangthai=Dondathang::da_thanh_toan;
+            }elseif($donhang->trangthai==1){
+                $donhang->trangthai=Dondathang::dang_giao_hang;
+            }elseif($donhang->trangthai==2){
+                $donhang->trangthai=Dondathang::hoan_thanh;
+            }elseif($donhang->trangthai==3){
+                if($donhang_details)
+                {
+                    //bo thanh toan, tru sp da ban
+                    foreach($donhang_details as $donhang_detail)
+                    {
+                        $sanpham=Sanpham::find($donhang_detail->id_sp);
+                        $thanhtoan= Dondathang::find($donhang_detail->id_dh);
+                        $sanpham->daban --;
+                        $thanhtoan->dathanhtoan --;
+                        $thanhtoan->save();                       
+                    }
+                }
+                $donhang->trangthai=Dondathang::da_huy;
+            }
+        }
+
+        $donhang->save();
+        return redirect()->back()->with('success','Đã xử lý đơn hàng');
+    }
+    public function destroy($id)
+    {
+        //
+        $donhang = Dondathang::where('id', $id)->delete();
+        return response()->json($donhang);
     }
 }

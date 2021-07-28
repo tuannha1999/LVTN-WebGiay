@@ -11,6 +11,8 @@
                         <tr>
                             <th>Mã đơn hàng</th>
                             <th>Tên khách hàng</th>
+                            <th>Tổng tiền</th>
+                            <th>Phương thức thanh toán</th>
                             <th>Trạng thái</th>
                             <th>Ngày mua hàng</th>
                             <th>Tác vụ</th>
@@ -41,6 +43,8 @@
                    columns: [
                     { data: 'id', name: 'id' },
                     { data: 'hoten', name: 'hoten'},
+                    { data: 'tongtien', name: 'tongtien'},
+                    { data: 'ptthanhtoan', name: 'ptthanhtoan'},
                     { data: 'trangthai', name: 'trangthai'},
                     { data: 'created_at', name: 'created_at'},
                     {data: 'action',name: 'action',orderable: false},
@@ -48,24 +52,24 @@
                    ]
                });
 
-// //Xóa Thương hiệu
-//             $('body').on('click', '#delete-lsp', function () {
-//                 var id = $(this).data("id");
-//                 if(confirm("Bạn có chắc muốn xóa thương hiệu này!")){
-//                 $.ajax({
-//                       type: "GET",
-//                       url:'/admin/dsloaisanpham-delete/'+id,
-//                       success: function (data) {
-//                       var oTable = $('#lsp-list').dataTable();
-//                       oTable.fnDraw(false);
-//                      //console.log(product_id);
-//                       },
-//                        error: function (data) {
-//                            console.log('Error:', data);
-//                        }
-//                 });
-//             }
-//         });
+ //Xóa đơn hàng
+ $('body').on('click', '#delete-dh', function () {
+                 var id = $(this).data("id");
+                 if(confirm("Bạn có chắc muốn xóa đơn hàng này!")){
+                 $.ajax({
+                       type: "GET",
+                       url:'/admin/dsdonhang-delete/'+id,
+                       success: function (data) {
+                       var oTable = $('#dh-list').dataTable();
+                       oTable.fnDraw(false);  
+                      //console.log(product_id);
+                       },
+                        error: function (data) {
+                            console.log('Error:', data);
+                        }
+                 });
+                }
+                });
  });
 
 </script>

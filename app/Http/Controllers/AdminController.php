@@ -21,19 +21,31 @@ class AdminController extends Controller
     {
         //
         if ($req->ajax()) {
-            $donhang = Dondathang::all()->where('trangthai', 0);
+            $donhang = Dondathang::where('trangthai',0)->orwhere('trangthai',1)->get();
             return  DataTables::of($donhang)
                 ->addColumn('action', function ($donhang) {
-                    return '<a href="#" class="btn btn-info">Duyệt</a>
-                    <a href="javascript:void(0);" id="delete-lsp" data-id="' . $donhang->id . ' " class="delete">
+                    return '<a href="' . URL('admin/dsdonhang-edit/'.$donhang->id) . '" class="btn btn-success">Duyệt</a>
+                    <a class="btn" href="javascript:void(0);" id="delete-dh" data-id="' . $donhang->id . ' " class="delete">
                     <i class="fas fa-2x fa-trash-alt"></i></a>';
                 })->editColumn('trangthai', function ($donhang) {
+
                     if ($donhang->trangthai == 0) {
-                        return '<span class="text-warning">Đơn hàng mới</span>';
+                        return '<span class="text-warning">Chờ xử lý</span>';
+                    } else if ($donhang->trangthai == 1) {
+                        return '<span class="text-info">Đã thanh toán</span>';
+                    } 
+                    
+
+                })->editColumn('ptthanhtoan', function ($donhang) {
+                    if ($donhang->ptthanhtoan == 0) {
+                        return '<span class="text-secondary"><b>Thanh toán khi nhận hàng</b></span>';
+                    }else{
+                        return '<span><b>Chuyển khoản ngân hàng</b></span>';
                     }
                 })->editColumn('created_at', function ($donhang) {
-                    return $donhang->created_at->toDateTimeString();
-                })->rawColumns(['action', 'trangthai', 'created_at'])->make(true);
+                    $date = date("d-m-Y", strtotime($donhang->created_at));
+                    return $date;
+                })->rawColumns(['action', 'trangthai', 'created_at','ptthanhtoan'])->make(true);
         }
         return view('admin.home_admin');
     }

@@ -53,17 +53,17 @@ Tìm kiếm đơn hàng
                 <td>{{$dh->sdt}}</td>
                 <td>{{$dh->created_at->toDateTimeString()}}</td>
                 <td>
-                    @if ($dh->trangthai==0)
-                        <span class="text-warning">Chờ duyệt</span>
-                    @elseif ($dh->trangthai==1)
-                        <span class="text-warning">Chờ giao hàng</span>
-                    @elseif ($dh->trangthai==2)
-                        <span class="text-info">Đang giao hàng</span>
-                    @elseif ($dh->trangthai==3)
-                         <span class="text-success">Hoàn thành</span>
-                    @elseif ($dh->trangthai==4)
-                        <span class="text-warning">Đã hủy</span>
-                    @endif
+                                @if ($dh->trangthai==0)
+                                    <span class="text-warning">Chờ xử lý</span>
+                                @elseif ($dh->trangthai==1)
+                                    <span class="text-info">Đã thanh toán</span>
+                                @elseif ($dh->trangthai==2)
+                                    <span class="text-primary">Đang giao hàng</span>
+                                @elseif ($dh->trangthai==3)
+                                    <span class="text-success">Hoàn thành</span>
+                                @else
+                                    <span class="text-danger">Đã hủy</span>
+                                @endif
                 </td>
                 <td>{{ number_format($dh->tongtien,0,'.','.').' '.'đ' }}</td>
                 <td>
