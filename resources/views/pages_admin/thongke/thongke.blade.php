@@ -31,9 +31,11 @@
     </div>
 </div>
 <div class="mt-4">
-    <div id="tieude">
+    <div class="text-center" id="tieude">
     </div>
     <div id="chart" style="height: 250px;"></div>
+    <div id="total-doanhso" class="mt-3 font-weight-bold">
+    </div>
 </div>
 
 @endsection
@@ -48,38 +50,42 @@
             url: "/admin/thongke-7ngay/",
           })
           .done(function( data ) {
-            chart.setData(data);
-            $('#tieude').html('Doanh số 7 ngày qua')
+            chart.setData(data.thongke);
+            $('#tieude').html('Doanh số 7 ngày qua');
+            $('#total-doanhso').html('Tổng doanh số: '+ data.total.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}))
+            //console.log(data.thongke);
           })
           .fail(function() {
-            alert( "error occured" );
+            alert( "Lỗi" );
           });
     });
 
     $(".btn-loc").click(function() {
         var ngaybd=$("input[name='ngaybd']").val();
         var ngaykt=$("input[name='ngaykt']").val();
+        var total=0;
         console.log(ngaykt);
         $.ajax({
             type: "get",
             url: "/admin/thongke-locngay/"+ngaybd+'/'+ngaykt,
           })
           .done(function( data ) {
-            $('#tieude').html('Doanh số từ '+ ngaybd+' '+'đến '+ngaykt)
-            chart.setData(data);
+            $('#tieude').html('Doanh số từ '+ ngaybd+' '+'đến '+ngaykt);
+            $('#total-doanhso').html('Tổng doanh số: '+ data.total.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
+            chart.setData(data.thongke);
           }).fail(function() {
-            alert( "error occured" );
+            alert( "Lỗi" );
           });
 
     })
 
     var chart = Morris.Bar({
           element: 'chart',
-          barColors:['#0000CD','#87CEEB','#4682B4'],
+          barColors:['#1C86EE','#00C5CD'],
           data: [0,0],
           xkey: 'ngaydat',
-          ykeys: ['doanhthu','loinhuan','soluong'],
-          labels: ['Doanh thu','Lợi nhuận','Số lượng đơn hàng']
+          ykeys: ['doanhthu','soluong'],
+          labels: ['Doanh thu','Số lượng đơn hàng']
         });
 
 

@@ -102,18 +102,25 @@ class PhieutraController extends Controller
         $new_phieutra->id_dh = $req->id_dh;
         $new_phieutra->lydo = $req->lydo;
         $new_phieutra->id_user = Auth::user()->id;
-        $new_phieutra->tongtien = $req->lydo == 0 ? session()->get('Phieutra')->totalPhieutra : session()->get('Phieutra')->totalPhieutra + 35000;
+        $new_phieutra->tongtien = $req->lydo == 0 ? session()->get('Phieutra')->totalPhieutra : session()->get('Phieutra')->totalPhieutra - 35000;
         $new_phieutra->save();
+        //cập nhật đơn hàng
+        $donhang = Dondathang::find($req->id_dh);
+        $donhang->tongtien = $donhang->tongtien - session()->get('Phieutra')->totalPhieutra;
+        $donhang->save();
         foreach (session()->get('Phieutra')->products as $item) {
             $new_phieutra->sanpham()->attach($item['productinfo']->id, ['size' => $item['size'], 'soluong' => $item['quanty']]);
-            $donhang = Dondathang::find($req->id_dh);
-            $donhang->tongtien = $donhang->tongtien - session()->get('Phieutra')->totalPhieutra;
-            $donhang->save();
+            $tong_sl = 0;
+            foreach ($donhang->sanpham as $dh) {
+                $tong_sl += $dh->pivot->soluong;
+            }
             foreach ($donhang->sanpham as $dh) {
                 if ($dh->pivot->id_sp == $item['productinfo']->id && $dh->pivot->size == $item['size']) {
                     if ($dh->pivot->soluong == $item['quanty']) {
                         $donhang->sanpham()->detach([$item['productinfo']->id]);
-                        $donhang->trangthai = 5;
+                        if ($tong_sl == $item['quanty']) {
+                            $donhang->trangthai = 5;
+                        }
                         $donhang->save();
                     } else {
                         $donhang->sanpham()->detach([$item['productinfo']->id]);
@@ -145,10 +152,13 @@ class PhieutraController extends Controller
 
     public function nhanhang($id)
     {
-        $phieutra = Phieutra::find($id);
+        $phieutra = Phieutra::with('dondathang')->find($id);
         $phieutra->nhanhang = 1;
         if ($phieutra->hoantien == 1) {
             $phieutra->trangthai = 1;
+            $thongke = Thongke::where('ngaydat', $phieutra->dondathang->ngaydat)->first();
+            $thongke->doanhthu -= $phieutra->tongtien;
+            $thongke->save();
         }
         $phieutra->save();
         return back();

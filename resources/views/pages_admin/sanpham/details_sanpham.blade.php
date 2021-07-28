@@ -139,7 +139,7 @@
 
                 </div>
 
-            @if($chitiet_sp->loaisanpham->slug=='giay')
+            {{-- @if($chitiet_sp->loaisanpham->slug=='giay') --}}
 
                 <div class="col-md-6">
                     <label for="basic-url">Bảng size</label>
@@ -173,7 +173,7 @@
                         </table>
                     </div>
                 </div>
-                @endif
+                {{-- @endif --}}
             </div>
             <div class="mb-3">
                 <button type="submit" class="btn btn-success">Lưu</button>

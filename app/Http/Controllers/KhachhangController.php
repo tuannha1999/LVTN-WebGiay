@@ -121,6 +121,7 @@ class KhachhangController extends Controller
         $khachhang->sdt = $request->sdt;
         $khachhang->email = $request->email;
         $khachhang->yeuthich = 0;
+        $khachhang->level = 0;
         $khachhang->password = bcrypt($request->password); //mã hóa bcrypt
         $khachhang->save();
         return redirect()->back()->with('thanhcong', 'Đăng kí thành công');

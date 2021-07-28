@@ -19,7 +19,7 @@ class KhuyenmaiController extends Controller
             return  DataTables::of($khuyenmai)
                 ->addColumn('action', function ($khuyenmai) {
                     return '<a href="javascript:void(0);" id="edit-khuyenmai" data-toggle="modal" data-id=' . $khuyenmai->id . '>
-                    <i class="far fa-2x fa-edit"></i></a>
+                    <i class="fas fa-2x fa-eye"></i></a>
                     <a href="javascript:void(0);" id="delete-khuyenmai" data-id="' . $khuyenmai->id . ' " class="delete">
                     <i class="fas fa-2x fa-trash-alt"></i></a>';
                 })->addColumn('hethan', function ($khuyenmai) {
@@ -29,10 +29,10 @@ class KhuyenmaiController extends Controller
                         return '<span class="text-warning">Hết hạn</span>';
                     }
                 })->editColumn('trangthai', function ($khuyenmai) {
-                    if ($khuyenmai->trangthai == 1) {
+                    if ($khuyenmai->trangthai == 1 && $khuyenmai->ngaykt >= Carbon::now()) {
                         return '<span class="text-success">Đang chạy</span>';
                     } else {
-                        return '<span class="text-warning">Tạm ngưng</span>';
+                        return '<span class="text-warning">Đã ngưng</span>';
                     }
                 })->rawColumns(['action', 'trangthai', 'hethan'])->make(true);
         }

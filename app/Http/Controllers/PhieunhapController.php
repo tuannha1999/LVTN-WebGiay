@@ -12,6 +12,7 @@ use App\Hinhanh;
 use App\Cart;
 use App\Imports\Importproducts;
 use App\Imports\Importsanpham;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 
@@ -116,7 +117,7 @@ class PhieunhapController extends Controller
         $this->validate(
             $req,
             [
-                'ngaynhap' => 'required|date|before_or_equal:today',
+                'ngaynhap' => 'required|date|before_or_equal:' . Carbon::now('Asia/Ho_Chi_Minh'),
             ],
 
             [
@@ -132,8 +133,8 @@ class PhieunhapController extends Controller
                 $new_phieunhap->ghichu = $req->ghichu != null ? $req->ghichu : '';
                 $new_phieunhap->thanhtoan = $req->thanhtoan != null ? 1 : 0;
                 $new_phieunhap->id_user = Auth::user()->id;
-                $new_phieunhap->nhapkho = $req->nhaphang != null ? $req->nhaphang : 0;
-                $new_phieunhap->trangthai = $req->thanhtoan == 1 && $req->nhaphang == 1 ? 1 : 0;
+                $new_phieunhap->nhapkho = $req->nhapkho != null ? 1 : 0;
+                $new_phieunhap->trangthai = $req->thanhtoan == 1 && $req->nhapkho == 1 ? 1 : 0;
                 $new_phieunhap->tongtien = Session::get("Cart")->totalPrice;
                 foreach (Session::get('Cart')->supplier as $ncc) {
                     $new_phieunhap->id_ncc = $ncc['supplierinfo']->id;

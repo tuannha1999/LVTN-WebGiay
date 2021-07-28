@@ -72,8 +72,8 @@
 
 
                 <div class="text-right">
-                    <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModalCenter">
-                        Nhập nhiều sản phẩm</button>
+                    {{-- <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModalCenter">
+                        Nhập nhiều sản phẩm</button> --}}
                     <a class="btn btn-outline-success mb-2" href="{{URL('admin/danhsachsanpham-formadd')}}">add</a>
                 </div>
                 <div class="">

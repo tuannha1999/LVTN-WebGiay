@@ -146,6 +146,7 @@ class DondathangController extends Controller
             $new_dh->tongtien = $req->Session()->get('tongtien');
             $new_dh->created_at = Carbon::now('Asia/Ho_Chi_Minh');
             $new_dh->ghichu = $req->ghichu;
+            $new_dh->id_kh = Auth::check() == true ? Auth::user()->id : null;
             $new_dh->ngaydat = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
             $new_dh->save();
             foreach (Cart::content() as $item) {
@@ -159,7 +160,7 @@ class DondathangController extends Controller
                 $price = $item->price - (($total_cart - session()->get('tongtien')) / $total_cart) * $item->price;
                 $new_dh->sanpham()->attach($item->id, [
                     'soluong' => $item->qty, 'giaban' => $price,
-                    'size' => $item->options->size->size, 'img' => $img
+                    'size' => $item->options->size->git, 'img' => $img
                 ]);
                 $sl = Size::where('size', $item->options->size->size)->where('id_sp', $item->id)->first();
                 $sl->soluong = $sl->soluong - $item->qty;

@@ -86,22 +86,7 @@ class SanphamController extends Controller
         }
         return view('pages_admin.sanpham.list_sanpham');
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function getformAdd()
     {
         //
@@ -164,7 +149,7 @@ class SanphamController extends Controller
             }
         } else {
             $new_size = new Size();
-            $new_size->size = '';
+            $new_size->size = 'default';
             $new_size->soluong = 0;
             $new_product->size()->save($new_size);
         }
@@ -180,7 +165,7 @@ class SanphamController extends Controller
                 $new_product->Hinhanh()->save($newImage);
             }
         }
-        $request->session()->flash('success', 'Tạo phiếu nhập thành công!');
+        $request->session()->flash('success', 'Thêm sản phẩm thành công!');
         return redirect('/admin/danhsachsanpham');
     }
 
@@ -301,9 +286,17 @@ class SanphamController extends Controller
      */
     public function update()
     {
-        $range = Carbon::now()->subDays(7);
-        $thongke = Thongke::where('ngaydat', '>=', $range)->get();
-        return $thongke;
+        // dd(Cart::content());
+        // $donhang = Dondathang::find(100177);
+        // $tong_sl = 0;
+        // foreach ($donhang->sanpham as $dh) {
+        //     $tong_sl += $dh->pivot->soluong;
+        // }
+        // echo $tong_sl;
+        //dd(Auth::check());
+        // $range = Carbon::now()->subDays(7);
+        // $thongke = Thongke::where('ngaydat', '>=', $range)->get();
+        // return $thongke;
         //session()->forget(['tongtien', 'tiengiamma', 'daapdung', 'tiengiamma', 'dagiamtv']);
         // $de = Nhacungcap::where('id', 1000006)->delete();
         //session()->forget('Phieutra');
