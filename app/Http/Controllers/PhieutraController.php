@@ -119,7 +119,7 @@ class PhieutraController extends Controller
                     if ($dh->pivot->soluong == $item['quanty']) {
                         $donhang->sanpham()->detach([$item['productinfo']->id]);
                         if ($tong_sl == $item['quanty']) {
-                            $donhang->trangthai = 5;
+                            $donhang->trangthai = 4;
                         }
                         $donhang->save();
                     } else {
