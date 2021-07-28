@@ -1,13 +1,17 @@
-
-@extends('layout')
-@section('noidung')
-@section('title')
-Chi tiết đơn hàng
-@endsection
-
+@extends('admin.layout_admin')
+@section('home')
 <div class="container">
-    <h3 class="mt-4">CHI TIẾT ĐƠN HÀNG</h3>
-    <div class="row">
+
+    <div class="mt-2"><a href="#"  onClick="history.go(-1);"><i class="fas fa-2x fa-chevron-left"></i></a></div>
+    @if (Session::has('success'))
+    <div class="alert alert-success mt-3" id="alert-success">
+        <span>{{Session::get('success')}}</span>
+    </div>
+    @endif
+    <div class="col-md-12">
+        <h2 class="card-title text-center font-weight-bold">CHI TIẾT ĐƠN HÀNG </h2>
+        
+        <div class="row">
         <div class="col-md-6 mt-3">
             <h3>Thông tin mua hàng</h3>
             <div class="row">
@@ -40,17 +44,38 @@ Chi tiết đơn hàng
                         </td>
                     </tr>
                     <tr>
+                        <td>Ghi chú</td>
+                        <td>
+                            {{$donhang->ghichu}}
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Phương thức thanh toán</td>
                         <td>@if ($donhang->ptthanhtoan==0)
-                                <span>Thanh toán khi nhận hàng</span>
+                                <span><b>Thanh toán khi nhận hàng</b></span>
                             @else
-                                <span>Chuyển khoản ngân hàng</span>
+                                <span><b>Chuyển khoản ngân hàng</b></span>
                             @endif
                         </td>
                     </tr>
                     <tr>
                         <td>Trạng thái</td>
-                        <td>  @if ($donhang->trangthai==0)
+                        <td>
+                            @if ($donhang->ptthanhtoan==0)
+                            
+                                @if ($donhang->trangthai==0)
+                                    <span class="text-warning">Chờ xử lý</span>
+                                @elseif ($donhang->trangthai==2)
+                                    <span class="text-primary">Đang giao hàng</span>
+                                @elseif ($donhang->trangthai==3)
+                                    <span class="text-success">Hoàn thành</span>
+                                @else
+                                    <span class="text-danger">Đã hủy</span>
+                                @endif
+                            
+                            @else
+                            
+                                @if ($donhang->trangthai==0)
                                     <span class="text-warning">Chờ xử lý</span>
                                 @elseif ($donhang->trangthai==1)
                                     <span class="text-info">Đã thanh toán</span>
@@ -61,17 +86,19 @@ Chi tiết đơn hàng
                                 @else
                                     <span class="text-danger">Đã hủy</span>
                                 @endif
+                            
+                            @endif
                         </td>
+                        
+
+                        
+                     
                     </tr>
-                    <tr>
-                        <td>Ghi chú</td>
-                        <td>
-                            {{$donhang->ghichu}}
-                        </td>
-                    </tr>
+                    
                   </table>
             </div>
         </div>
+
         <div class="col-md-6 mt-5">
             <h4>Đơn hàng ({{count($donhang->sanpham)}} sản phẩm)</h4>
             <div class="table-wrapper-scroll-y my-custom-scrollbar">
@@ -108,20 +135,12 @@ Chi tiết đơn hàng
                 </div>
             </div>
 
-
-
-            <div class="row mt-5">
-                <div class="col-md-8">
-                    <a href="#" onClick="history.go(-1);" class="link text-info"><i class="fas fa-chevron-left"></i> <span>Quay lại</span></a>
-                </div>
-                {{-- <div class="col-md-3">
-                        <button type="submit" class="btn btn-primary">Hoàn tất</button>
-                </div> --}}
-            </div>
         </div>
     </div>
-    </form>
-</div>
 
+    
+
+    
+</div>
 
 @endsection

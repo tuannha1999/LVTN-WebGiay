@@ -68,7 +68,11 @@ Route::middleware('checkloginadmin')->group(function () {
 
     //Donhang
     Route::get('/admin/dsdonhang', 'DondathangController@getDanhsach')->name('getDonHang');
-
+    Route::get('admin/dsdonhang-edit/{id}','DondathangController@getDuyetdonhang');
+    Route::get('admin/dsdonhang-delete/{id}', 'DondathangController@destroy');
+    Route::get('admin/dsdonhang-detail/{id}', 'DondathangController@getChitietdonhangAdmin');
+    Route::get('admin/active/{id}','DondathangController@actionDonhang')->name('actionDonhang');
+    
     //khachhang
     Route::get('/admin/dskhachhang', 'QLKhachhangController@getDanhsach')->name('getKhachhang');
     Route::post('/admin/dskhachhang-add', 'QLKhachhangController@add');

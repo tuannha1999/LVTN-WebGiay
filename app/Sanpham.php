@@ -46,4 +46,8 @@ class Sanpham extends Model
     {
         return $this->hasMany(Hinhanh::class, 'id_sp');
     }
+    public function chitietdondathang()
+    {
+        return $this->hasMany(Chitietdondathang::class, 'id');
+    }
 }
