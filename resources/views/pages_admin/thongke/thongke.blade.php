@@ -38,6 +38,9 @@
     </div>
 </div>
 
+<div id="banchay" style="height: 250px;"></div>
+
+
 @endsection
 @push('scripts')
 
@@ -51,7 +54,9 @@
           })
           .done(function( data ) {
             chart.setData(data.thongke);
-            $('#tieude').html('Doanh số 7 ngày qua');
+            //console.log(data.banchay);
+            // banchay.setData(data.banchay);
+            $('#tieude').html('Doanh số 30 ngày qua');
             $('#total-doanhso').html('Tổng doanh số: '+ data.total.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}))
             //console.log(data.thongke);
           })
@@ -81,13 +86,21 @@
 
     var chart = Morris.Bar({
           element: 'chart',
-          barColors:['#1C86EE','#00C5CD'],
+          barColors:['#1C86EE','#B0C4DE','#00C5CD'],
           data: [0,0],
           xkey: 'ngaydat',
-          ykeys: ['doanhthu','soluong'],
-          labels: ['Doanh thu','Số lượng đơn hàng']
+          ykeys: ['doanhthu','loinhuan','donhang'],
+          labels: ['Doanh thu','Lợi nhuận','Số lượng đơn hàng']
         });
 
+    // var banchay = Morris.Bar({
+    //       element: 'banchay',
+    //       barColors:['#1C86EE'],
+    //       data: [0],
+    //       xkey: 'tensp',
+    //       ykeys: ['daban'],
+    //       labels: ['Đã bán']
+    //     });
 
 </script>
 @endpush

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Sanpham;
 use App\Thongke;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -25,11 +26,12 @@ class ThongkeController extends Controller
     public function loc7ngay()
     {
         $total = 0;
-        $range = Carbon::now()->subDays(7);
+        $range = Carbon::now()->subDays(30);
         $thongke = Thongke::where('ngaydat', '>=', $range)->get();
+        $banchay = Sanpham::orderBy('daban', 'desc')->limit(5)->get(['tensp', 'daban']);
         foreach ($thongke as $value) {
             $total += $value->doanhthu;
         }
-        return response()->json(['thongke' => $thongke, 'total' => $total]);
+        return response()->json(['thongke' => $thongke, 'total' => $total, 'banchay' => $banchay]);
     }
 }

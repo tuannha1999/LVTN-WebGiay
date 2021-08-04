@@ -106,11 +106,10 @@
                 <div class="mt-3">
                     <input type="text" hidden id="id_km" value="">
                     <div id="stop">
-                        <a href="#" class="btn btn-outline-danger btn-stop">Dừng khuyến mãi</a>
+
                     </div>
                     <div id="run">
-                        <a href="#" class="btn btn-outline-danger btn-run">Chạy khuyến mãi</a>
-                    </div>
+
                 </div>
         </div>
         <div class="modal-footer">
@@ -148,13 +147,6 @@
                    ]
                });
 
-// //Show form Thêm
-//                $('#create-khuyenmai').click(function () {
-//                $('#btn-save').val("create-khuyenmai");
-//                $('#khuyenmaiForm').trigger("reset");
-//                $('#khuyenmaiCrudModal').html("Thêm Khách Hàng");
-//                $('#ajax-khuyenmai-modal').modal('show');
-//             });
 
  //Show form chi tiet
            $('body').on('click', '#edit-khuyenmai', function () {
@@ -170,12 +162,7 @@
                  $('#macode').html(data.macode);
                  $('#dieukien').html(data.dieukien);
                  $('#tiengiam').html(data.tiengiam);
-                if(data.trangthai==0){
-                    $("#stop").hide('')
-                }else
-                {
-                    $("#run").hide('')
-                }
+
              })
           });
 

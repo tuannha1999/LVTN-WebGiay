@@ -120,10 +120,11 @@ class PhieutraController extends Controller
                         $donhang->sanpham()->detach([$item['productinfo']->id]);
                         if ($tong_sl == $item['quanty']) {
                             $donhang->trangthai = 4;
+                            $donhang->ghichu = 'Đã trả hàng';
                         }
                         $donhang->save();
                     } else {
-                        $donhang->sanpham()->detach([$item['productinfo']->id]);
+                        $donhang->sanpham()->wherePivot('size', '=', $item['size'])->detach([$item['productinfo']->id]);
                         $donhang->sanpham()->attach(
                             $item['productinfo']->id,
                             [

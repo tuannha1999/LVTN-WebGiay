@@ -98,7 +98,7 @@
                     <div class="col-md-6">
                         <div class="mb-2">
                             <input type="checkbox" @if (old('trangthai') ==1) checked
-                            @endif id="basic-url" @if (old('nosize') ==1) checked  @endif name="nosize" value="1"> Chọn nếu sản phẩm không có size (vd: dây giày...)
+                            @endif id="basic-url" @if (old('nosize') ==1) checked  @endif name="nosize" value="1"> Chọn nếu sản phẩm không có nhiều size (vd: dây giày...)
                          </div>
                         <label for="basic-url">Size</label>
                             <input type="text"  class="form-control" placeholder="Nhập size và nhấn enter" id="basic-url"

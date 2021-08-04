@@ -28,7 +28,7 @@ class PhieunhapController extends Controller
     public function dsPhieuNhap(Request $request)
     {
         if ($request->ajax()) {
-            $pn = Phieunhap::all();
+            $pn = Phieunhap::all()->sortBy('trangthai');
             return  DataTables::of($pn)
                 ->addColumn('action', function ($pn) {
                     return '<a href="' . URL('/admin/dsphieunhap-detail/' . $pn->id) . '" class="link">
@@ -149,7 +149,7 @@ class PhieunhapController extends Controller
                     $save_gianhap = Sanpham::find($sp['productinfo']->id);
                     $save_gianhap->gianhap = $sp['entryprice'];
                     $save_gianhap->save();
-                    if ($req->nhaphang == 1) {
+                    if ($req->nhapkho == 1) {
                         $sl = Size::find($sp['id_size']);
                         $sl->soluong = $sl->soluong + $sp['quanty'];
                         $sl->save();
@@ -157,20 +157,18 @@ class PhieunhapController extends Controller
                 }
 
                 $req->session()->forget('Cart');
-                $req->session()->flash('success', 'Tạo phiếu nhập thành công!');
-                return redirect('/admin/dsphieunhap');
+                return redirect('/admin/dsphieunhap')->with('success', 'Tạo phiếu nhập thành công!. Mã phiếu nhập: ' . $new_phieunhap->id);
             }
 
-            $req->session()->flash('error', 'Chưa Chọn nhà cung cấp hoặc sản phẩm!');
-            return redirect()->back();
+            return back()->with('error', 'Chưa Chọn nhà cung cấp hoặc sản phẩm!');
         }
-        $req->session()->flash('error', 'Tạo không thành công!');
-        return redirect()->back();
+        // $req->session()->flash
+        return back()->with('error', 'Tạo không thành công!');
     }
     public function dsSanpham(Request $request)
     {
         if ($request->ajax()) {
-            $size = Size::with('Sanpham')->get();
+            $size = Size::with('Sanpham')->orderBy('id', 'desc')->get();
             return  DataTables::of($size)
                 ->editColumn('tensp', function ($size) {
                     $sp = Sanpham::where('id', $size->id_sp)->first();
@@ -186,11 +184,11 @@ class PhieunhapController extends Controller
                     return '<input type="number" id="price-' . $size->id_sp . $size->id  . '" required
                      style="width: 100px;height: 30px;" value="' . $sp->gianhap . '">';
                 })->addColumn('action', function ($size) {
-                    if (Session::has("Cart") != null) {
-                        if (array_key_exists($size->id_sp  . $size->id, Session::get("Cart")->products)) {
-                            return '<button class="btn btn-outline-info" disabled/> Chọn</button>';
-                        }
-                    }
+                    // if (Session::has("Cart") != null) {
+                    //     if (array_key_exists($size->id_sp  . $size->id, Session::get("Cart")->products)) {
+                    //         return '<button class="btn btn-outline-info" disabled/> Chọn</button>';
+                    //     }
+                    // }
                     //return '<i onclick="addCart(' . $size->id_sp  . ',' . $size->id . ')" class="fas fa-2x fa-plus"></i>';
                     return '<a href="#" onclick="addCart(' . $size->id_sp  . ',' . $size->id . ')" class="btn btn-outline-info">Chọn</a>';
                 })->rawColumns(['tensp', 'img', 'soluong', 'action', 'gianhap'])->make(true);
@@ -198,11 +196,7 @@ class PhieunhapController extends Controller
         return view('pages_admin.nhaphang.add_phieunhap');
     }
 
-    // public function import()
-    // {
-    //     Excel::import(new Importsanpham, request()->file('file'));
-    //     return back();
-    // }
+
     public function dsNhaCungCap(Request $request)
     {
         if ($request->ajax()) {

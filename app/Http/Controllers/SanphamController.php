@@ -286,6 +286,10 @@ class SanphamController extends Controller
      */
     public function update()
     {
+        // $donhang = Dondathang::orderby('trangthai', 'asc')->get();
+        // foreach ($donhang as $item) {
+        //     echo $item->hoten . '-' . $item->trangthai . '<br>';
+        // }
         // dd(Cart::content());
         // $donhang = Dondathang::find(100177);
         // $tong_sl = 0;

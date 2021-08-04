@@ -11,8 +11,6 @@
     <div class="col-md-12">
         <h2 class="card-title text-center font-weight-bold">CHI TIẾT KHÁCH HÀNG </h2>
         <div class="row mt-4">
-
-            <div class="col-md-8">
                 <table class="table">
                     <h4 class="font-weight-bold">Thông tin khách hàng </h4>
                  <tr>
@@ -29,31 +27,15 @@
                  </tr>
                  <tr>
                     <td>Tổng giao dịch:</td>
-                    <td>{{$khachhang->tonggd}}</td>
+                    <td>{{number_format($khachhang->tonggd,0,'.','.')}}</td>
                 </tr>
                 <tr>
                     <td>Ưu đãi cho mỗi đơn hàng:</td>
                     <td>
-                        @if ($khachhang->level==1)
-                            <span>5%</span>
-                        @elseif($khachhang->level==2)
-                            <span>6%</span>
-                        @elseif($khachhang->level==3)
-                            <span>7%</span>
-                        @elseif($khachhang->level==4)
-                            <span>8%</span>
-                        @elseif($khachhang->level==5)
-                            <span>9%</span>
-                        @elseif($khachhang->level==6)
-                            <span>10%</span>
-                        @else
-                            <span>0%</span>
-                        @endif
+                       {{$khachhang->phantram*100}}%
                     </td>
                 </tr>
              </table>
-            </div>
-
     </div>
 
     <div class="col-md-12">
@@ -91,7 +73,7 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="{{URL('/admin/dsdonhang-detail/' . $dh->id)}}" class="btn btn-outline-primary">Chi tiết </a>
+                                <a href="{{URL('/admin/dsdonhang-donhang/' . $dh->id)}}" class="btn btn-outline-primary">Chi tiết </a>
                             </td>
                         </tr>
                           @endforeach

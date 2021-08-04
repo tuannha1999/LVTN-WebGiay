@@ -33,7 +33,7 @@ class CartController extends Controller
                     'name' => $product->tensp,
                     'qty' => $req->qty,
                     'price' => $product->giakm == 0 ? $product->giaban : $product->giakm,
-                    'options' => ['size' => $size, 'images' => $img->name]
+                    'options' => ['size' => $size, 'images' => $img->name,]
                 ]
             );
             return response()->json(['success' => 'Đã thêm vào giỏ hàng', 'data' => Cart::count()]);

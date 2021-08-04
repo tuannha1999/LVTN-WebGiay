@@ -84,21 +84,7 @@
                                              <li>
                                                  <a  class="nav-link" href="{{url('/profile' )}}">
                                                    {{ Auth::user()->name}}
-                                                    @if (Auth::user()->level==1)
-                                                        <span>(5%)</span>
-                                                    @elseif(Auth::user()->level==2)
-                                                        <span>(6%)</span>
-                                                    @elseif(Auth::user()->level==3)
-                                                        <span>(7%)</span>
-                                                    @elseif(Auth::user()->level==4)
-                                                        <span>(8%)</span>
-                                                    @elseif(Auth::user()->level==5)
-                                                        <span>(9%)</span>
-                                                    @elseif(Auth::user()->level==6)
-                                                        <span>(10%)</span>
-                                                    @else
-                                                        <span>(0%)</span>
-                                                    @endif
+                                                    <span>({{Auth::user()->phantram*100}}%)</span>
                                                 </a>
                                              </li>
                                              <li>

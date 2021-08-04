@@ -11,9 +11,9 @@
                         <tr>
                             <th>Mã đơn hàng</th>
                             <th>Tên khách hàng</th>
-                            <th>Tổng tiền</th>
-                            <th>Phương thức thanh toán</th>
+                            <th>Thanh toán</th>
                             <th>Trạng thái</th>
+                            <th>Tổng tiền</th>
                             <th>Ngày mua hàng</th>
                             <th>Tác vụ</th>
                         </tr>
@@ -43,14 +43,33 @@
                    columns: [
                     { data: 'id', name: 'id' },
                     { data: 'hoten', name: 'hoten'},
-                    { data: 'tongtien', name: 'tongtien'},
-                    { data: 'ptthanhtoan', name: 'ptthanhtoan'},
+                    { data: 'dathanhtoan', name: 'dathanhtoan'},
                     { data: 'trangthai', name: 'trangthai'},
-                    { data: 'created_at', name: 'created_at'},
+                    { data: 'tongtien', name: 'tongtien'},
+                    { data: 'ngaydat', name: 'ngaydat'},
                     {data: 'action',name: 'action',orderable: false},
 
                    ]
                });
+
+//Hủy đơn hàng
+$('body').on('click', '#huy-dh', function () {
+                 var id = $(this).data("id");
+                 if(confirm("Bạn có chắc muốn hủy đơn hàng này!")){
+                 $.ajax({
+                       type: "GET",
+                       url:'/huy-donhang/'+id,
+                       success: function (data) {
+                       var oTable = $('#donhang-list').dataTable();
+                       oTable.fnDraw(false);
+                      alertify.success('Đã hủy đơn hàng!');
+                       },
+                        error: function (data) {
+                            console.log('Error:', data);
+                        }
+                 });
+                }
+                });
 
  //Xóa đơn hàng
  $('body').on('click', '#delete-dh', function () {
@@ -61,7 +80,7 @@
                        url:'/admin/dsdonhang-delete/'+id,
                        success: function (data) {
                        var oTable = $('#dh-list').dataTable();
-                       oTable.fnDraw(false);  
+                       oTable.fnDraw(false);
                       //console.log(product_id);
                        },
                         error: function (data) {
