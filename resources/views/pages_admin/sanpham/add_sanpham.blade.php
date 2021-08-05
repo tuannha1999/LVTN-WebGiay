@@ -109,6 +109,7 @@
                         <input type="checkbox" @if (old('trangthai') ==1) checked  @endif id="basic-url" name="trangthai" value="1"> Cho phép bán
                     </div>
                 </div>
+                
                 <div class="mt-5">
                     <button type="submit" class="btn btn-success">Thêm sản phẩm</button>
                 </div>

@@ -28,7 +28,7 @@ class HomeController extends Controller
     public function search(Request $request)
     {
         $loai_sp = Loaisanpham::all();
-        $search = Sanpham::with('Hinhanh')->with('size')->where('tensp', 'like', '%' . $request->search . '%')->get();
+        $search = Sanpham::with('Hinhanh')->with('size')->where('tensp', 'like', '%' . $request->search . '%')->orwhere('mota', 'like', '%' . $request->search . '%')->get();
         return view('pages.search', compact('search', 'loai_sp'));
     }
     public function formsearchDonHang()
@@ -40,6 +40,17 @@ class HomeController extends Controller
     {
         $loai_sp = Loaisanpham::all();
         $search = Dondathang::where('id', $req->search)->orwhere('sdt', $req->search)->get();
+        //dd($search);
         return view('pages.dathang.kq_search', compact('loai_sp', 'search'));
+    }
+    public function gioiThieu()
+    {
+        $loai_sp = Loaisanpham::all();
+        return view('gioithieu', compact('loai_sp'));
+    }
+    public function hinhThucThanhToan()
+    {
+        $loai_sp = Loaisanpham::all();
+        return view('hinhthucthanhtoan', compact('loai_sp'));
     }
 }

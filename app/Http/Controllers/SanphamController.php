@@ -98,7 +98,7 @@ class SanphamController extends Controller
     {
 
         //dd($request->nosize);
-        $request->old('tensp', 'giaban', 'lsp', 'trangthai', 'th', 'tags', 'nosize');
+        $request->old('tensp','mota', 'giaban', 'lsp', 'trangthai', 'th', 'tags', 'nosize');
         $this->validate(
             $request,
             [

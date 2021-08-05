@@ -6,6 +6,11 @@ use App\Dondathang;
 use App\Sanpham;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
+
+
+
 
 
 
@@ -23,34 +28,49 @@ use Illuminate\Support\Facades\Auth;
 
 //Home Controller
 Route::get('/', 'HomeController@index')->name('trangchu');
-Route::get('/trang-chu', 'HomeController@index');
+Route::get('/trang-chu', 'HomeController@index');//
 Route::get('search', 'HomeController@search');
 Route::get('/form-search-donhang', 'HomeController@formsearchDonHang');
 Route::get('/search-donhang', 'HomeController@searchDonHang');
+Route::get('/form-search-donhang', 'HomeController@formsearchDonHang');
+Route::get('/gioi-thieu', 'HomeController@gioiThieu');
+Route::get('/hinh-thuc-thanh-toan', 'HomeController@hinhThucThanhToan');
+Route::get('chinh-sach-thanh-vien', 'KhachhangController@chinhsachThanhVien');
+
 
 
 //Khachhang
 Route::get('dangnhap', 'KhachhangController@getLogin')->name('show-form-login');
 Route::post('dangnhap', 'KhachhangController@postLogin')->name('login');
+Route::get('quen-mat-khau', 'KhachhangController@getFormResetPassword')->name('form-reset-password');
+Route::post('quen-mat-khau', 'KhachhangController@sendCoderesetPassword');
+Route::get('dat-lai-mat-khau', 'KhachhangController@resetPassword')->name('get-link-reset-password');
+Route::post('dat-lai-mat-khau', 'KhachhangController@saveResetpassword');
 
 Route::get('dangki', 'KhachhangController@getRegister')->name('show-form-register');
 Route::post('dangki', 'KhachhangController@postRegister')->name('register');
-Route::get('chinh-sach-thanh-vien', 'KhachhangController@chinhsachThanhVien');
+Route::get('xac-nhan-tai-khoan', 'KhachhangController@verifyAccount')->name('user-verify-account');
 
 
-//yeuthich
-Route::get('yeuthich', 'KhachhangController@yeuthich');
-Route::get('add-yeuthich/{id}/{size}', 'KhachhangController@addyeuthich');
-Route::get('delete-yeuthich/{id}', 'KhachhangController@deleteyeuthich');
+
 
 
 //
 Route::middleware('checklogin')->group(function () {
 
     Route::get('dangxuat', 'KhachhangController@getLogout')->name('logout');
+    //yeuthich
+    Route::get('yeuthich', 'KhachhangController@yeuthich');
+    Route::get('add-yeuthich/{id}/{size}', 'KhachhangController@addyeuthich');
+    Route::get('delete-yeuthich/{id}', 'KhachhangController@deleteyeuthich');
 
-    Route::get('profile', 'KhachhangController@getProfile')->name('show-profile');
-    Route::post('profile', 'KhachhangController@postProfile')->name('profile');
+    Route::get('profile/{id}', 'KhachhangController@getProfile');
+    Route::post('profile-edit', 'KhachhangController@editProfile');
+
+    Route::get('lich-su-mua-hang/{id}', 'KhachhangController@dsDonhangganday')->name('list-don-hang-gan-day');
+
+
+
 });
 //Khachhang
 
@@ -214,7 +234,6 @@ Route::get('chitiet-sanpham/{id}', 'SanphamController@chitiet_sp');
 Route::get('loai-sanpham/{loai}', 'SanphamController@locLoaisp');
 Route::get('loc-gia-san-pham/{value}', 'SanphamController@locgia');
 Route::get('loc-thuonghieu/{loai}', 'SanphamController@locthuonghieu');
-
 
 
 //dat hang

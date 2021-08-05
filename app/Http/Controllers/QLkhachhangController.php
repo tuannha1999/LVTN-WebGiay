@@ -13,7 +13,7 @@ class QLkhachhangController extends Controller
     public function getDanhSach(Request $req)
     {
         if ($req->ajax()) {
-            $khachhang = User::latest()->where('is_admin', 0)->get();
+            $khachhang = User::latest()->where('active', 1)->get();
             return  DataTables::of($khachhang)
                 ->addColumn('action', function ($khachhang) {
                     return '<a  id="edit-khachhang" data-toggle="tooltip"

@@ -47,10 +47,6 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Dondathang::class, 'id_kh');
     }
-    public function dondathang1()
-    {
-        return $this->hasMany(Dondathang::class, 'id_admin');
-    }
     public function khuyenmai()
     {
         return $this->hasMany(khuyenmai::class, 'id_user');
