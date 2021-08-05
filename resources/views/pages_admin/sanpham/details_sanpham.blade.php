@@ -31,29 +31,25 @@
 
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label for="basic-url">Giá bán</label>
                     <div class="input-group mb-3">
                       <input type="number" class="form-control" name="giaban" id="basic-url" aria-describedby="basic-addon3" value="{{$chitiet_sp->giaban}}">
 
                     </div>
                 </div>
-                {{-- <div class="col-md-4">
-                    <label for="basic-url">Giá nhập</label>
-                    <div class="input-group mb-3">
-                      <input type="number" class="form-control @error('gianhap') is-invalid @enderror" name="gianhap" id="basic-url" aria-describedby="basic-addon3" value="{{$chitiet_sp->gianhap}}">
-                      @error('gianhap')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                     @enderror
-                    </div>
-                </div> --}}
-                <div class="col-md-6">
+
+                <div class="col-md-4">
                     <label for="basic-url">Giá khuyến mãi</label>
                     <div class="input-group mb-3">
                       <input type="number" class="form-control" name="giakm" id="basic-url" aria-describedby="basic-addon3" value="{{$chitiet_sp->giakm}}">
 
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="basic-url">Giá nhập</label>
+                    <div class="input-group mb-3">
+                      <input type="number" class="form-control" readonly name="gianhap" id="basic-url" aria-describedby="basic-addon3" value="{{$chitiet_sp->gianhap}}">
                     </div>
                 </div>
             </div>

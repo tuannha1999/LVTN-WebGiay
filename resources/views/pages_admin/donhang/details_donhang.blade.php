@@ -193,8 +193,8 @@
                                 <td>{{number_format($sp->pivot->giaban,0,'.','.')}}</td>
                                 @if ($donhang->trangthai==0||$donhang->trangthai==1||$donhang->trangthai==2)
                                 <td>
-                                    <i onclick="updateSanPham({{$donhang->id.','.$sp->id.','.$sp->pivot->size}})" class="fas fa-save"></i>
-                                    <a href="{{URL('/admin/dsdonhang-delete-sanpham/'.$donhang->id.'/'.$sp->id.'/'.$sp->pivot->size)}}"><i class="fas fa-trash-alt"></a></i>
+                                    <i onclick="updateSanPham({{$donhang->id.','.$sp->id.','}}'{{$sp->pivot->size}}')" class="fas fa-2x fa-save"></i>
+                                    <a href="{{URL('/admin/dsdonhang-delete-sanpham/'.$donhang->id.'/'.$sp->id.'/'.$sp->pivot->size)}}"><i class="fas fa-2x fa-trash-alt"></a></i>
                                 </td>
                                 @endif
 
@@ -239,7 +239,7 @@
 <script>
    function updateSanPham(id,sp,size) {
     var strid=String(sp)+String(size);
-        // console.log(size);
+        console.log(strid);
         // console.log($('#qty-update-'+strid).val());
         $.ajax({
             type: 'GET',

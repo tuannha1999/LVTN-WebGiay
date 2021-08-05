@@ -57,20 +57,20 @@
                         @foreach ($khachhang->dondathang as $dh)
                           <tr>
                             <td>{{$dh->id}}</td>
-                            <td>{{$dh->created_at->toDateString()}}</td>
+                            <td>{{$dh->ngaydat}}</td>
 
                             <td>
-                            @if ($dh->trangthai==0)
-                                    <span class="text-warning">Chờ xử lý</span>
-                                @elseif ($dh->trangthai==1)
-                                    <span class="text-info">Đã thanh toán</span>
-                                @elseif ($dh->trangthai==2)
-                                    <span class="text-primary">Đang giao hàng</span>
-                                @elseif ($dh->trangthai==3)
-                                    <span class="text-success">Hoàn thành</span>
-                                @else
-                                    <span class="text-danger">Đã hủy</span>
-                                @endif
+                                @if ($dh->trangthai==0)
+                                <span class="text-warning">CHỜ XỬ LÝ</span>
+                            @elseif ($dh->trangthai==1)
+                                <span class="text-info">CHỜ GIAO HÀNG</span>
+                            @elseif ($dh->trangthai==2)
+                                <span class="text-primary">ĐANG GIAO HÀNG</span>
+                            @elseif ($dh->trangthai==3)
+                                <span class="text-success">HOÀN THÀNH</span>
+                            @else
+                                <span class="text-danger">ĐÃ HỦY</span>
+                            @endif
                             </td>
                             <td>
                                 <a href="{{URL('/admin/dsdonhang-donhang/' . $dh->id)}}" class="btn btn-outline-primary">Chi tiết </a>
