@@ -94,6 +94,7 @@ Giỏ hàng
                 $("#list-cart").empty();
                  $("#list-cart").html(response);
                  $("#total-quanty-show").text($("#total-quanty-cart").val());
+                 location.reload();
         });
     });
 
@@ -107,6 +108,7 @@ Giỏ hàng
                 $("#list-cart").empty();
                  $("#list-cart").html(response);
                  $("#total-quanty-show").text($("#total-quanty-cart").val());
+                 location.reload();
                     }
                     else{
                         alertify .alert(response.error, function(){

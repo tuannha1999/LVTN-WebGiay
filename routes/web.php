@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -85,11 +86,30 @@ Route::middleware('checkloginadmin')->group(function () {
 
     //Donhang
     Route::get('/admin/dsdonhang', 'DondathangController@getDanhsach')->name('getDonHang');
-    Route::get('admin/dsdonhang-edit/{id}','DondathangController@getDuyetdonhang');
+    Route::post('admin/dsdonhang-update-donhang/', 'DondathangController@updateDonHang');
+    Route::get('admin/dsdonhang-update-sanpham/{id}/{sp}/{size}/{qty}', 'DondathangController@updateSanPham');
+    Route::get('admin/dsdonhang-delete-sanpham/{id}/{sp}/{size}', 'DondathangController@deleteSanPhamDH');
+    Route::get('admin/dsdonhang-formadd', 'DondathangController@formTaoDon');
+    Route::get('admin/dsdonhang-chuyenform', 'DondathangController@chuyenformTaoDon');
+    Route::post('admin/dsdonhang-add', 'DondathangController@addDonHang');
+    Route::get('admin/dsdonhang-add-sanpham/{id}/{size}/{qty}', 'DondathangController@addCart');
+    Route::get('admin/dsdonhang-update-sanpham/{id}/{qty}', 'DondathangController@updateCart');
     Route::get('admin/dsdonhang-delete/{id}', 'DondathangController@destroy');
-    Route::get('admin/dsdonhang-detail/{id}', 'DondathangController@getChitietdonhangAdmin');
-    Route::get('admin/active/{id}','DondathangController@actionDonhang')->name('actionDonhang');
-    
+    Route::get('admin/dsdonhang-donhang/{id}', 'DondathangController@getChitietdonhangAdmin');
+    Route::get('admin/dsdonhang-duyetdon/{id}', 'DondathangController@duyetDonHang');
+    Route::get('admin/dsdonhang-thanhtoan/{id}', 'DondathangController@thanhtoan');
+    Route::get('admin/dsdonhang-giaohang/{id}', 'DondathangController@giaohang');
+    Route::get('admin/dsdonhang-hoanthanh/{id}', 'DondathangController@hoanthanh');
+    Route::get('admin/dsdonhang-delete-cart/{id}', 'DondathangController@deleteCart');
+    Route::get('admin/dsdonhang-getsanpham', 'DondathangController@dsSanpham')->name('getSanPhamDH');
+    Route::get('admin/dsdonhang-getkhachhang', 'DondathangController@dsKhachhang')->name('getKhachHangDH');
+    Route::get('admin/dsdonhang-chon-khachhang/{id}', 'DondathangController@chonKhachhang');
+    Route::get('admin/dsdonhang-delete-khachhang/', 'DondathangController@deleteKhachhang');
+
+
+
+    Route::get('admin/active/{id}', 'DondathangController@actionDonhang')->name('actionDonhang');
+
     //khachhang
     Route::get('/admin/dskhachhang', 'QLKhachhangController@getDanhsach')->name('getKhachhang');
     Route::post('/admin/dskhachhang-add', 'QLKhachhangController@add');
@@ -218,7 +238,7 @@ Route::get('loc-thuonghieu/{loai}', 'SanphamController@locthuonghieu');
 Route::get('/chuyen-form-dathang', 'DondathangController@chuyenformDatHang');
 Route::get('/form-dathang', 'DondathangController@getformDatHang');
 Route::post('/hoantat-dathang', 'DondathangController@getformHoanTat');
-Route::get('dathang-thanhcong/{sdt}', 'DondathangController@formSuccess');
+Route::get('dathang-thanhcong/{id}', 'DondathangController@formSuccess');
 Route::post('/dathang', 'DondathangController@dathang');
 Route::post('/check-coupons', 'DondathangController@checkCoupons');
 Route::get('/delete-coupons', 'DondathangController@deleteCoupons');

@@ -166,6 +166,7 @@
                       success: function (data) {
                       var oTable = $('#khachhang-list').dataTable();
                       oTable.fnDraw(false);
+                      alertify.success('Đã xóa!');
                      //console.log(product_id);
                       },
                        error: function (data) {

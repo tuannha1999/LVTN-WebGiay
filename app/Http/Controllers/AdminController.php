@@ -21,31 +21,34 @@ class AdminController extends Controller
     {
         //
         if ($req->ajax()) {
-            $donhang = Dondathang::where('trangthai',0)->orwhere('trangthai',1)->get();
+            $donhang = Dondathang::where('trangthai', 0)->get();
             return  DataTables::of($donhang)
                 ->addColumn('action', function ($donhang) {
-                    return '<a href="' . URL('admin/dsdonhang-edit/'.$donhang->id) . '" class="btn btn-success">Duyệt</a>
+                    return '<a href="' . URL('admin/dsdonhang-donhang/' . $donhang->id) . '" class="btn btn-success">Duyệt</a>
+                        <a href="javascript:void(0);" id="huy-dh" data-id="' . $donhang->id . ' " class="btn btn-warning">Hủy</a>
                     <a class="btn" href="javascript:void(0);" id="delete-dh" data-id="' . $donhang->id . ' " class="delete">
                     <i class="fas fa-2x fa-trash-alt"></i></a>';
                 })->editColumn('trangthai', function ($donhang) {
-
                     if ($donhang->trangthai == 0) {
                         return '<span class="text-warning">Chờ xử lý</span>';
                     } else if ($donhang->trangthai == 1) {
-                        return '<span class="text-info">Đã thanh toán</span>';
-                    } 
-                    
-
-                })->editColumn('ptthanhtoan', function ($donhang) {
-                    if ($donhang->ptthanhtoan == 0) {
-                        return '<span class="text-secondary"><b>Thanh toán khi nhận hàng</b></span>';
-                    }else{
-                        return '<span><b>Chuyển khoản ngân hàng</b></span>';
+                        return '<span class="text-info">Chờ giao hàng</span>';
+                    } else if ($donhang->trangthai == 2) {
+                        return '<span class="text-primary">Đang giao hàng</span>';
+                    } else if ($donhang->trangthai == 3) {
+                        return '<span class="text-success">Hoàn thành</span>';
+                    } else {
+                        return '<span class="text-danger">Đã hủy</span>';
                     }
-                })->editColumn('created_at', function ($donhang) {
-                    $date = date("d-m-Y", strtotime($donhang->created_at));
-                    return $date;
-                })->rawColumns(['action', 'trangthai', 'created_at','ptthanhtoan'])->make(true);
+                })->editColumn('dathanhtoan', function ($donhang) {
+                    if ($donhang->dathanhtoan == 1) {
+                        return '<span class="text-success">Đã thanh toán</span>';
+                    } else {
+                        return '<span class="text-warning">Chưa thanh toán</span>';
+                    }
+                })->editColumn('tongtien', function ($donhang) {
+                    return number_format($donhang->tongtien, 0, '.', '.');
+                })->rawColumns(['action', 'trangthai', 'dathanhtoan', 'tongtien'])->make(true);
         }
         return view('admin.home_admin');
     }

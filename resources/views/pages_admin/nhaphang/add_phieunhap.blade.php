@@ -40,8 +40,6 @@
                         @foreach (Session::get("Cart")->supplier as $item)
                         <table class="table">
                             <tr>
-                                <td><h4>Thông tin nhà cung cấp</h4>
-                                </td>
                                 <td class="text-right"><a href="{{URL('admin/dsphieunhap-deletencc/'.$item['supplierinfo']->id)}}"><i class="fas fa-trash-alt"></a></i></td>
                             </tr>
                             <tr>
@@ -72,8 +70,8 @@
 
 
                 <div class="text-right">
-                    <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModalCenter">
-                        Nhập nhiều sản phẩm</button>
+                    {{-- <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModalCenter">
+                        Nhập nhiều sản phẩm</button> --}}
                     <a class="btn btn-outline-success mb-2" href="{{URL('admin/danhsachsanpham-formadd')}}">add</a>
                 </div>
                 <div class="">
@@ -171,32 +169,6 @@
 
         </div>
 
-        {{-- <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLongTitle">Chọn file Excel</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <form action="{{ url('admin/dsphieunhap-import') }}" method="POST" name="importform"
-                enctype="multipart/form-data">
-             @csrf
-             <div class="form-group">
-             <label for="file">File:</label>
-             <input id="file" type="file" name="file" class="form-control">
-             </div>
-             <div class="form-group">
-             <a class="btn btn-info" href="{{ url('export') }}">Export File</a>
-             </div>
-             <button class="btn btn-success">Import File</button>
-             </form>
-
-              </div>
-            </div>
-          </div>
-    </div> --}}
 
 
 <script type="text/javascript">

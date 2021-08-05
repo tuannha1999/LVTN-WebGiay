@@ -28,7 +28,7 @@
         </div>
     </div>
 
-<script src="{{ asset ('/js/jQuery.tagify.min.js') }}"></script>
+{{-- <script src="{{ asset ('/js/jQuery.tagify.min.js') }}"></script> --}}
 <script>
 
 //tắt thông báo sau 3s

@@ -16,12 +16,13 @@ class CartController extends Controller
     //
     public function themGiohang(Request $req)
     {
+        old('size');
         $product = Sanpham::where('id', $req->id)->first();
         $img = Hinhanh::where('id_sp', $req->id)->where('avt', 1)->first();
-        $size = Size::where('size', $req->size)->where('id_sp', $req->id)->first();
-        $sl = 0;
+        $size = Size::where('id', $req->size)->first();
+        $sl = $req->qty;
         foreach (Cart::content() as $item) {
-            if ($item->id == $req->id && $item->options->size->size == $req->size) {
+            if ($item->id == $req->id && $item->options->size->id == $req->size) {
                 $sl = $item->qty + $req->qty;
             }
         }
@@ -32,7 +33,7 @@ class CartController extends Controller
                     'name' => $product->tensp,
                     'qty' => $req->qty,
                     'price' => $product->giakm == 0 ? $product->giaban : $product->giakm,
-                    'options' => ['size' => $size, 'images' => $img->name]
+                    'options' => ['size' => $size, 'images' => $img->name,]
                 ]
             );
             return response()->json(['success' => 'Đã thêm vào giỏ hàng', 'data' => Cart::count()]);

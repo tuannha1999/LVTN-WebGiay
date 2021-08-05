@@ -13,7 +13,7 @@ class QLkhachhangController extends Controller
     public function getDanhSach(Request $req)
     {
         if ($req->ajax()) {
-            $khachhang = User::latest()->where('is_admin',0)->get();
+            $khachhang = User::latest()->where('active', 1)->get();
             return  DataTables::of($khachhang)
                 ->addColumn('action', function ($khachhang) {
                     return '<a  id="edit-khachhang" data-toggle="tooltip"
@@ -22,7 +22,9 @@ class QLkhachhangController extends Controller
                     <i class="far fa-2x fa-edit"></i></a>
                     <a href="javascript:void(0);" id="delete-khachhang" data-id="' . $khachhang->id . ' " class="delete">
                     <i class="fas fa-2x fa-trash-alt"></i></a>';
-                })->rawColumns(['action'])->make(true);
+                })->addColumn('tonggd', function ($khachhang) {
+                    return number_format($khachhang->tonggd, 0, '.', '.');
+                })->rawColumns(['action', 'tonggd'])->make(true);
         }
         return view('pages_admin.khachhang.list_khachhang');
     }
@@ -53,7 +55,7 @@ class QLkhachhangController extends Controller
             'email' => $req->email,
             'sdt' => $req->sdt,
             'yeuthich' => 0,
-            'level' => 0,
+            'phantram' => 0,
             'password' => bcrypt(123456),
         ]);
         return redirect('/admin/dskhachhang');
