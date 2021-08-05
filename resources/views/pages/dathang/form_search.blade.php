@@ -22,9 +22,13 @@ Tìm kiếm đơn hàng
                 </div>
                 <button type="submit" class="btn btn-info">Kiểm tra</button>
               </form>
+              <br>
+          <br>
+          <br>
+          <br>
         </div>
         <div class="col-md-4">
-
+          
         </div>
     </div>
 </div>

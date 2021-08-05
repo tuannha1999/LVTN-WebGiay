@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
     /**
@@ -46,10 +46,6 @@ class User extends Authenticatable
     public function dondathang()
     {
         return $this->hasMany(Dondathang::class, 'id_kh');
-    }
-    public function dondathang1()
-    {
-        return $this->hasMany(Dondathang::class, 'id_admin');
     }
     public function khuyenmai()
     {

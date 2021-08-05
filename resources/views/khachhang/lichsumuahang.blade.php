@@ -1,44 +1,18 @@
-
 @extends('layout')
-@section('title')
-Tìm kiếm đơn hàng
-@endsection
-
 @section('noidung')
-
-<!--Container-->
-<hr class="my-4">
-<div class="container">
-<h2>TÌM KIẾM ĐƠN HÀNG</h2>
+@section('title')
+Lịch sử mua hàng
+@endsection
 <hr>
-<div class="row mt-5 ">
-
-    <div class="col-md-4">
-
-    </div>
-    <div class="col-md-4">
-        <form action="{{URL('/search-donhang')}}" method="get">
-            <div class="form-group">
-              <span class="font-weight-bold">Nhập mã đơn hàng hoặc số điện thoại</span>
-              <input type="text" name="search" class="form-control mt-2" id="exampleInputEmail1"  placeholder="">
-            </div>
-            <button type="submit" class="btn btn-info">Kiểm tra</button>
-          </form>
-    </div>
-    <div class="col-md-4">
-
-    </div>
-</div>
-
-@if (count($search)>0)
-<div class="row mt-4">
-    <div> <h5>Tìm thấy {{ $count = count($search) }} đơn hàng</h5> </div>
+<div class="container mt-4">
+<h3>Lịch sử mua hàng</h3>
+<hr>
+@if (count($donhang)>0)
     <table class="table">
         <thead>
             <tr>
                 <th>Mã đơn hàng</th>
                 <th>Tên khách hàng</th>
-                <th>Số điện thoại</th>
                 <th>Ngày đặt hàng</th>
                 <th>Tình trạng</th>
                 <th>Tổng tiền</th>
@@ -46,11 +20,10 @@ Tìm kiếm đơn hàng
             </tr>
         </thead>
         <tbody>
-            @foreach ($search as $dh )
+            @foreach ($donhang as $dh )
             <tr>
                 <td>{{$dh->id}}</td>
                 <td>{{$dh->hoten}}</td>
-                <td>{{$dh->sdt}}</td>
                 <td>{{$dh->created_at->toDateTimeString()}}</td>
                 <td>
                                 @if ($dh->trangthai==0)
@@ -105,15 +78,8 @@ Tìm kiếm đơn hàng
     </table>
 
     {{-- //modal --}}
-
-</div>
 @else
-<h4>Không tìm thấy đơn hàng!</h4>
+<h4>Không có đơn hàng nào!</h4>
 @endif
 </div>
-
 @endsection
-
-
-
-

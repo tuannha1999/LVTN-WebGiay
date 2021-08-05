@@ -4,6 +4,7 @@
 @section('title')
 Chi tiết đơn hàng
 @endsection
+<hr>
 
 <div class="container">
     <h3 class="mt-4">CHI TIẾT ĐƠN HÀNG</h3>
@@ -51,15 +52,15 @@ Chi tiết đơn hàng
                     <tr>
                         <td>Trạng thái</td>
                         <td>  @if ($donhang->trangthai==0)
-                                    <span class="text-warning">Chờ xử lý</span>
+                                    <span class="text-warning">CHỜ XỬ LÝ</span>
                                 @elseif ($donhang->trangthai==1)
-                                    <span class="text-info">Đã thanh toán</span>
+                                    <span class="text-info">CHỜ GIAO HÀNG</span>
                                 @elseif ($donhang->trangthai==2)
-                                    <span class="text-primary">Đang giao hàng</span>
+                                    <span class="text-primary">ĐANG GIAO HÀNG</span>
                                 @elseif ($donhang->trangthai==3)
-                                    <span class="text-success">Hoàn thành</span>
+                                    <span class="text-success">HOÀN THÀNH</span>
                                 @else
-                                    <span class="text-danger">Đã hủy</span>
+                                    <span class="text-danger">ĐÃ HỦY</span>
                                 @endif
                         </td>
                     </tr>

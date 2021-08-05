@@ -1,6 +1,11 @@
 @extends('layout')
-@section('dangki')
+@section('noidung')
+@section('title')
+Đăng kí
+@endsection
 <div class="container text-center" >
+<hr>
+
 <br>
 <h2 class="title ">ĐĂNG KÍ THÀNH VIÊN MỚI</h2>
 <br>
@@ -10,17 +15,13 @@
 
   <form action="{{ url('/dangki') }}" method="post">
   {{ csrf_field() }}
-
-<!--     @if(count($errors)>0)
-        <div class="alert alert-danger">
-            @foreach($errors->all() as $err)
-            {{$err}}
-            @endforeach
-        </div>
-    @endif -->
     
-    @if(Session::has('thanhcong'))
-        <div class="alert alert-success">{{Session::get('thanhcong')}} </div>
+    @if(Session::has('thongbao'))
+        <div class="alert alert-success">{{Session::get('thongbao')}} </div>
+    @endif
+
+    @if(Session::has('error'))
+        <div class="alert alert-danger">{{Session::get('error')}} </div>
     @endif
 
     <div class="form-group">
@@ -68,12 +69,14 @@
     
     
   </form>
-
+    <br>
+    <br>
+    
   </div>
-  <div class="col-md-4 "></div>
   </div>
 
 </div>
+
 @endsection
 
 

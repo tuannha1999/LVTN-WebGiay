@@ -43,7 +43,7 @@
                                 <a class="nav-link " href="{{ url('trang-chu')}}">TRANG CHỦ</a>
                             </li>
                             <li class="nav-item ">
-                                <a class="nav-link" href="#">GIỚI THIỆU</a>
+                                <a class="nav-link" href="{{ url('gioi-thieu')}}">GIỚI THIỆU</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link" href="{{ url('san-pham')}}">SẢN PHẨM</a>
@@ -79,10 +79,10 @@
                             	    </li>
                                 @else(Auth::user()->is_admin==0)
                                     <li class="nav-item dropdown">
-                                         <a class="nav-link" href="{{ url('/profile' )}}"><i class="fas fa-2x fa-user-check"></i></a>
+                                         <a class="nav-link" href="{{ url('/profile/{id}' )}}"><i class="fas fa-2x fa-user-check"></i></a>
                                          <ul class="dropdown-menu">
                                              <li>
-                                                 <a  class="nav-link" href="{{url('/profile' )}}">
+                                                 <a  class="nav-link" href="{{url('/profile/{id}' )}}">
                                                    {{ Auth::user()->name}}
                                                     @if (Auth::user()->level==1)
                                                         <span>(5%)</span>
@@ -102,7 +102,7 @@
                                                 </a>
                                              </li>
                                              <li>
-                                                <a  class="nav-link" href="{{url('/profile' )}}">Lịch sử mua hàng</a></a>
+                                                <a  class="nav-link" href="{{url('/lich-su-mua-hang/{id}' )}}">Lịch sử mua hàng</a></a>
                                             </li>
                                              <li>
                                                 <a  class="nav-link" href="{{url('chinh-sach-thanh-vien' )}}">Ưu đãi thành viên</a>
@@ -145,12 +145,7 @@
     </div>
 </nav>
 <!--Header-->
-<!-- khachhang -->
-@yield('dangki')
-@yield('dangnhap')
-@yield('profile')
 
-<!-- khachhang -->
 <!--Container-->
 @yield('noidung')
 
@@ -162,30 +157,37 @@
             <div class="row p-4" >
                 <div class="col-md-4 mt-3 p-2">
                     <h5 class="text-uppercase">Liên hệ</h5>
+                    <br>
                     <p><i class="far fa-envelope"></i> Email: tuannha1234@gmail.com</p>
                     <p><i class="fas fa-phone"></i> Hotline: 0376440058</p>
                     <p><i class="fas fa-home"></i> Đ/c: 180 Cao Lỗ, P4, Quận 8, Tp HCM</p>
-                    <p><i class="fas fa-phone"></i> Điện thoại:</p>
+                    <p><i class="fas fa-phone"></i> Điện thoại: 0379307950</p>
                 </div>
                 <div class="col-md-4 mt-3">
-                    <h5 class="text-uppercase"><a class="nav-link text-color" href="#">Trang chủ</a></h5>
+                    <h5 class="text-uppercase"><a class="nav-link text-color" href="{{ url('trang-chu')}}">Trang chủ</a></h5>
                     <ul class="list-unstyled">
                         <li>
-                            <a class="nav-link text-color" href="#">Giới thiệu</a>
+                            <a class="nav-link text-color" href="{{ url('gioi-thieu')}}">Giới thiệu</a>
                         </li>
                         <li>
-                            <a class="nav-link text-color" href="#">Sản phẩm</a>
+                            <a class="nav-link text-color" href="{{ url('san-pham')}}">Sản phẩm</a>
                         </li>
                         <li>
-                            <a class="nav-link text-color" href="#">Tìm kiếm đơn hàng</a>
+                            <a class="nav-link text-color" href="{{URL('/form-search-donhang')}}">Tìm kiếm đơn hàng</a>
+                        </li>
+                        <li>
+                            <a class="nav-link text-color" href="{{url('chinh-sach-thanh-vien' )}}">Chính sách thành viên</a>
+                        </li>
+                        <li>
+                            <a class="nav-link text-color" href="{{url('hinh-thuc-thanh-toan' )}}">Hình thức thanh toán</a>
                         </li>
                     </ul>
                 </div>
                 <div class="col-md-4 mt-3 text-center p-2">
                     <h5 class="text-uppercase">Follow US</h5>
-                    <a href="#"><i class="fab fa-facebook-square fa-3x"></i></a>
-                    <a href="#"><i class="fab fa-instagram-square fa-3x"></i></a>
-                    <a href="#"><i class="fab fa-youtube fa-3x"></i></a>
+                    <a href="https://www.facebook.com/NT-Store-100183609011131" target="_blank" ><i class="fab fa-facebook-square fa-3x"></i></a>
+                    <a href="https://www.instagram.com/taitandinh.99/" target="_blank" ><i class="fab fa-instagram-square fa-3x"></i></a>
+                    <a href="https://www.youtube.com/channel/UCoizrIR3iCClVypk23opfyg" target="_blank" ><i class="fab fa-youtube fa-3x"></i></a>
                 </div>
             </div>
         </div>

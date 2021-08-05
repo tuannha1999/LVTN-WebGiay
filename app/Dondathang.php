@@ -28,10 +28,6 @@ class Dondathang extends Model
     {
         return $this->hasMany(phieutra::class, 'id_dh');
     }
-    public function user1()
-    {
-        return $this->belongsTo(User::class, 'id_admin');
-    }
     public function chitietdondathang()
     {
         return $this->hasMany(Chitietdondathang::class, 'id');
