@@ -120,8 +120,6 @@ Route::middleware('checkloginadmin')->group(function () {
     Route::get('/admin/dskhachhang-detail/{id}', 'QLKhachhangController@detail');
 
 
-
-
     //sanpham
     Route::get('admin/danhsachsanpham', 'SanphamController@getDSSanpham')->name('getSanpham');
     Route::get('admin/danhsachsanpham-delete/{id}', 'SanphamController@destroy');

@@ -1,33 +1,35 @@
 <div class="left-sidebar">
-    <h5>LOẠI SẢN PHẨM</h5>
     <div class="mt-3">
-        @foreach ($loai_sp as $loai )
-        <div id="accordion">
-            <div class="card">
-                <div class="card-header">
-                    <a href="{{ url('loai-sanpham/'.$loai->slug)}}" class="link">{{$loai->tenloai}}</a>
-                  <a class="collapsed link-col link" data-toggle="collapse" href="#collapse{{$loai->id}}">
-                  </a>
+        <div class="card">
+            <div class="card-header">
+                <h5>LOẠI SẢN PHẨM</h5>
+            </div>
+                <div class="card-body">
+                    @foreach ($loai_sp as $loai )
+                        <div class="card-text">
+                            <a href="{{ url('loai-sanpham/'.$loai->slug)}}" class="link">{{$loai->tenloai}}</a>
+                        </div>
+                    @endforeach
                 </div>
-                <div id="collapse{{$loai->id}}" class="collapse" data-parent="#accordion">
-                  <div class="card-body">
-
-                      <ul class="list-group list-group-flush">
-                          @foreach ($thuonghieu as $th)
-                             @if ($th->id_lsp==$loai->id)
-                                <li class="list-group-item">
-                                    <a class="link" href="{{ url('loc-thuonghieu/'.$th->slug)}}">
-                                         {{$th->ten}}
-                                    </a></li>
-                             @endif
-                          @endforeach
-                        </ul>
-                  </div>
-                </div>
-              </div>
+                
         </div>
-        @endforeach
     </div>
+    <div class="mt-3">
+        <div class="card">
+            <div class="card-header">
+                <h5>THƯƠNG HIỆU</h5>
+            </div>
+                <div class="card-body">
+                    @foreach ($thuonghieu as $loai )
+                        <div class="list-group list-group-flush">
+                            <a href="{{ url('loc-thuonghieu/'.$loai->ten)}}" class="link">{{$loai->ten}}</a>
+                        </div>
+                    @endforeach
+                </div>
+                
+        </div>
+    </div>
+    
     <div class="mt-3">
         <h5>KHOẢNG GIÁ</h5>
         <ul class="list-group list-group-flush">
