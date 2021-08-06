@@ -7,6 +7,7 @@
             <div class="col-3">
                 @include('pages.sanpham.sidebar_left')
             </div>
+            
             <div class="col-9">
                 <div class="row">
                           @foreach($loai->sanpham as $value)
