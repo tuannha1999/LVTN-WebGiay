@@ -145,20 +145,8 @@
                 </div>
                 <div class="col-md-3">
                    <label for="" class="h6">- {{number_format(session()->get('tiengiamtv'),0,',',',')}}đ</label>&nbsp;
-                                                    @if (Auth::user()->level==1)
-                                                        <span>(Giảm 5%)</span>
-                                                    @elseif(Auth::user()->level==2)
-                                                        <span>(Giảm 6%)</span>
-                                                    @elseif(Auth::user()->level==3)
-                                                        <span>(Giảm 7%)</span>
-                                                    @elseif(Auth::user()->level==4)
-                                                        <span>(Giảm 8%)</span>
-                                                    @elseif(Auth::user()->level==5)
-                                                        <span>(Giảm 9%)</span>
-                                                    @elseif(Auth::user()->level==6)
-                                                        <span>(Giảm 10%)</span>
-                                                    @else
-                                                        <span>(Giảm 0%)</span>
+                                                    @if (Auth::check())
+                                                        <span>({{Auth::user()->phantram*100}}%)</span>
                                                     @endif
                 </div>
             </div>

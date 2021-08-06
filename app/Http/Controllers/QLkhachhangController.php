@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Dondathang;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 
@@ -13,7 +15,7 @@ class QLkhachhangController extends Controller
     public function getDanhSach(Request $req)
     {
         if ($req->ajax()) {
-            $khachhang = User::latest()->where('active', 1)->get();
+            $khachhang = User::where('is_admin', 0)->get();
             return  DataTables::of($khachhang)
                 ->addColumn('action', function ($khachhang) {
                     return '<a  id="edit-khachhang" data-toggle="tooltip"
@@ -24,7 +26,13 @@ class QLkhachhangController extends Controller
                     <i class="fas fa-2x fa-trash-alt"></i></a>';
                 })->addColumn('tonggd', function ($khachhang) {
                     return number_format($khachhang->tonggd, 0, '.', '.');
-                })->rawColumns(['action', 'tonggd'])->make(true);
+                })->addColumn('active', function ($khachhang) {
+                    if ($khachhang->active == 1) {
+                        return '<span class="text-success">Đã xác thực</span>';
+                    } else {
+                        return '<span class="text-warning">Chưa xác thực</span>';
+                    }
+                })->rawColumns(['action', 'tonggd', 'active'])->make(true);
         }
         return view('pages_admin.khachhang.list_khachhang');
     }
@@ -50,15 +58,41 @@ class QLkhachhangController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()->all()]);
         }
-        User::updateOrCreate(['id' => $req->id], [
-            'name' => $req->tenkh,
-            'email' => $req->email,
-            'sdt' => $req->sdt,
-            'yeuthich' => 0,
-            'phantram' => 0,
-            'password' => bcrypt(123456),
-        ]);
-        return redirect('/admin/dskhachhang');
+        $check = User::find($req->id);
+        if ($check != null) {
+            User::updateOrCreate(['id' => $req->id], [
+                'name' => $req->tenkh,
+                'email' => $req->email,
+                'sdt' => $req->sdt,
+                'yeuthich' => 0,
+                'phantram' => 0,
+                'password' => bcrypt(123456),
+            ]);
+        } else {
+            $khachhang = User::updateOrCreate(['id' => $req->id], [
+                'name' => $req->tenkh,
+                'email' => $req->email,
+                'sdt' => $req->sdt,
+                'yeuthich' => 0,
+                'phantram' => 0,
+                'password' => bcrypt(123456),
+            ]);
+            $email = $khachhang->email;
+            $code = bcrypt(md5(time() . $email));
+            $url = route('user-verify-account', ['id' =>  $khachhang->id, 'code' => $code]);
+            $khachhang->code_active = $code;
+            $khachhang->email_verified_at = Carbon::now();
+            $khachhang->save();
+
+            $data = [
+                'route' => $url
+            ];
+            Mail::send('email.verify_account', $data, function ($message) use ($email) {
+                $message->to($email, 'Account Verification')->subject('Xác thực tài khoản - NT Store');
+            });
+        }
+
+        return redirect('/admin/dskhachhang')->with('success', 'Đã tạo thành công. Cần xác thực tài khoản!');
     }
 
     public function detail($id)

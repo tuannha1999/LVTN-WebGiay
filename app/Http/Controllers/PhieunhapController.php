@@ -148,7 +148,7 @@ class PhieunhapController extends Controller
                     ]);
                     $soluong = Size::with('sanpham')->where('id_sp', $sp['productinfo']->id)->sum('soluong');
                     $save_gianhap = Sanpham::find($sp['productinfo']->id);
-                    $save_gianhap->gianhap = (($save_gianhap->gianhap * $soluong) + ($sp['entryprice'] * $sp['quanty'])) / ($sp['quanty'] + $soluong);
+                    $save_gianhap->gianhap = $save_gianhap->gianhap == 0 ? $sp['entryprice'] : (($save_gianhap->gianhap * $soluong) + ($sp['entryprice'] * $sp['quanty'])) / ($sp['quanty'] + $soluong);
                     $save_gianhap->save();
                     if ($req->nhapkho == 1) {
                         $sl = Size::find($sp['id_size']);

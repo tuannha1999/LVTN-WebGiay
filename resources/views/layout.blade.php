@@ -141,7 +141,7 @@
     <footer>
         <div class="container" >
             <div class="row p-4" >
-                <div class="col-md-4 mt-3 p-2">
+                <div class="col-md-4 mt-6 p-2">
                     <h5 class="text-uppercase">Liên hệ</h5>
                     <br>
                     <p><i class="far fa-envelope"></i> Email: tuannha1234@gmail.com</p>
@@ -149,7 +149,7 @@
                     <p><i class="fas fa-home"></i> Đ/c: 180 Cao Lỗ, P4, Quận 8, Tp HCM</p>
                     <p><i class="fas fa-phone"></i> Điện thoại: 0379307950</p>
                 </div>
-                <div class="col-md-4 mt-3">
+                <div class="col-md-4 ">
                     <h5 class="text-uppercase"><a class="nav-link text-color" href="{{ url('trang-chu')}}">Trang chủ</a></h5>
                     <ul class="list-unstyled">
                         <li>
@@ -179,7 +179,7 @@
         </div>
         <!--Coppyright-->
         <hr>
-        <div class="text-center p-2" >
+        <div class="text-center " >
         © Bản quyền thuộc về Tuấn Nhã - Tấn Tài | D17_TH06
       </div>
       <!--Coppyright-->

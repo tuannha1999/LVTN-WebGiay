@@ -13,6 +13,7 @@
             <tr>
                 <th>Mã khách hàng</th>
                 <th>Tên khách hàng</th>
+                <th>Xác thực</th>
                 <th>Email</th>
                 <th>Số điện thoại</th>
                 <th>Tổng giao dịch</th>
@@ -85,6 +86,7 @@
                    columns: [
                     { data: 'id', name: 'id' },
                     { data: 'name', name: 'name'},
+                    { data: 'active', name: 'active'},
                     { data: 'email', name: 'email'},
                     { data: 'sdt', name: 'sdt'},
                     { data: 'tonggd', name: 'tonggd'},

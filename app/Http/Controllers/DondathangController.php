@@ -579,7 +579,7 @@ class DondathangController extends Controller
     public function dsKhachhang(Request $req)
     {
         if ($req->ajax()) {
-            $khachhang = User::latest()->where('is_admin', 0)->get();
+            $khachhang = User::where('is_admin', 0)->where('active', 1)->get();
             return  DataTables::of($khachhang)
                 ->addColumn('action', function ($khachhang) {
                     if (Session::has("khachhang")) {

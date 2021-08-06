@@ -28,7 +28,7 @@ class KhachhangController extends Controller
     {
         //
     }
-    
+
     public function getLogin()
     {
         //
@@ -53,10 +53,8 @@ class KhachhangController extends Controller
             ]
         );
 
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password,'active'=> 1])) 
-        {
-            if (auth()->user()->is_admin == 0)
-            {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active' => 1])) {
+            if (auth()->user()->is_admin == 0) {
                 return redirect('/');
             }
         }
@@ -69,56 +67,54 @@ class KhachhangController extends Controller
     }
     public function sendCoderesetPassword(Request $request)
     {
-        $email=$request->email;
-        $checkUser=User::where('email',$email)->first();
-        if(!$checkUser)
-        {
-            return redirect()->back()->with('error','Email không tồn tại.');
+        $email = $request->email;
+        $checkUser = User::where('email', $email)->first();
+        if (!$checkUser) {
+            return redirect()->back()->with('error', 'Email không tồn tại.');
         }
-        
-        $code=bcrypt(md5(time().$email));
-        $checkUser->code=$code;
-        $checkUser->time_code=Carbon::now();
+
+        $code = bcrypt(md5(time() . $email));
+        $checkUser->code = $code;
+        $checkUser->time_code = Carbon::now();
         $checkUser->save();
 
         //dd($checkUser->toArray());
-        $url=route('get-link-reset-password',['code'=>$checkUser->code,'email'=>$email]);
-        $data=[
-            'route'=>$url
+        $url = route('get-link-reset-password', ['code' => $checkUser->code, 'email' => $email]);
+        $data = [
+            'route' => $url
         ];
 
-        Mail::send('email.reset_password',$data, function($message) use ($email){
-	        $message->to($email, 'Reset Password')->subject('Lấy lại mật khẩu - NT Store');
+        Mail::send('email.reset_password', $data, function ($message) use ($email) {
+            $message->to($email, 'Reset Password')->subject('Lấy lại mật khẩu - NT Store');
         });
-        return redirect()->back()->with('success','Thành công! Link lấy lại mật khẩu đã gửi vào email của bạn.');
+        return redirect()->back()->with('success', 'Thành công! Link lấy lại mật khẩu đã gửi vào email của bạn.');
     }
     public function resetPassword(Request $request)
     {
         $loai_sp = Loaisanpham::all();
 
-        $code=$request->code;
-        $email=$request->email;
-        $checkUser=User::where([
-            'code'=> $code,
-            'email'=> $email
+        $code = $request->code;
+        $email = $request->email;
+        $checkUser = User::where([
+            'code' => $code,
+            'email' => $email
         ])->first();
 
-        if(!$checkUser)
-        {
-            return redirect('quen-mat-khau')->with('hethan','Vui lòng nhập lại email vì link đã quá hạn!');
+        if (!$checkUser) {
+            return redirect('quen-mat-khau')->with('hethan', 'Vui lòng nhập lại email vì link đã quá hạn!');
         }
 
         return view('khachhang.passwords.reset', compact('loai_sp'));
     }
     public function saveResetpassword(Request $request)
     {
-        $data=$request->all();
-        $code_random=Str::random();
-        $customer=User::where('email','=',$data['email'])->where('code','=',$data['code'])->get();
-        $count =$customer->count();
-        if($count>0){
-            foreach($customer as $key=> $cus){
-                $customer_id=$cus->id;
+        $data = $request->all();
+        $code_random = Str::random();
+        $customer = User::where('email', '=', $data['email'])->where('code', '=', $data['code'])->get();
+        $count = $customer->count();
+        if ($count > 0) {
+            foreach ($customer as $key => $cus) {
+                $customer_id = $cus->id;
             }
             $this->validate(
                 $request,
@@ -132,14 +128,13 @@ class KhachhangController extends Controller
 
                 ]
             );
-            $reset=User:: find($customer_id);
-            $reset-> password=bcrypt($data['password']);
-            $reset-> code=$code_random;
+            $reset = User::find($customer_id);
+            $reset->password = bcrypt($data['password']);
+            $reset->code = $code_random;
             $reset->save();
-            return redirect('dangnhap')->with('success','Mật khẩu đã được cập nhật mới.');
-        }else
-        {
-            return redirect('quen-mat-khau')->with('hethan','Vui lòng nhập lại email vì link đã quá hạn');
+            return redirect('dangnhap')->with('success', 'Mật khẩu đã được cập nhật mới.');
+        } else {
+            return redirect('quen-mat-khau')->with('hethan', 'Vui lòng nhập lại email vì link đã quá hạn');
         }
     }
     public function getLogout()
@@ -188,52 +183,50 @@ class KhachhangController extends Controller
                 'password.max' => 'Mật khẩu không quá 20 kí tự'
             ]
         );
-        $khachhang = new User(); 
+        $khachhang = new User();
         $khachhang->name = $request->name;
         $khachhang->sdt = $request->sdt;
         $khachhang->email = $request->email;
         $khachhang->yeuthich = 0;
+        $khachhang->phantram = 0;
         $khachhang->password = bcrypt($request->password);
         $khachhang->save();
 
-        if($khachhang->id)
-        {
-            $email=$khachhang->email;
-            $code=bcrypt(md5(time().$email));
-            $url=route('user-verify-account',['id'=> $khachhang->id,'code'=>$code]);
-            $khachhang->code_active=$code;
-            $khachhang->email_verified_at=Carbon::now();
+        if ($khachhang->id) {
+            $email = $khachhang->email;
+            $code = bcrypt(md5(time() . $email));
+            $url = route('user-verify-account', ['id' => $khachhang->id, 'code' => $code]);
+            $khachhang->code_active = $code;
+            $khachhang->email_verified_at = Carbon::now();
             $khachhang->save();
-    
-            $data=[
-                'route'=>$url
+
+            $data = [
+                'route' => $url
             ];
-            Mail::send('email.verify_account',$data, function($message) use ($email){
+            Mail::send('email.verify_account', $data, function ($message) use ($email) {
                 $message->to($email, 'Account Verification')->subject('Xác thực tài khoản - NT Store');
             });
-            return redirect()->back()->with('thongbao','LINK xác thực tài khoản đã gửi vào email của bạn!');
+            return redirect()->back()->with('thongbao', 'LINK xác thực tài khoản đã gửi vào email của bạn!');
         }
         return redirect()->back();
-        
     }
 
     public function verifyAccount(Request $request)
     {
-        $code=$request->code;
-        $id=$request->id;
-        $code_random=Str::random();
-        $checkUser=User::where([
-            'code_active'=> $code,
-            'id'=> $id
+        $code = $request->code;
+        $id = $request->id;
+        $code_random = Str::random();
+        $checkUser = User::where([
+            'code_active' => $code,
+            'id' => $id
         ])->first();
-        if(!$checkUser)
-        {
-            return redirect('dangki')->with('error','Xin lỗi! Đường dẫn xác thực không tồn tại');
+        if (!$checkUser) {
+            return redirect('dangki')->with('error', 'Xin lỗi! Đường dẫn xác thực không tồn tại');
         }
-        $checkUser->active=1;
-        $checkUser-> code_active =$code_random;
+        $checkUser->active = 1;
+        $checkUser->code_active = $code_random;
         $checkUser->save();
-        return redirect('dangnhap')->with('success','Xác thực tài khoản thành công! Mời bạn đăng nhập');
+        return redirect('dangnhap')->with('success', 'Xác thực tài khoản thành công! Mời bạn đăng nhập');
     }
 
     public function getProfile()
@@ -320,8 +313,8 @@ class KhachhangController extends Controller
     public function dsDonhangganday($id)
     {
         $loai_sp = Loaisanpham::all();
-        $donhang = Dondathang::where('id_kh',Auth::user()->id)->get();
+        $donhang = Dondathang::where('id_kh', Auth::user()->id)->get();
         //dd($donhang);
-        return view('khachhang.lichsumuahang', compact('loai_sp','donhang'));
+        return view('khachhang.lichsumuahang', compact('loai_sp', 'donhang'));
     }
 }
