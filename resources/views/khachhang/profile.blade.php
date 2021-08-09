@@ -42,8 +42,13 @@ Thông tin Thành Viên
               <input type="text" class="form-control " id="" name="level" value="{{Auth::user()->phantram*100}}%" readonly>
             </div>
           </div>
+          <div class="form-group">
+          <label class="text-danger">Tổng giao dịch</label>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control " id="" name="level" value="{{number_format((Auth::user()->tonggd),0,',',',')}}đ" readonly>
+            </div>
+          </div>
           <div class="row">
-
               <div class="col-md-6">
               <div class="form-group">
               <label>Email*</label>

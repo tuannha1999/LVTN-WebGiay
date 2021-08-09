@@ -25,6 +25,7 @@ class HomeController extends Controller
             ->where('trangthai', 1)->orderby('daban', 'desc')->paginate(8);
         return view('pages.home', compact('sp', 'sp_banchay', 'loai_sp', 'banner'));
     }
+
     public function search(Request $request)
     {
         $loai_sp = Loaisanpham::all();

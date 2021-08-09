@@ -16,7 +16,7 @@
               @foreach (Cart::content() as $item)
               <tbody>
                 <tr>
-                  <td>
+                    <td>
                     <a href="{{ url('chitiet-sanpham/'.$item->id)}}" class="link">
                         <img src="{{asset ('storage/'.$item->options->images) }}" alt="" height="150px" width="150px">
                     </a>

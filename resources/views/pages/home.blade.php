@@ -1,7 +1,7 @@
 
 @extends('layout')
 @section('title')
-NT store
+NT Store
 @endsection
 
 @section('noidung')
@@ -24,7 +24,7 @@ NT store
                      $total+=$size->soluong;
                  }
                  @endphp
-                    @if ($sp->loaisanpham->slug=='giay'&& $total>0)
+                @if ($sp->loaisanpham->slug=='giay'&& $total>0)
                 <div class="productinfo text-center">
                         <a href="{{ url('chitiet-sanpham/'.$sp->id)}}" class="link">
                             @foreach ($sp->Hinhanh as $img )
@@ -42,12 +42,15 @@ NT store
                                  <p style="color: red;">{{ number_format($sp->giakm,0,'.','.').' '.'đ' }}</p>
                               @endif
                         </div>
-		 </div>
-            @endif
-            @endforeach
+		</div>
+                @endif
+                @endforeach
         </div>
     </div>
-<h2 >SẢN PHẨM BÁN CHẠY</h2>
+
+
+    <div class="container">
+    <h2 >SẢN PHẨM BÁN CHẠY</h2>
 <hr>
 	<div class="row">
         <div class="owl-carousel owl-theme">
@@ -92,8 +95,14 @@ NT store
                 @endif
 		@endforeach
     </div>
+    </div>
+
+
+    <div id="product_view"></div>
 
 </div>
+
+
 </div>
 <!--Container-->
 <script src="{{ asset ('/js/owl.carousel.min.js') }}" type="text/javascript"></script>
@@ -108,7 +117,41 @@ NT store
                 items:4
             },
         }
+    });
+
+
+    $(function(){
+        $.ajaxSetup({
+                    headers: {
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+                     }
+                });
+        let routeRenderProduct ='{{ route('post-product-view') }}';
+        checkRenderProduct=false;
+        $(document).on('scroll',function(){
+            if($(window).scrollTop()>150 && checkRenderProduct==false){
+
+                console.log('LOG')
+                checkRenderProduct=true;
+                let products=localStorage.getItem('products');
+                //products.reverse();
+                products=$.parseJSON(products)
+                if(products.length>0)
+                {
+                    $.ajax({
+                        url: routeRenderProduct,
+                        method:"POST",
+                        data: {id : products},
+                        success : function(result)
+                        {
+                            $("#product_view").html('').append(result.data)
+                        }
+                    });
+                }
+            }
+        })  
     })
+    
 </script>
 @endsection
 

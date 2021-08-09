@@ -12,7 +12,7 @@
         <span>{{Session::get('message')}}</span>
     </div>
     @endif
-	<div class="row">
+	<div class="row" id="content_product" data-id="{{$chitiet_sp->id}}">
         <div class="col-6">
 <form>
     @csrf
@@ -24,7 +24,7 @@
 
         </div>
         <div class="col-6">
-                <input type="hidden" name="id" value="{{$chitiet_sp->id}}" id="">
+                <input type="hidden" name="id" value="{{$chitiet_sp->id}}" >
                 <h2>{{$chitiet_sp->tensp}}</h2>
                 ________
                 <h3>
@@ -132,6 +132,15 @@
         </div>
     </div>
 
+
+
+
+
+    <div id="product_view"></div>
+                                        
+
+
+
 </div>
 <!--Container-->
 <script src="{{ asset ('/js/owl.carousel.min.js') }}" type="text/javascript"></script>
@@ -206,6 +215,65 @@ $(document).ready(function() {
                     location.reload();
                 });
     });
+
+    
+////
+    $(function(){
+        //luu id sp vao storage
+        let idProduct=$("#content_product").attr('data-id');
+        //lay gtri storage
+        let products=localStorage.getItem('products');
+        if(products==null)
+        {
+            arrayProduct=new Array();
+            arrayProduct.push(idProduct)
+            localStorage.setItem('products',JSON.stringify(arrayProduct))
+            
+        }
+        else{
+            //chuyen ve mang
+            products=$.parseJSON(products)
+            if(products.indexOf(idProduct)==-1)
+            {
+                products.push(idProduct);
+                localStorage.setItem('products',JSON.stringify(products))
+            }
+        }
+    });
+
+
+    $(function(){
+        $.ajaxSetup({
+                    headers: {
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+                     }
+                });
+        let routeRenderProduct ='{{ route('post-product-view') }}';
+        checkRenderProduct=false;
+        $(document).on('scroll',function(){
+            if($(window).scrollTop()>150 && checkRenderProduct==false){
+
+                console.log('LOG')
+                checkRenderProduct=true;
+                let products=localStorage.getItem('products');
+                //products.reverse();
+                products=$.parseJSON(products)
+                if(products.length>0)
+                {
+                    $.ajax({
+                        url: routeRenderProduct,
+                        method:"POST",
+                        data: {id : products},
+                        success : function(result)
+                        {
+                            $("#product_view").html('').append(result.data)
+                        }
+                    });
+                }
+            }
+        })  
+    })
+
 });
 
  //alert thông báo

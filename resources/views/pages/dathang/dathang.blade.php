@@ -23,7 +23,7 @@
                     <label for="basic-url">Họ tên*</label>
                     <div class="input-group mb-3">
                       <input type="text" class="form-control @error('hoten') is-invalid @enderror" id="basic-url" aria-describedby="basic-addon3" value="{{old('hoten')}}" name="hoten">
-                      @error('hoten')
+                        @error('hoten')
                       <span class="invalid-feedback" role="alert">
                           <strong>{{ $message }}</strong>
                       </span>
@@ -39,7 +39,7 @@
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
-                          @enderror
+                        @enderror
                      </div>
                 </div>
             </div>
