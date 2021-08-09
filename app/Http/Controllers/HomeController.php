@@ -28,7 +28,7 @@ class HomeController extends Controller
     public function search(Request $request)
     {
         $loai_sp = Loaisanpham::all();
-        $search = Sanpham::with('Hinhanh')->with('size')->where('tensp', 'like', '%' . $request->search . '%')->get();
+        $search = Sanpham::with('Hinhanh')->with('size')->where('tensp', 'like', '%' . $request->search . '%')->where('trangthai', 1)->get();
         return view('pages.search', compact('search', 'loai_sp'));
     }
     public function formsearchDonHang()

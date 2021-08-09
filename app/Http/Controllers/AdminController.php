@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Dondathang;
+use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
 
 
@@ -98,17 +99,45 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function formChangePassword()
     {
         //
+        return view("admin.thaydoi_password");
+    }
+    public function ChangePassword(Request $request)
+    {
+        if (!(Hash::check($request->get('current-password'), Auth::user()->password))) {
+            // The passwords matches
+            return redirect()->back()->with("error", "Mật khẩu hiện tại không hợp lệ");
+        }
+
+        if (strcmp($request->get('current-password'), $request->get('new-password')) == 0) {
+            //Current password and new password are same
+            return redirect()->back()->with("error", "Mật khẩu mới không được trùng với mật khẩu hiện tại");
+        }
+        $this->validate(
+            $request,
+            [
+                'current-password' => 'required',
+                'new-password' => 'required|min:6|confirmed',
+            ],
+            [
+                'current-password.required' => 'Mật khẩu hiện tại không được để trống',
+                'new-password.min' => 'Mật khẩu phải ít nhất 6 kí tự',
+                'new-password.max' => 'Mật khẩu không quá 20 kí tự',
+                'new-password.confirmed' => 'Mật khẩu nhập lại không khớp'
+
+            ]
+        );
+
+        //Change Password
+        $user = Auth::user();
+        $user->password = bcrypt($request->get('new-password'));
+        $user->save();
+
+        return redirect()->back()->with("success", "Đã thay đổi password thành công!");
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //

@@ -39,11 +39,11 @@ Thông tin Thành Viên
           <div class="form-group">
           <label class="text-danger">Điểm tích lũy/Giảm giá</label>
             <div class="input-group mb-3">
-              <input type="text" class="form-control " id="" name="level" value="{{Auth::user()->level}}%" readonly>
+              <input type="text" class="form-control " id="" name="level" value="{{Auth::user()->phantram*100}}%" readonly>
             </div>
           </div>
           <div class="row">
-              
+
               <div class="col-md-6">
               <div class="form-group">
               <label>Email*</label>
@@ -52,7 +52,7 @@ Thông tin Thành Viên
                 </div>
               </div>
               </div>
-            
+
               <div class="col-md-6">
                 <div class="form-group">
                 <label>Số điện thoại*</label>
@@ -67,8 +67,8 @@ Thông tin Thành Viên
           <div class="text-center">
                 <button type="submit" class="btn btn-primary">Cập nhật thông tin</button>
           </div>
-          
-      
+
+
     </div>
     </form>
 <br>

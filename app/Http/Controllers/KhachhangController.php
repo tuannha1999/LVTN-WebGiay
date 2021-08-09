@@ -19,16 +19,6 @@ use Illuminate\Support\Facades\Session;
 
 class KhachhangController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
     public function getLogin()
     {
         //

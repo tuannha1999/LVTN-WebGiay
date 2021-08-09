@@ -56,7 +56,7 @@
   </div>
 
 
-  <div class="modal fade" id="ajax-khuyenmai-modal" aria-hidden="true">
+  {{-- <div class="modal fade" id="ajax-khuyenmai-modal" aria-hidden="true">
     <div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
@@ -72,8 +72,7 @@
                     <div class="col-md-6">
                         <label for="basic-url">Ngày bắt đầu</label>
                         <div class="input-group mb-3">
-                            <div class="form-control" id="ngaybd">
-                            </div>
+                            <div class="form-control" id="ngaybd"></div>
                         </div>
                     </div>
 
@@ -115,7 +114,7 @@
         <div class="modal-footer">
         </div>
     </div>
-    </div>
+    </div> --}}
 
 </div>
 
@@ -148,23 +147,23 @@
                });
 
 
- //Show form chi tiet
-           $('body').on('click', '#edit-khuyenmai', function () {
-             var id = $(this).data('id');
-             $.get('/admin/dskhuyenmai-detail/'+id, function (data) {
-                $('#khuyenmaiCrudModal').html("Chi tiết Khuyến mãi");
-                 $('#btn-save').val("edit-khuyenmai");
-                 $('#ajax-khuyenmai-modal').modal('show');
-                 $('#id_km').val(data.id);
-                 $('#tenkm').html(data.tenkm);
-                 $('#ngaybd').html(data.ngaybd);
-                 $('#ngaykt').html(data.ngaykt);
-                 $('#macode').html(data.macode);
-                 $('#dieukien').html(data.dieukien);
-                 $('#tiengiam').html(data.tiengiam);
+//  //Show form chi tiet
+//            $('body').on('click', '#edit-khuyenmai', function () {
+//              var id = $(this).data('id');
+//              $.get('/admin/dskhuyenmai-detail/'+id, function (data) {
+//                 $('#khuyenmaiCrudModal').html("Chi tiết Khuyến mãi");
+//                  $('#btn-save').val("edit-khuyenmai");
+//                  $('#ajax-khuyenmai-modal').modal('show');
+//                  $('#id_km').val(data.id);
+//                  $('#tenkm').html(data.tenkm);
+//                  $('#ngaybd').html(data.ngaybd);
+//                  $('#ngaykt').html(data.ngaykt);
+//                  $('#macode').html(data.macode);
+//                  $('#dieukien').html(data.dieukien);
+//                  $('#tiengiam').html(data.tiengiam);
 
-             })
-          });
+//              })
+//           });
 
 //Xóa Thương hiệu
             $('body').on('click', '#delete-khuyenmai', function () {
@@ -185,43 +184,43 @@
             }
         });
 
-//Dừng khuyến mãi
-$('.btn-stop').on('click',function(){
-               console.log($('#id_km').val());
-               if(confirm("Bạn có chắc muốn dừng khuyến mãi này?")){
-                $.ajax({
-                        url:'/admin/dskhuyenmai-stop/'+$('#id_km').val(),
-                        type:'GET',
-                        success: function (data) {
-                            location.reload();
-                   },
-                    error: function (data) {
-                        console.log('Error:', data);
-                    }
-                 })
-               }
-             })
-//Chạy khuyến mãi
-$('.btn-run').on('click',function(){
-               console.log($('#id_km').val());
-               if(confirm("Bạn có chắc muốn chạy khuyến mãi này?")){
-                $.ajax({
-                        url:'/admin/dskhuyenmai-run/'+$('#id_km').val(),
-                        type:'GET',
-                        success: function (data) {
-                            location.reload();
-                   },
-                    error: function (data) {
-                        console.log('Error:', data);
-                    }
-                 })
-               }
-             })
+// //Dừng khuyến mãi
+// $('.btn-stop').on('click',function(){
+//                console.log($('#id_km').val());
+//                if(confirm("Bạn có chắc muốn dừng khuyến mãi này?")){
+//                 $.ajax({
+//                         url:'/admin/dskhuyenmai-stop/'+$('#id_km').val(),
+//                         type:'GET',
+//                         success: function (data) {
+//                             location.reload();
+//                    },
+//                     error: function (data) {
+//                         console.log('Error:', data);
+//                     }
+//                  })
+//                }
+//              })
+// //Chạy khuyến mãi
+// $('.btn-run').on('click',function(){
+//                console.log($('#id_km').val());
+//                if(confirm("Bạn có chắc muốn chạy khuyến mãi này?")){
+//                 $.ajax({
+//                         url:'/admin/dskhuyenmai-run/'+$('#id_km').val(),
+//                         type:'GET',
+//                         success: function (data) {
+//                             location.reload();
+//                    },
+//                     error: function (data) {
+//                         console.log('Error:', data);
+//                     }
+//                  })
+//                }
+//              })
  });
 
  //Tắt thông báo
  window.setTimeout(function() {
-    $(".alert-success").fadeTo(500, 0).slideUp(500, function(){
+    $(".alert").fadeTo(500, 0).slideUp(500, function(){
     $(this).remove();});
  },4000);
 </script>

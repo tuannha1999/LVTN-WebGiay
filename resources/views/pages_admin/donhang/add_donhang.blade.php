@@ -154,7 +154,7 @@
 
                               <label for="basic-url">Địa chỉ*</label>
                                  <div class="input-group mb-3">
-                                   <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" value="{{old('hoten')}}" name="diachi" >
+                                   <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" value="{{old('diachi')}}" name="diachi" >
                                  </div>
 
                                  <div class="row">

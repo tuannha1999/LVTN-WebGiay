@@ -3,6 +3,11 @@
 @section('home')
 <div class="col-md-12">
 <h3 class="card-title">Danh sách phiếu trả</h3>
+@if (Session::has('success'))
+<div class="alert alert-success mt-3" id="alert-success">
+    <span>{{Session::get('success')}}</span>
+</div>
+@endif
   <div class="text-right">
       <a class="btn btn-success mb-3" href="javascript:void(0)"
           id="create-phieutra"> Thêm Phiếu trả</a>
@@ -64,6 +69,7 @@
                 $('#phieutra-list').DataTable({
                    processing: true,
                    serverSide: true,
+                   order:false,
                    ajax : '{!! route('getPhieutra') !!}',
                    columns: [
                     { data: 'id', name: 'id' },
@@ -105,43 +111,6 @@
             });
 
 
-
-//             $('#btn-save').click(function(e){
-//                 e.preventDefault();
-//                 $.ajaxSetup({
-//                     headers: {
-//                         'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-//                     }
-//                 });
-//                 $.ajax({
-//                     url: "{{ url('/admin/dsphieutra-add')}}",
-//                     method: 'post',
-//                     data: {
-//                         id: $('#id_th').val(),
-//                         ten: $('#tenth').val(),
-//                     },
-//                     success: function(result){
-//                         if(result.errors)
-//                         {
-//                             $('.alert-danger').html('');
-
-//                             $.each(result.errors, function(key, value){
-//                                 $('.alert-danger').show();
-//                                 $('.alert-danger').append('<li>'+value+'</li>');
-//                             });
-//                             //tắt thông báo sau 3s
-//                             setTimeout(function(){
-//                                 $('.alert-danger').hide('');
-//                             }, 3000);
-//                         }
-//                         else
-//                         {
-//                             location.reload('/admin/dsphieutra');
-//                         }
-//                     }
-//                 });
-//             });
-
 //Xóa phiếu trả
             $('body').on('click', '#delete-phieutra', function () {
                 var id = $(this).data("id");
@@ -162,6 +131,13 @@
             }
         });
  });
+
+//alert thông báo
+window.setTimeout(function() {
+          $(".alert").fadeTo(500, 0).slideUp(500, function(){
+              $(this).remove();
+          });
+},              3000);
 
 </script>
 @endpush

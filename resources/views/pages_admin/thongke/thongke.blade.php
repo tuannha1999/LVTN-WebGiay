@@ -31,13 +31,13 @@
     </div>
 </div>
 <div class="mt-4">
-    <div class="text-center" id="tieude">
-    </div>
+    <div class="text-center" id="tieude"></div>
     <div id="chart" style="height: 250px;"></div>
     <div id="total-doanhso" class="mt-3 font-weight-bold">
     </div>
 </div>
 
+<div class="text-center h4" id="tieude-banchay"></div>
 <div id="banchay" style="height: 250px;"></div>
 
 
@@ -54,8 +54,9 @@
           })
           .done(function( data ) {
             chart.setData(data.thongke);
-            //console.log(data.banchay);
-            // banchay.setData(data.banchay);
+            console.log(data.banchay);
+            banchay.setData(data.banchay);
+            $('#tieude-banchay').html('Top 5 sản phẩm bán chạy');
             $('#tieude').html('Doanh số 30 ngày qua');
             $('#total-doanhso').html('Tổng doanh số: '+ data.total.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}))
             //console.log(data.thongke);
@@ -86,6 +87,7 @@
 
     var chart = Morris.Bar({
           element: 'chart',
+          gridTextSize:8,
           barColors:['#1C86EE','#B0C4DE','#00C5CD'],
           data: [0,0],
           xkey: 'ngaydat',
@@ -93,14 +95,15 @@
           labels: ['Doanh thu','Lợi nhuận','Số lượng đơn hàng']
         });
 
-    // var banchay = Morris.Bar({
-    //       element: 'banchay',
-    //       barColors:['#1C86EE'],
-    //       data: [0],
-    //       xkey: 'tensp',
-    //       ykeys: ['daban'],
-    //       labels: ['Đã bán']
-    //     });
+    var banchay = Morris.Bar({
+          element: 'banchay',
+          gridTextSize:8,
+          barColors:['#1C86EE'],
+          data: [0],
+          xkey: 'tensp',
+          ykeys: ['daban'],
+          labels: ['Đã bán']
+        });
 
 </script>
 @endpush

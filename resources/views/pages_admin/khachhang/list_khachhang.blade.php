@@ -30,6 +30,7 @@
             <h4 class="modal-title" id="khachhangCrudModal"></h4>
         </div>
         <div class="modal-body">
+            <div class="alert alert-success" style="display:none"></div>
             <div class="alert alert-danger" style="display:none"></div>
             <form action="" method="POST" id="khachhangForm" >
                 @csrf
@@ -82,6 +83,7 @@
                 $('#khachhang-list').DataTable({
                    processing: true,
                    serverSide: true,
+                   order:false,
                    ajax : '{!! route('getKhachhang') !!}',
                    columns: [
                     { data: 'id', name: 'id' },
@@ -129,18 +131,22 @@
                                 $('.alert-danger').show();
                                 $('.alert-danger').append('<li>'+value+'</li>');
                             });
-                            //tắt thông báo sau 3s
-                            setTimeout(function(){
-                                $('.alert-danger').hide('');
-                            }, 3000);
+
                         }
                         else
                         {
-                            location.reload('/admin/dskhachhang');
+                          location.reload('/admin/dskhachhang');
+
                         }
+                        setTimeout(function(){
+                         $('.alert').hide('');
+                        }, 3000);
                     }
+
                 });
             });
+
+//tắt thông báo sau 3s
 
 
 //Show form sửa

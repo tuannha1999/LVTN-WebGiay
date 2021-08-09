@@ -60,7 +60,7 @@ $('body').on('click', '#huy-dh', function () {
                        type: "GET",
                        url:'/huy-donhang/'+id,
                        success: function (data) {
-                       var oTable = $('#donhang-list').dataTable();
+                       var oTable = $('#dh-list').dataTable();
                        oTable.fnDraw(false);
                       alertify.success('Đã hủy đơn hàng!');
                        },

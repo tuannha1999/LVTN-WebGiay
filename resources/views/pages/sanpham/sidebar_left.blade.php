@@ -11,7 +11,7 @@
                         </div>
                     @endforeach
                 </div>
-                
+
         </div>
     </div>
     <div class="mt-3">
@@ -26,10 +26,10 @@
                         </div>
                     @endforeach
                 </div>
-                
+
         </div>
     </div>
-    
+
     <div class="mt-3">
         <h5>KHOẢNG GIÁ</h5>
         <ul class="list-group list-group-flush">

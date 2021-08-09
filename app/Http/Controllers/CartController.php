@@ -19,7 +19,7 @@ class CartController extends Controller
         old('size');
         $product = Sanpham::where('id', $req->id)->first();
         $img = Hinhanh::where('id_sp', $req->id)->where('avt', 1)->first();
-        $size = Size::where('id', $req->size)->first();
+        $size = Size::where('size', $req->size)->where('id_sp', $req->id)->first();
         $sl = $req->qty;
         foreach (Cart::content() as $item) {
             if ($item->id == $req->id && $item->options->size->id == $req->size) {

@@ -234,6 +234,7 @@ return [
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Carbon' => 'Carbon\Carbon',
 
 
     ],

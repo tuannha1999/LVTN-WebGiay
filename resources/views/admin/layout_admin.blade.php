@@ -87,6 +87,8 @@
                             <li class="nav-item dropdown">
                             <a class="nav-link" href="{{ url('/index' )}}">HI {{ Auth::user()->name}}                   <i class="fas fa-user fa-2x"></i> </a>
                             <ul class="dropdown-menu">
+
+                                <li><a  class="nav-link" href="{{url('/admin/form-change-password' )}}">Đổi mật khẩu</a></li>
                                 <li><a  class="nav-link" href="{{url('/logout' )}}">Đăng xuất</a></li>
                             </ul>
                             </li>

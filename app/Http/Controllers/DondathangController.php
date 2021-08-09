@@ -20,58 +20,6 @@ use Illuminate\Support\Facades\Auth;
 
 class DondathangController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-
-    public function getDanhsach(Request $req)
-    {
-        //
-        if ($req->ajax()) {
-            $donhang = Dondathang::orderby('trangthai')->get();
-            return  DataTables::of($donhang)
-                ->addColumn('action', function ($donhang) {
-                    if ($donhang->trangthai == 3) {
-                        return '<a href="' . URL('admin/dsdonhang-donhang/' . $donhang->id) . '" class="btn btn-info">Xem</a>
-                    <a class="btn" href="javascript:void(0);" id="delete-dh" data-id="' . $donhang->id . ' " class="delete">
-                    <i class="fas fa-2x fa-trash-alt"></i></a>';
-                    } elseif ($donhang->trangthai == 4) {
-                        return '<a href="' . URL('admin/dsdonhang-donhang/' . $donhang->id) . '" class="btn btn-info">Xem</a>
-                        <a class="btn" href="javascript:void(0);" id="delete-dh" data-id="' . $donhang->id . ' " class="delete">
-                        <i class="fas fa-2x fa-trash-alt"></i></a>';
-                    } else {
-                        return '<a href="' . URL('admin/dsdonhang-donhang/' . $donhang->id) . '" class="btn btn-success">Duyệt</a>
-                        <a href="javascript:void(0);" id="huy-dh" data-id="' . $donhang->id . ' " class="btn btn-warning">Hủy</a>
-                    <a class="btn" href="javascript:void(0);" id="delete-dh" data-id="' . $donhang->id . ' " class="delete">
-                    <i class="fas fa-2x fa-trash-alt"></i></a>';
-                    }
-                })->editColumn('trangthai', function ($donhang) {
-                    if ($donhang->trangthai == 0) {
-                        return '<span class="text-warning">Chờ xử lý</span>';
-                    } else if ($donhang->trangthai == 1) {
-                        return '<span class="text-info">Chờ giao hàng</span>';
-                    } else if ($donhang->trangthai == 2) {
-                        return '<span class="text-primary">Đang giao hàng</span>';
-                    } else if ($donhang->trangthai == 3) {
-                        return '<span class="text-success">Hoàn thành</span>';
-                    } else {
-                        return '<span class="text-danger">Đã hủy</span>';
-                    }
-                })->editColumn('dathanhtoan', function ($donhang) {
-                    if ($donhang->dathanhtoan == 1) {
-                        return '<span class="text-success">Đã thanh toán</span>';
-                    } else {
-                        return '<span class="text-warning">Chưa thanh toán</span>';
-                    }
-                })->editColumn('tongtien', function ($donhang) {
-                    return number_format($donhang->tongtien, 0, '.', '.');
-                })->rawColumns(['action', 'trangthai', 'dathanhtoan', 'tongtien'])->make(true);
-        }
-        return view('pages_admin.donhang.list_donhang');
-    }
 
     public function chuyenformDatHang()
     {
@@ -82,7 +30,6 @@ class DondathangController extends Controller
     public function getformDatHang(Request $req)
     {
 
-        //dd(session()->get('tongtien'));
         $total_cart = str_replace(array(','), '', Cart::subtotal());
         $total = $total_cart;
         if (Auth::check()) {
@@ -153,13 +100,7 @@ class DondathangController extends Controller
             $new_dh->ngaydat = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
             $new_dh->save();
             foreach (Cart::content() as $item) {
-                // $hinhanh = Hinhanh::where('id_sp', $item->id)->get();
-                // $img = 0;
-                // foreach ($hinhanh as $anh) {
-                //     if ($anh->avt == 1) {
-                //         $img = $anh->name;
-                //     }
-                // }
+
                 $price = $item->price - (($total_cart - session()->get('tongtien')) / $total_cart) * $item->price;
                 $new_dh->sanpham()->attach($item->id, [
                     'soluong' => $item->qty, 'giaban' => $price,
@@ -231,7 +172,54 @@ class DondathangController extends Controller
         return view("pages.dathang.chitiet_donhang", compact('donhang', 'loai_sp'));
     }
 
-    //admin
+    //Code - ADMIN
+
+    public function getDanhsach(Request $req)
+    {
+        //
+        if ($req->ajax()) {
+            $donhang = Dondathang::orderby('trangthai')->get();
+            return  DataTables::of($donhang)
+                ->addColumn('action', function ($donhang) {
+                    if ($donhang->trangthai == 3) {
+                        return '<a href="' . URL('admin/dsdonhang-donhang/' . $donhang->id) . '" class="btn btn-info">Xem</a>
+                    <a class="btn" href="javascript:void(0);" id="delete-dh" data-id="' . $donhang->id . ' " class="delete">
+                    <i class="fas fa-2x fa-trash-alt"></i></a>';
+                    } elseif ($donhang->trangthai == 4) {
+                        return '<a href="' . URL('admin/dsdonhang-donhang/' . $donhang->id) . '" class="btn btn-info">Xem</a>
+                        <a class="btn" href="javascript:void(0);" id="delete-dh" data-id="' . $donhang->id . ' " class="delete">
+                        <i class="fas fa-2x fa-trash-alt"></i></a>';
+                    } else {
+                        return '<a href="' . URL('admin/dsdonhang-donhang/' . $donhang->id) . '" class="btn btn-success">Duyệt</a>
+                        <a href="javascript:void(0);" id="huy-dh" data-id="' . $donhang->id . ' " class="btn btn-warning">Hủy</a>
+                    <a class="btn" href="javascript:void(0);" id="delete-dh" data-id="' . $donhang->id . ' " class="delete">
+                    <i class="fas fa-2x fa-trash-alt"></i></a>';
+                    }
+                })->editColumn('trangthai', function ($donhang) {
+                    if ($donhang->trangthai == 0) {
+                        return '<span class="text-warning">Chờ xử lý</span>';
+                    } else if ($donhang->trangthai == 1) {
+                        return '<span class="text-info">Chờ giao hàng</span>';
+                    } else if ($donhang->trangthai == 2) {
+                        return '<span class="text-primary">Đang giao hàng</span>';
+                    } else if ($donhang->trangthai == 3) {
+                        return '<span class="text-success">Hoàn thành</span>';
+                    } else {
+                        return '<span class="text-danger">Đã hủy</span>';
+                    }
+                })->editColumn('dathanhtoan', function ($donhang) {
+                    if ($donhang->dathanhtoan == 1) {
+                        return '<span class="text-success">Đã thanh toán</span>';
+                    } else {
+                        return '<span class="text-warning">Chưa thanh toán</span>';
+                    }
+                })->editColumn('tongtien', function ($donhang) {
+                    return number_format($donhang->tongtien, 0, '.', '.');
+                })->rawColumns(['action', 'trangthai', 'dathanhtoan', 'tongtien'])->make(true);
+        }
+        return view('pages_admin.donhang.list_donhang');
+    }
+
     public function getChitietdonhangAdmin($id)
     {
         $loai_sp = Loaisanpham::all();
@@ -285,7 +273,6 @@ class DondathangController extends Controller
             $tong_ban += $sp->pivot->giaban * $sp->pivot->soluong;
             $tong_nhap += $sanpham->gianhap * $sp->pivot->soluong;
         }
-        //dd($tong_ban - $tong_nhap);
         //tích lũy thành viên
         if ($donhang->id_kh != null) {
             $khachhang = User::find($donhang->id_kh);
@@ -321,6 +308,16 @@ class DondathangController extends Controller
             $thongke_new->donhang = 1;
             $thongke_new->save();
         }
+        return back();
+    }
+    public function huyTrangThai($id)
+    {
+        $donhang = Dondathang::find($id);
+        if ($donhang->trangthai == 2) {
+            $donhang->dathanhtoan = 0;
+        }
+        $donhang->trangthai--;
+        $donhang->save();
         return back();
     }
     public function chuyenformTaoDon()
@@ -396,6 +393,21 @@ class DondathangController extends Controller
     public function addDonHang(Request $req)
     {
         $old = old('hoten', 'sdt', 'diachi', 'ghichu');
+        //
+        $this->validate(
+            $req,
+            [
+                'hoten' => 'required',
+                'sdt' => 'required|regex:/(0)[3-9][0-9]{8}/|max:10',
+            ],
+
+            [
+                'hoten.required' => 'Vui lòng nhập họ tên',
+                'sdt.required' => 'Số điện thoại không được để trống',
+                'sdt.regex' => 'Số điện thoại không hợp lệ',
+                'sdt.max' => 'Số điện thoại không hợp lệ',
+            ]
+        );
         if (Cart::count() > 0) {
             $total_cart = str_replace(array(','), '', Cart::subtotal());
             $loinhuan = 0;
@@ -422,13 +434,6 @@ class DondathangController extends Controller
                 $sanpham->save();
                 $loinhuan += $price - $sanpham->gianhap;
 
-                // $hinhanh = Hinhanh::where('id_sp', $item->id)->get();
-                // //$img = 0;
-                // foreach ($hinhanh as $anh) {
-                //     if ($anh->avt == 1) {
-                //         $img = $anh->name;
-                //     }
-                // }
                 $new_donhang->sanpham()->attach($item->id, [
                     'soluong' => $item->qty, 'giaban' => $price,
                     'size' => $item->options->size->size, 'img' => $item->options->images
@@ -556,7 +561,6 @@ class DondathangController extends Controller
     public function updateCart($id, $quanty)
     {
         $qty = $quanty;
-        // Cart::update($id, $qty);
         $thanhtien = Cart::get($id)->price * Cart::get($id)->qty;
         if (Session::has('khachhang')) {
             Session::put([

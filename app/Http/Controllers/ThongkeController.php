@@ -23,7 +23,7 @@ class ThongkeController extends Controller
         }
         return response()->json(['thongke' => $thongke, 'total' => $total]);
     }
-    public function loc7ngay()
+    public function loc30ngay()
     {
         $total = 0;
         $range = Carbon::now()->subDays(30);

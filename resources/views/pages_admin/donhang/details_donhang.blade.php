@@ -209,15 +209,26 @@
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-md-3">
-                        @if ($donhang->trangthai==0)
-                            <a href="{{URL('admin/dsdonhang-duyetdon/'.$donhang->id)}}" class="btn btn-info btn-nhapkho">Duyệt đơn</a>
-                        @elseif ($donhang->trangthai==1)
-                            <a href="{{URL('admin/dsdonhang-giaohang/'.$donhang->id)}}" class="btn btn-primary btn-nhapkho">Giao hàng</a>
-                        @elseif ($donhang->trangthai==2)
-                            <a href="{{URL('admin/dsdonhang-hoanthanh/'.$donhang->id)}}" class="btn btn-success btn-nhapkho">Hoàn thành</a>
-                        @endif
+                                <div class="btn-group dropdown- show mb-2">
+                                    @if ($donhang->trangthai==0)
+                                     <a href="{{URL('admin/dsdonhang-duyetdon/'.$donhang->id)}}" class="btn btn-info btn-nhapkho">Duyệt đơn</a>
+                                    @elseif ($donhang->trangthai==1)
+                                     <a href="{{URL('admin/dsdonhang-giaohang/'.$donhang->id)}}" class="btn btn-primary btn-nhapkho">Giao hàng</a>
+                                    @elseif ($donhang->trangthai==2)
+                                     <a href="{{URL('admin/dsdonhang-hoanthanh/'.$donhang->id)}}" class="btn btn-success btn-nhapkho">Hoàn thành</a>
+                                    @endif
+                                    @if ($donhang->trangthai!=0&&$donhang->trangthai!=3)
+                                    <button type="button" class="btn btn-default dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-tt"   aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item " href="{{URL('/admin/dsdonhang-huytrangthai/'.$donhang->id)}}">Hủy trạng thái</a>
+                                    </div>
+                                    @endif
+
+                                  </div>
+
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-6">
                         @if ($donhang->dathanhtoan==0&&$donhang->ptthanhtoan==1)
                         <a href="{{URL('/admin/dsdonhang-thanhtoan/'.$donhang->id)}}" class="btn btn-info btn-thanhtoan">Đã thanh toán</a>
                         @endif

@@ -51,7 +51,7 @@
                     </label>
                     @else
                         <label for="size-{{$value->size}}"class="btn btn-outline-dark text-center">
-                            <input type="radio" id="size-{{$value->size}}" checked name="size" value="{{$value->id}}">{{$value->size}}
+                            <input type="radio" id="size-{{$value->size}}" checked name="size" value="{{$value->size}}">{{$value->size}}
                         </label>
                     @endif
                     @endforeach

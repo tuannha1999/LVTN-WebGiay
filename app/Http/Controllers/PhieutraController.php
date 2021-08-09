@@ -19,7 +19,7 @@ class PhieutraController extends Controller
     public function getPhieuTra(Request $request)
     {
         if ($request->ajax()) {
-            $phieutra = Phieutra::all();
+            $phieutra = Phieutra::all()->sortBy('trangthai');
             return  DataTables::of($phieutra)
                 ->addColumn('action', function ($phieutra) {
                     return '<a href="' . URL('/admin/dsphieutra-detail/' . $phieutra->id) . '" class="link">
@@ -82,67 +82,86 @@ class PhieutraController extends Controller
     }
     public function AddPhieuTra(Request $req)
     {
-        $req->old('nhanhang', 'hoantien', 'ghichu', 'lydo');
-        $this->validate(
-            $req,
-            [
-                'lydo' => 'required',
-            ],
+        if (session()->has('Phieutra')) {
 
-            [
-                'lydo.required' => 'Bạn chưa chọn lý do trả hàng',
+            $req->old('nhanhang', 'hoantien', 'ghichu', 'lydo');
+            $this->validate(
+                $req,
+                [
+                    'lydo' => 'required',
+                ],
 
-            ]
-        );
-        $new_phieutra = new Phieutra();
-        $new_phieutra->ghichu = $req->ghichu;
-        $new_phieutra->hoantien = $req->hoantien == 1 ? 1 : 0;
-        $new_phieutra->nhanhang = $req->nhanhang == 1 ? 1 : 0;
-        $new_phieutra->trangthai = $req->nhanhang == 1 && $req->hoantien == 1 ? 1 : 0;
-        $new_phieutra->id_dh = $req->id_dh;
-        $new_phieutra->lydo = $req->lydo;
-        $new_phieutra->id_user = Auth::user()->id;
-        $new_phieutra->tongtien = $req->lydo == 0 ? session()->get('Phieutra')->totalPhieutra : session()->get('Phieutra')->totalPhieutra - 35000;
-        $new_phieutra->save();
-        //cập nhật đơn hàng
-        $donhang = Dondathang::find($req->id_dh);
-        $donhang->tongtien = $donhang->tongtien - session()->get('Phieutra')->totalPhieutra;
-        $donhang->save();
-        foreach (session()->get('Phieutra')->products as $item) {
-            $new_phieutra->sanpham()->attach($item['productinfo']->id, ['size' => $item['size'], 'soluong' => $item['quanty']]);
-            $tong_sl = 0;
-            foreach ($donhang->sanpham as $dh) {
-                $tong_sl += $dh->pivot->soluong;
-            }
-            foreach ($donhang->sanpham as $dh) {
-                if ($dh->pivot->id_sp == $item['productinfo']->id && $dh->pivot->size == $item['size']) {
-                    if ($dh->pivot->soluong == $item['quanty']) {
-                        $donhang->sanpham()->detach([$item['productinfo']->id]);
-                        if ($tong_sl == $item['quanty']) {
-                            $donhang->trangthai = 4;
-                            $donhang->ghichu = 'Đã trả hàng';
+                [
+                    'lydo.required' => 'Bạn chưa chọn lý do trả hàng',
+
+                ]
+            );
+            $new_phieutra = new Phieutra();
+            $new_phieutra->ghichu = $req->ghichu;
+            $new_phieutra->hoantien = $req->hoantien == 1 ? 1 : 0;
+            $new_phieutra->nhanhang = $req->nhanhang == 1 ? 1 : 0;
+            $new_phieutra->trangthai = $req->nhanhang == 1 && $req->hoantien == 1 ? 1 : 0;
+            $new_phieutra->id_dh = $req->id_dh;
+            $new_phieutra->lydo = $req->lydo;
+            $new_phieutra->id_user = Auth::user()->id;
+            $new_phieutra->tongtien = session()->get('Phieutra')->totalPhieutra;
+            $new_phieutra->save();
+            //cập nhật đơn hàng
+            $donhang = Dondathang::find($req->id_dh);
+            $donhang->tongtien = $donhang->tongtien - session()->get('Phieutra')->totalPhieutra;
+            $donhang->save();
+            $tong_nhap = 0;
+            foreach (session()->get('Phieutra')->products as $item) {
+                $new_phieutra->sanpham()->attach($item['productinfo']->id, ['size' => $item['size'], 'soluong' => $item['quanty']]);
+                $tong_sl = 0;
+                foreach ($donhang->sanpham as $dh) {
+                    $tong_sl += $dh->pivot->soluong;
+                }
+                foreach ($donhang->sanpham as $dh) {
+                    if ($dh->pivot->id_sp == $item['productinfo']->id && $dh->pivot->size == $item['size']) {
+                        if ($dh->pivot->soluong == $item['quanty']) {
+                            $donhang->sanpham()->detach([$item['productinfo']->id]);
+                            if ($tong_sl == session()->get('Phieutra')->QuantyPhieutra) {
+                                $donhang->trangthai = 4;
+                                $donhang->ghichu = 'Đã trả hàng';
+                            }
+                            $donhang->save();
+                        } else {
+                            $donhang->sanpham()->wherePivot('size', '=', $item['size'])->detach([$item['productinfo']->id]);
+                            $donhang->sanpham()->attach(
+                                $item['productinfo']->id,
+                                [
+                                    'soluong' => $dh->pivot->soluong - $item['quanty'],
+                                    'giaban' => $item['giaban'], 'size' => $item['size'], 'img' => $dh->pivot->img
+                                ]
+                            );
                         }
-                        $donhang->save();
-                    } else {
-                        $donhang->sanpham()->wherePivot('size', '=', $item['size'])->detach([$item['productinfo']->id]);
-                        $donhang->sanpham()->attach(
-                            $item['productinfo']->id,
-                            [
-                                'soluong' => $dh->pivot->soluong - $item['quanty'],
-                                'giaban' => $item['giaban'], 'size' => $item['size'], 'img' => $dh->pivot->img
-                            ]
-                        );
+                        if ($req->nhanhang == 1 && $req->hoantien == 1) {
+                            //Cộng sản phẩm lại kho
+                            if ($req->lydo == 1) {
+                                $sl = Size::where('size', $item['size'])->where('id_sp', $item['productinfo']->id)->first();
+                                $sl->soluong += $item['quanty'];
+                                $sl->save();
+                            }
+                            //Tổng giá nhập
+                            $sanpham = Sanpham::find($item['productinfo']->id);
+                            $tong_nhap += $sanpham->gianhap * $item['quanty'];
+                        }
                     }
-                    if ($req->nhanhang == 1 && $req->hoantien == 1) {
-                        $thongke = Thongke::where('ngaydat', $donhang->ngaydat)->first();
-                        $thongke->doanhthu -= session()->get('Phieutra')->totalPhieutra;
-                        $thongke->save();
-                    }
-                    session()->forget('Phieutra');
                 }
             }
+            //thống kê
+            if ($req->nhanhang == 1 && $req->hoantien == 1) {
+                $thongke = Thongke::where('ngaydat', $donhang->ngaydat)->first();
+                $thongke->doanhthu -= session()->get('Phieutra')->totalPhieutra;
+                $thongke->loinhuan -= session()->get('Phieutra')->totalPhieutra - $tong_nhap;
+                $thongke->save();
+            }
+            session()->forget('Phieutra');
+            return redirect('/admin/dsphieutra')->with('success', 'Đã tạo phiếu trả. Mã phiếu trả:' . $new_phieutra->id);
+        } else {
+            return redirect('/admin/dsphieutra');
         }
-        return redirect('/admin/dsphieutra');
     }
 
     public function detailPhieuTra($id)
@@ -153,25 +172,60 @@ class PhieutraController extends Controller
 
     public function nhanhang($id)
     {
-        $phieutra = Phieutra::with('dondathang')->find($id);
+        $phieutra = Phieutra::with('dondathang')->with('sanpham')->find($id);
         $phieutra->nhanhang = 1;
+        $tong_nhap = 0;
         if ($phieutra->hoantien == 1) {
             $phieutra->trangthai = 1;
+            $phieutra->save();
+            if ($phieutra->lydo == 1) {
+                //Cộng sản phẩm lại kho
+                foreach ($phieutra->sanpham as $sp) {
+                    $sl = Size::where('size', $sp->pivot->size)->where('id_sp', $sp->id)->first();
+                    $sl->soluong += $sp->pivot->soluong;
+                    $sl->save();
+                }
+            }
+            //thống kê
+            foreach ($phieutra->sanpham as $sp) {
+                //Tổng giá nhập
+                $sanpham = Sanpham::find($sp->id);
+                $tong_nhap += $sanpham->gianhap * $sp->pivot->soluong;
+            }
             $thongke = Thongke::where('ngaydat', $phieutra->dondathang->ngaydat)->first();
             $thongke->doanhthu -= $phieutra->tongtien;
+            $thongke->loinhuan -= $phieutra->tongtien - $tong_nhap;
             $thongke->save();
         }
-        $phieutra->save();
         return back();
     }
     public function hoantien($id)
     {
         $phieutra = Phieutra::find($id);
         $phieutra->hoantien = 1;
+        $tong_nhap = 0;
         if ($phieutra->nhanhang == 1) {
             $phieutra->trangthai = 1;
+            $phieutra->save();
+            if ($phieutra->lydo == 1) {
+                //Cộng sản phẩm lại kho
+                foreach ($phieutra->sanpham as $sp) {
+                    $sl = Size::where('size', $sp->pivot->size)->where('id_sp', $sp->id)->first();
+                    $sl->soluong += $sp->pivot->soluong;
+                    $sl->save();
+                }
+            }
+            //thống kê
+            foreach ($phieutra->sanpham as $sp) {
+                //Tổng giá nhập
+                $sanpham = Sanpham::find($sp->id);
+                $tong_nhap += $sanpham->gianhap * $sp->pivot->soluong;
+            }
+            $thongke = Thongke::where('ngaydat', $phieutra->dondathang->ngaydat)->first();
+            $thongke->doanhthu -= $phieutra->tongtien;
+            $thongke->loinhuan -= $phieutra->tongtien - $tong_nhap;
+            $thongke->save();
         }
-        $phieutra->save();
         return back();
     }
     public function addSanPhamTra($id)
@@ -216,17 +270,4 @@ class PhieutraController extends Controller
             return response()->json(['error' => 'Số lượng sản phẩm phải lớn hơn 0']);
         }
     }
-    // public function plusSanPhamTra($id)
-    // {
-    //     //dd($qty);
-    //     if (session()->get('Phieutra')->products[$id]['quanty'] > 1) {
-    //         $oldCart = Session('Phieutra') ? Session('Phieutra') : null;
-    //         $newCart = new CartPhieuTra($oldCart);
-    //         $newCart->minusSanPham($id);
-    //         Session()->put('Phieutra', $newCart);
-    //         return response()->json('success');
-    //     } else {
-    //         return response()->json(['error' => 'Số lượng sản phẩm phải lớn hơn 0']);
-    //     }
-    // }
 }

@@ -28,7 +28,7 @@ use Illuminate\Http\Request;
 
 //Home Controller
 Route::get('/', 'HomeController@index')->name('trangchu');
-Route::get('/trang-chu', 'HomeController@index');//
+Route::get('/trang-chu', 'HomeController@index'); //
 Route::get('search', 'HomeController@search');
 Route::get('/form-search-donhang', 'HomeController@formsearchDonHang');
 Route::get('/search-donhang', 'HomeController@searchDonHang');
@@ -68,9 +68,6 @@ Route::middleware('checklogin')->group(function () {
     Route::post('profile-edit', 'KhachhangController@editProfile');
 
     Route::get('lich-su-mua-hang/{id}', 'KhachhangController@dsDonhangganday')->name('list-don-hang-gan-day');
-
-
-
 });
 //Khachhang
 
@@ -78,11 +75,16 @@ Route::middleware('checklogin')->group(function () {
 //Admin
 Route::get('admin', 'AdminController@getLogin')->name('show-form-login-admin');
 Route::post('admin', 'AdminController@postLogin')->name('login-admin');
+
+
 //
 Route::middleware('checkloginadmin')->group(function () {
 
     Route::get('index', 'AdminController@homeAdmin')->name('getDHcanxuly');
     Route::get('logout', 'AdminController@getLogout');
+    //thay đổi pass admin
+    Route::get('admin/form-change-password', 'AdminController@formChangePassword');
+    Route::post('admin/change-password', 'AdminController@ChangePassword');
 
     //Home
 
@@ -102,6 +104,7 @@ Route::middleware('checkloginadmin')->group(function () {
     Route::get('admin/dsdonhang-thanhtoan/{id}', 'DondathangController@thanhtoan');
     Route::get('admin/dsdonhang-giaohang/{id}', 'DondathangController@giaohang');
     Route::get('admin/dsdonhang-hoanthanh/{id}', 'DondathangController@hoanthanh');
+    Route::get('admin/dsdonhang-huytrangthai/{id}', 'DondathangController@huyTrangThai');
     Route::get('admin/dsdonhang-delete-cart/{id}', 'DondathangController@deleteCart');
     Route::get('admin/dsdonhang-getsanpham', 'DondathangController@dsSanpham')->name('getSanPhamDH');
     Route::get('admin/dsdonhang-getkhachhang', 'DondathangController@dsKhachhang')->name('getKhachHangDH');
@@ -192,7 +195,7 @@ Route::middleware('checkloginadmin')->group(function () {
     //thống kê
     Route::get('admin/thongke', 'ThongkeController@thongke');
     Route::get('admin/thongke-locngay/{ngaybd}/{ngaykt}', 'ThongkeController@locngay');
-    Route::get('admin/thongke-7ngay', 'ThongkeController@loc7ngay');
+    Route::get('admin/thongke-7ngay', 'ThongkeController@loc30ngay');
 
 
 
@@ -216,6 +219,7 @@ Route::middleware('checkloginadmin')->group(function () {
     Route::get('admin/dskhuyenmai-form-tangsp', 'KhuyenmaiController@getformMaGiamGia');
     Route::get('admin/dskhuyenmai-delete/{id}', 'KhuyenmaiController@deleteKhuyenmai');
     Route::get('admin/dskhuyenmai-detail/{id}', 'KhuyenmaiController@detailKhuyenmai');
+    Route::post('admin/dskhuyenmai-edit-khuyenmai', 'KhuyenmaiController@editKhuyenmai');
     Route::get('admin/dskhuyenmai-stop/{id}', 'KhuyenmaiController@stopKhuyenmai');
     Route::get('admin/dskhuyenmai-run/{id}', 'KhuyenmaiController@runKhuyenmai');
     Route::post('admin/dskhuyenmai-add-khuyenmai', 'KhuyenmaiController@addKhuyenmai');

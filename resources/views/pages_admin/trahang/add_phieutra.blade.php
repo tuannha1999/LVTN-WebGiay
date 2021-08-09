@@ -66,7 +66,7 @@
                           <tr>
                             <td>{{$sp['productinfo']->id}}</td>
                             <td><img style="heigth:50px;width:50px;" src="{{ asset('storage/' . $sp['img']) }}" alt="Card image"></td>
-                            <td>{{$sp['productinfo']->tensp}}</td>
+                            <td>{{$sp['productinfo']->tensp .' - '. $sp['size'] }}</td>
                             <td>
                                 <input type="button" class="btn btn-light" id="qtyminus{{$key}}" data-id="{{$key}}"
                                 value="-" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
