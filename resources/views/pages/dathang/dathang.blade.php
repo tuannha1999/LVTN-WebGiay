@@ -23,7 +23,7 @@
                     <label for="basic-url">Họ tên*</label>
                     <div class="input-group mb-3">
                       <input type="text" class="form-control @error('hoten') is-invalid @enderror" id="basic-url" aria-describedby="basic-addon3" value="{{old('hoten')}}" name="hoten">
-                      @error('hoten')
+                        @error('hoten')
                       <span class="invalid-feedback" role="alert">
                           <strong>{{ $message }}</strong>
                       </span>
@@ -39,7 +39,7 @@
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
-                          @enderror
+                        @enderror
                      </div>
                 </div>
             </div>
@@ -145,17 +145,17 @@
                 </div>
                 <div class="col-md-3">
                    <label for="" class="h6">- {{number_format(session()->get('tiengiamtv'),0,',',',')}}đ</label>&nbsp;
-                                                    @if (Auth::user()->level==1)
+                                                    @if (Auth::user()->phantram==0.05)
                                                         <span>(Giảm 5%)</span>
-                                                    @elseif(Auth::user()->level==2)
+                                                    @elseif(Auth::user()->phantram==0.06)
                                                         <span>(Giảm 6%)</span>
-                                                    @elseif(Auth::user()->level==3)
+                                                    @elseif(Auth::user()->phantram==0.07)
                                                         <span>(Giảm 7%)</span>
-                                                    @elseif(Auth::user()->level==4)
+                                                    @elseif(Auth::user()->phantram==0.08)
                                                         <span>(Giảm 8%)</span>
-                                                    @elseif(Auth::user()->level==5)
+                                                    @elseif(Auth::user()->phantram==0.09)
                                                         <span>(Giảm 9%)</span>
-                                                    @elseif(Auth::user()->level==6)
+                                                    @elseif(Auth::user()->phantram==0.10)
                                                         <span>(Giảm 10%)</span>
                                                     @else
                                                         <span>(Giảm 0%)</span>

@@ -228,6 +228,10 @@ Route::middleware('checkloginadmin')->group(function () {
 Route::get('/san-pham', 'SanphamController@all_sanpham');
 Route::get('chitiet-sanpham/{id}', 'SanphamController@chitiet_sp');
 
+
+//san pham vua xem
+Route::post('/san-pham-vua-xem', 'SanphamController@renderProductView')->name('post-product-view');
+
 //locsanpham
 Route::get('loai-sanpham/{loai}', 'SanphamController@locLoaisp');
 Route::get('loc-gia-san-pham/{value}', 'SanphamController@locgia');

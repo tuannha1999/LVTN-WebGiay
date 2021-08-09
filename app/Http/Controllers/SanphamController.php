@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Banner;
 use App\Coupons;
 use App\Loaisanpham;
 use App\Dondathang;
@@ -24,7 +25,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Session;
-
+use PhpOffice\PhpSpreadsheet\Helper\Html;
 
 class SanphamController extends Controller
 {
@@ -355,4 +356,20 @@ class SanphamController extends Controller
         $sp = Sanpham::where('id', $id)->delete();
         return response()->json($sp);
     }
+    
+    public function renderProductView(Request $request)
+    {
+        if($request->ajax())
+        {
+            $listID=$request->id;
+            $products=Sanpham::with('loaisanpham')->with('Hinhanh')->with('size')->whereIn('id',$listID)->get();
+            $html = view("pages.sanphamvuaxem",compact('products'))->render();
+            
+        }
+        return response()->json(['data'=> $html]);
+
+        //return response()->json(['data'=>$request->id]);
+    }
 }
+
+

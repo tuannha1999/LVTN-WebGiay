@@ -25,10 +25,11 @@ class HomeController extends Controller
             ->where('trangthai', 1)->orderby('daban', 'desc')->paginate(8);
         return view('pages.home', compact('sp', 'sp_banchay', 'loai_sp', 'banner'));
     }
+    
     public function search(Request $request)
     {
         $loai_sp = Loaisanpham::all();
-        $search = Sanpham::with('Hinhanh')->with('size')->where('tensp', 'like', '%' . $request->search . '%')->orwhere('mota', 'like', '%' . $request->search . '%')->get();
+        $search = Sanpham::with('Hinhanh')->with('size')->where('tensp', 'like', '%' . $request->search . '%')->get();
         return view('pages.search', compact('search', 'loai_sp'));
     }
     public function formsearchDonHang()

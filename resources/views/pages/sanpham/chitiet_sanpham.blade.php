@@ -12,7 +12,7 @@
         <span>{{Session::get('message')}}</span>
     </div>
     @endif
-	<div class="row">
+	<div class="row" id="content_product" data-id="{{$chitiet_sp->id}}">
         <div class="col-6">
 <form>
     @csrf
@@ -24,7 +24,7 @@
 
         </div>
         <div class="col-6">
-                <input type="hidden" name="id" value="{{$chitiet_sp->id}}" id="">
+                <input type="hidden" name="id" value="{{$chitiet_sp->id}}" >
                 <h2>{{$chitiet_sp->tensp}}</h2>
                 ________
                 <h3>
@@ -51,7 +51,7 @@
                     </label>
                     @else
                         <label for="size-{{$value->size}}"class="btn btn-outline-dark text-center">
-                            <input type="radio" id="size-{{$value->size}}" checked name="size" value="{{$value->id}}">{{$value->size}}
+                            <input type="radio" id="size-{{$value->size}}" checked name="size" value="{{$value->size}}">{{$value->size}}
                         </label>
                     @endif
                     @endforeach
@@ -206,6 +206,32 @@ $(document).ready(function() {
                     location.reload();
                 });
     });
+
+    
+////
+    $(function(){
+        //luu id sp vao storage
+        let idProduct=$("#content_product").attr('data-id');
+        //lay gtri storage
+        let products=localStorage.getItem('products');
+        if(products==null)
+        {
+            arrayProduct=new Array();
+            arrayProduct.push(idProduct)
+            localStorage.setItem('products',JSON.stringify(arrayProduct))
+            
+        }
+        else{
+            //chuyen ve mang
+            products=$.parseJSON(products)
+            if(products.indexOf(idProduct)==-1)
+            {
+                products.push(idProduct);
+                localStorage.setItem('products',JSON.stringify(products))
+            }
+        }
+    });
+
 });
 
  //alert thông báo
