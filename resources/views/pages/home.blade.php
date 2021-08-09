@@ -149,9 +149,9 @@ NT Store
                     });
                 }
             }
-        })
-        
+        })  
     })
+    
 </script>
 @endsection
 

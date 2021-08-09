@@ -132,6 +132,15 @@
         </div>
     </div>
 
+
+
+
+
+    <div id="product_view"></div>
+                                        
+
+
+
 </div>
 <!--Container-->
 <script src="{{ asset ('/js/owl.carousel.min.js') }}" type="text/javascript"></script>
@@ -231,6 +240,39 @@ $(document).ready(function() {
             }
         }
     });
+
+
+    $(function(){
+        $.ajaxSetup({
+                    headers: {
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+                     }
+                });
+        let routeRenderProduct ='{{ route('post-product-view') }}';
+        checkRenderProduct=false;
+        $(document).on('scroll',function(){
+            if($(window).scrollTop()>150 && checkRenderProduct==false){
+
+                console.log('LOG')
+                checkRenderProduct=true;
+                let products=localStorage.getItem('products');
+                //products.reverse();
+                products=$.parseJSON(products)
+                if(products.length>0)
+                {
+                    $.ajax({
+                        url: routeRenderProduct,
+                        method:"POST",
+                        data: {id : products},
+                        success : function(result)
+                        {
+                            $("#product_view").html('').append(result.data)
+                        }
+                    });
+                }
+            }
+        })  
+    })
 
 });
 
