@@ -276,22 +276,24 @@ class DondathangController extends Controller
         //tích lũy thành viên
         if ($donhang->id_kh != null) {
             $khachhang = User::find($donhang->id_kh);
-            $khachhang->tonggd += $donhang->tongtien;
-            $khachhang->save();
-            if (2000000 <= $khachhang->tonggd && $khachhang->tonggd < 3999000) {
-                $khachhang->phantram =  0.05;
-            } else if (4000000 <= $khachhang->tonggd && $khachhang->tonggd < 5999000) {
-                $khachhang->phantram =  0.06;
-            } else if (6000000 <= $khachhang->tonggd && $khachhang->tonggd < 7999000) {
-                $khachhang->phantram =  0.07;
-            } else if (8000000 <= $khachhang->tonggd && $khachhang->tonggd < 9999000) {
-                $khachhang->phantram =  0.08;
-            } else if (10000000 <= $khachhang->tonggd && $khachhang->tonggd < 11999000) {
-                $khachhang->phantram =  0.09;
-            } else {
-                $khachhang->phantram =  0.1;
+            if ($khachhang->is_admin != 1) {
+                $khachhang->tonggd += $donhang->tongtien;
+                $khachhang->save();
+                if (2000000 <= $khachhang->tonggd && $khachhang->tonggd < 3999000) {
+                    $khachhang->phantram =  0.05;
+                } else if (4000000 <= $khachhang->tonggd && $khachhang->tonggd < 5999000) {
+                    $khachhang->phantram =  0.06;
+                } else if (6000000 <= $khachhang->tonggd && $khachhang->tonggd < 7999000) {
+                    $khachhang->phantram =  0.07;
+                } else if (8000000 <= $khachhang->tonggd && $khachhang->tonggd < 9999000) {
+                    $khachhang->phantram =  0.08;
+                } else if (10000000 <= $khachhang->tonggd && $khachhang->tonggd < 11999000) {
+                    $khachhang->phantram =  0.09;
+                } else {
+                    $khachhang->phantram =  0.1;
+                }
+                $khachhang->save();
             }
-            $khachhang->save();
         }
         //thống kê
         $thongke = Thongke::where('ngaydat', $donhang->ngaydat)->first();
@@ -444,24 +446,26 @@ class DondathangController extends Controller
                 Cart::destroy($item->rowId);
             }
             //tích lũy thành viên
-            if (Session::has('khachhang') && Session::get('khachhang') != 'Khách lẻ') {
+            if (Session::has('khachhang')) {
                 $khachhang = User::find(Session::get('khachhang')->id);
-                $khachhang->tonggd += Session::get('tongtien');
-                $khachhang->save();
-                if (2000000 <= $khachhang->tonggd && $khachhang->tonggd < 3999000) {
-                    $khachhang->phantram =  0.05;
-                } else if (4000000 <= $khachhang->tonggd && $khachhang->tonggd < 5999000) {
-                    $khachhang->phantram =  0.06;
-                } else if (6000000 <= $khachhang->tonggd && $khachhang->tonggd < 7999000) {
-                    $khachhang->phantram =  0.07;
-                } else if (8000000 <= $khachhang->tonggd && $khachhang->tonggd < 9999000) {
-                    $khachhang->phantram =  0.08;
-                } else if (10000000 <= $khachhang->tonggd && $khachhang->tonggd < 11999000) {
-                    $khachhang->phantram =  0.09;
-                } else {
-                    $khachhang->phantram =  0.1;
+                if ($khachhang->is_admin != 1) {
+                    $khachhang->tonggd += Session::get('tongtien');
+                    $khachhang->save();
+                    if (2000000 <= $khachhang->tonggd && $khachhang->tonggd < 3999000) {
+                        $khachhang->phantram =  0.05;
+                    } else if (4000000 <= $khachhang->tonggd && $khachhang->tonggd < 5999000) {
+                        $khachhang->phantram =  0.06;
+                    } else if (6000000 <= $khachhang->tonggd && $khachhang->tonggd < 7999000) {
+                        $khachhang->phantram =  0.07;
+                    } else if (8000000 <= $khachhang->tonggd && $khachhang->tonggd < 9999000) {
+                        $khachhang->phantram =  0.08;
+                    } else if (10000000 <= $khachhang->tonggd && $khachhang->tonggd < 11999000) {
+                        $khachhang->phantram =  0.09;
+                    } else {
+                        $khachhang->phantram =  0.1;
+                    }
+                    $khachhang->save();
                 }
-                $khachhang->save();
             }
             //thống kê
             $thongke = Thongke::where('ngaydat', Carbon::now('Asia/Ho_Chi_Minh')->toDateString())->first();

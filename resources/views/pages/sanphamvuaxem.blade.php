@@ -8,7 +8,7 @@
                         <div class="productinfo text-center">
                             <a href="{{ url('chitiet-sanpham/'.$value->id)}}"  class="link">
                                 @foreach ($value->Hinhanh as $img )
-                                @if ($img->avt===1)
+                                @if ($img->avt==1)
                                          <img class="card-img-top" src="{{asset ('storage/'.$img->name) }}" alt="Card image">
                                 @endif
                                 @endforeach
@@ -24,7 +24,7 @@
                                          }
                                      @endphp
                                     <h4 class="card-title">{{$value->tensp}}</h4>
-                                    @if ($value->giakm===0)
+                                    @if ($value->giakm==0)
                                     <p style="color: red;">{{ number_format($value->giaban,0,'.','.').' '.'đ' }}</p>
                                     @else
                                     <p><del>{{ number_format($value->giaban,0,'.','.').' '.'đ' }}</del></p>

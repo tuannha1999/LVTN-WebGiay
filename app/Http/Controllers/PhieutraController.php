@@ -143,6 +143,10 @@ class PhieutraController extends Controller
                                 $sl->soluong += $item['quanty'];
                                 $sl->save();
                             }
+                            //trừ sản phẩm đã bán
+                            $sp_daban = Sanpham::find($item['productinfo']->id);
+                            $sp_daban->daban = $sp_daban->daban - $item['quanty'];
+                            $sp_daban->save();
                             //Tổng giá nhập
                             $sanpham = Sanpham::find($item['productinfo']->id);
                             $tong_nhap += $sanpham->gianhap * $item['quanty'];
@@ -174,6 +178,7 @@ class PhieutraController extends Controller
     {
         $phieutra = Phieutra::with('dondathang')->with('sanpham')->find($id);
         $phieutra->nhanhang = 1;
+        $phieutra->save();
         $tong_nhap = 0;
         if ($phieutra->hoantien == 1) {
             $phieutra->trangthai = 1;
@@ -184,7 +189,16 @@ class PhieutraController extends Controller
                     $sl = Size::where('size', $sp->pivot->size)->where('id_sp', $sp->id)->first();
                     $sl->soluong += $sp->pivot->soluong;
                     $sl->save();
+                    //trừ sản phẩm đã bán
+                    $sp_daban = Sanpham::find($sp->id);
+                    $sp_daban->daban = $sp_daban->daban - $sp->pivot->soluong;
+                    $sp_daban->save();
                 }
+            }
+            //trừ sản phẩm đã bán
+            foreach ($phieutra->sanpham as $sp) {
+                $sp_daban = Sanpham::find($sp->id);
+                $sp_daban->daban = $sp_daban->daban - $sp->pivot->soluong;
             }
             //thống kê
             foreach ($phieutra->sanpham as $sp) {
@@ -203,6 +217,7 @@ class PhieutraController extends Controller
     {
         $phieutra = Phieutra::find($id);
         $phieutra->hoantien = 1;
+        $phieutra->save();
         $tong_nhap = 0;
         if ($phieutra->nhanhang == 1) {
             $phieutra->trangthai = 1;
@@ -214,6 +229,12 @@ class PhieutraController extends Controller
                     $sl->soluong += $sp->pivot->soluong;
                     $sl->save();
                 }
+            }
+            //trừ sản phẩm đã bán
+            foreach ($phieutra->sanpham as $sp) {
+                $sp_daban = Sanpham::find($sp->id);
+                $sp_daban->daban = $sp_daban->daban - $sp->pivot->soluong;
+                $sp_daban->save();
             }
             //thống kê
             foreach ($phieutra->sanpham as $sp) {

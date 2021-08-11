@@ -28,7 +28,7 @@
                 <h2>{{$chitiet_sp->tensp}}</h2>
                 ________
                 <h3>
-                     @if ($chitiet_sp->giakm===0)
+                     @if ($chitiet_sp->giakm==0)
                         <p style="color: red;">{{ number_format($chitiet_sp->giaban,0,'.','.').' '.'đ' }}</p>
                     @else
                          <p><del>{{ number_format($chitiet_sp->giaban,0,'.','.').' '.'đ' }}</del></p>
@@ -137,7 +137,7 @@
 
 
     <div id="product_view"></div>
-                                        
+
 
 
 
@@ -216,7 +216,7 @@ $(document).ready(function() {
                 });
     });
 
-    
+
 ////
     $(function(){
         //luu id sp vao storage
@@ -228,7 +228,7 @@ $(document).ready(function() {
             arrayProduct=new Array();
             arrayProduct.push(idProduct)
             localStorage.setItem('products',JSON.stringify(arrayProduct))
-            
+
         }
         else{
             //chuyen ve mang
@@ -271,7 +271,7 @@ $(document).ready(function() {
                     });
                 }
             }
-        })  
+        })
     })
 
 });

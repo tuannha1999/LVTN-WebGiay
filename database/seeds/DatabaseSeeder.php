@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
                 'sdt' => '0989895802',
                 'password' => bcrypt('admin123'),
                 'is_admin' => '1',
+                'yeuthich' => '0',
+                'phantram' => '0',
             ],
         ];
         DB::table('users')->insert($data);

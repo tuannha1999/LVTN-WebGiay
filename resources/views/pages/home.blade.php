@@ -28,14 +28,14 @@ NT Store
                 <div class="productinfo text-center">
                         <a href="{{ url('chitiet-sanpham/'.$sp->id)}}" class="link">
                             @foreach ($sp->Hinhanh as $img )
-                            @if ($img->avt===1)
+                            @if ($img->avt==1)
                                  <img class="card-img-top" src="{{asset ('storage/'.$img->name) }}" alt="Card image">
                             @endif
                             @endforeach
 					    <div class="card-body">
 						    <h4 class="card-title">{{$sp->tensp}}</h4>
                          </a>
-                             @if ($sp->giakm===0)
+                             @if ($sp->giakm==0)
                                   <p style="color: red;">{{ number_format($sp->giaban,0,'.','.').' '.'đ' }}</p>
                               @else
                                   <p><del>{{ number_format($sp->giaban,0,'.','.').' '.'đ' }}</del></p>
@@ -67,7 +67,7 @@ NT Store
 	                <div class="productinfo text-center">
                         <a href="{{ url('chitiet-sanpham/'.$sp->id)}}" class="link">
                             @foreach ($sp->Hinhanh as $img )
-                            @if ($img->avt===1)
+                            @if ($img->avt==1)
                                  <img class="card-img-top" src="{{asset ('storage/'.$img->name) }}" alt="Card image">
                             @endif
                             @endforeach
@@ -84,7 +84,7 @@ NT Store
                              @endphp --}}
 						        <h4 class="card-title">{{$sp->tensp}}</h4>
                               </a>
-                              @if ($sp->giakm===0)
+                              @if ($sp->giakm==0)
                                     <p style="color: red;">{{ number_format($sp->giaban,0,'.','.').' '.'đ' }}</p>
                               @else
                                      <p><del>{{ number_format($sp->giaban,0,'.','.').' '.'đ' }}</del></p>
@@ -149,9 +149,9 @@ NT Store
                     });
                 }
             }
-        })  
+        })
     })
-    
+
 </script>
 @endsection
 

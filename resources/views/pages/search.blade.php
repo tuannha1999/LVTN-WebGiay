@@ -10,7 +10,7 @@
 	                <div class="productinfo text-center">
                         <a href="{{ url('chitiet-sanpham/'.$value->id)}}" class="link">
                             @foreach ($value->Hinhanh as $img )
-                            @if ($img->avt===1)
+                            @if ($img->avt==1)
                                     <img class="card-img-top" src="{{asset ('storage/'.$img->name) }}" alt="Card image">
                             @endif
                             @endforeach
