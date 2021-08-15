@@ -115,11 +115,11 @@ Route::middleware('checkloginadmin')->group(function () {
     Route::get('admin/active/{id}', 'DondathangController@actionDonhang')->name('actionDonhang');
 
     //khachhang
-    Route::get('/admin/dskhachhang', 'QLKhachhangController@getDanhsach')->name('getKhachhang');
-    Route::post('/admin/dskhachhang-add', 'QLKhachhangController@add');
-    Route::get('/admin/dskhachhang-edit/{id}', 'QLKhachhangController@edit');
-    Route::get('/admin/dskhachhang-delete/{id}', 'QLKhachhangController@delete');
-    Route::get('/admin/dskhachhang-detail/{id}', 'QLKhachhangController@detail');
+    Route::get('/admin/dskhachhang', 'QLkhachhangController@getDanhsach')->name('getKhachhang');
+    Route::post('/admin/dskhachhang-add', 'QLkhachhangController@add');
+    Route::get('/admin/dskhachhang-edit/{id}', 'QLkhachhangController@edit');
+    Route::get('/admin/dskhachhang-delete/{id}', 'QLkhachhangController@delete');
+    Route::get('/admin/dskhachhang-detail/{id}', 'QLkhachhangController@detail');
 
 
     //sanpham

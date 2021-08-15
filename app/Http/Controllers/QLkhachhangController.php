@@ -83,7 +83,6 @@ class QLkhachhangController extends Controller
             $khachhang->code_active = $code;
             $khachhang->email_verified_at = Carbon::now();
             $khachhang->save();
-
             $data = [
                 'route' => $url
             ];

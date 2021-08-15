@@ -287,11 +287,13 @@ class SanphamController extends Controller
      */
     public function update()
     {
+        $sp_yeuthich = User::find(Auth::user()->id);
+        dd($sp_yeuthich->sanpham);
         // $donhang = Dondathang::orderby('trangthai', 'asc')->get();
         // foreach ($donhang as $item) {
         //     echo $item->hoten . '-' . $item->trangthai . '<br>';
         // }
-        dd(Cart::content());
+        //dd(Cart::content());
         // $donhang = Dondathang::find(100177);
         // $tong_sl = 0;
         // foreach ($donhang->sanpham as $dh) {
@@ -356,20 +358,16 @@ class SanphamController extends Controller
         $sp = Sanpham::where('id', $id)->delete();
         return response()->json($sp);
     }
-    
+
     public function renderProductView(Request $request)
     {
-        if($request->ajax())
-        {
-            $listID=$request->id;
-            $products=Sanpham::with('loaisanpham')->with('Hinhanh')->with('size')->whereIn('id',$listID)->get();
-            $html = view("pages.sanphamvuaxem",compact('products'))->render();
-            
+        if ($request->ajax()) {
+            $listID = $request->id;
+            $products = Sanpham::with('loaisanpham')->with('Hinhanh')->with('size')->whereIn('id', $listID)->get();
+            $html = view("pages.sanphamvuaxem", compact('products'))->render();
         }
-        return response()->json(['data'=> $html]);
+        return response()->json(['data' => $html]);
 
         //return response()->json(['data'=>$request->id]);
     }
 }
-
-

@@ -92,7 +92,7 @@
             </div>
         </div>
     </div>
-    <form action="/admin/dsphieutra-add/" method="POST">
+    <form action="{{URL('/admin/dsphieutra-add')}}" method="POST">
         @csrf
     <div class="row mt-5">
         <div class="col-md-6">

@@ -21,10 +21,10 @@ class ThuonghieuController extends Controller
             $thuonghieu = Thuonghieu::all();
             return  DataTables::of($thuonghieu)
                 ->addColumn('action', function ($thuonghieu) {
-                    return '<a href="javascript:void(0);" id="delete-thuonghieu" data-id="' . $thuonghieu->id . ' " class="delete">
-                    <i class="fas fa-2x fa-trash-alt"></i></a>
-                    <a href="javascript:void(0);" id="edit-thuonghieu" data-toggle="modal" data-id=' . $thuonghieu->id . '>
-                    <i class="far fa-2x fa-edit"></i></a>';
+                    return '<a href="javascript:void(0);" id="edit-thuonghieu" data-toggle="modal" data-id=' . $thuonghieu->id . '>
+                    <i class="far fa-2x fa-edit"></i></a>
+                    <a href="javascript:void(0);" id="delete-thuonghieu" data-id="' . $thuonghieu->id . ' " class="delete">
+                    <i class="fas fa-2x fa-trash-alt"></i></a>';
                 })->rawColumns(['action'])->make(true);
         }
         return view('pages_admin.thuonghieu.list_thuonghieu');

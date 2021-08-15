@@ -9,6 +9,7 @@ use App\Phieutra;
 use App\Sanpham;
 use App\Size;
 use App\Thongke;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
@@ -154,12 +155,32 @@ class PhieutraController extends Controller
                     }
                 }
             }
-            //thống kê
             if ($req->nhanhang == 1 && $req->hoantien == 1) {
+                //thống kê
                 $thongke = Thongke::where('ngaydat', $donhang->ngaydat)->first();
                 $thongke->doanhthu -= session()->get('Phieutra')->totalPhieutra;
                 $thongke->loinhuan -= session()->get('Phieutra')->totalPhieutra - $tong_nhap;
                 $thongke->save();
+                //Cập nhật tổng giao dịch khách hàng
+                if ($donhang->id_kh != null) {
+                    $khachhang = User::find($donhang->id_kh);
+                    $khachhang->tonggd = $khachhang->tonggd - session()->get('Phieutra')->totalPhieutra;
+                    $khachhang->save();
+                    if (2000000 <= $khachhang->tonggd && $khachhang->tonggd < 3999000) {
+                        $khachhang->phantram =  0.05;
+                    } else if (4000000 <= $khachhang->tonggd && $khachhang->tonggd < 5999000) {
+                        $khachhang->phantram =  0.06;
+                    } else if (6000000 <= $khachhang->tonggd && $khachhang->tonggd < 7999000) {
+                        $khachhang->phantram =  0.07;
+                    } else if (8000000 <= $khachhang->tonggd && $khachhang->tonggd < 9999000) {
+                        $khachhang->phantram =  0.08;
+                    } else if (10000000 <= $khachhang->tonggd && $khachhang->tonggd < 11999000) {
+                        $khachhang->phantram =  0.09;
+                    } else {
+                        $khachhang->phantram =  0.1;
+                    }
+                    $khachhang->save();
+                }
             }
             session()->forget('Phieutra');
             return redirect('/admin/dsphieutra')->with('success', 'Đã tạo phiếu trả. Mã phiếu trả:' . $new_phieutra->id);
@@ -210,6 +231,27 @@ class PhieutraController extends Controller
             $thongke->doanhthu -= $phieutra->tongtien;
             $thongke->loinhuan -= $phieutra->tongtien - $tong_nhap;
             $thongke->save();
+            //Cập nhật tổng giao dịch khách hàng
+            $donhang = Dondathang::find($phieutra->id_dh);
+            if ($donhang->id_kh != null) {
+                $khachhang = User::find($donhang->id_kh);
+                $khachhang->tonggd = $khachhang->tonggd - $phieutra->tongtien;
+                $khachhang->save();
+                if (2000000 <= $khachhang->tonggd && $khachhang->tonggd < 3999000) {
+                    $khachhang->phantram =  0.05;
+                } else if (4000000 <= $khachhang->tonggd && $khachhang->tonggd < 5999000) {
+                    $khachhang->phantram =  0.06;
+                } else if (6000000 <= $khachhang->tonggd && $khachhang->tonggd < 7999000) {
+                    $khachhang->phantram =  0.07;
+                } else if (8000000 <= $khachhang->tonggd && $khachhang->tonggd < 9999000) {
+                    $khachhang->phantram =  0.08;
+                } else if (10000000 <= $khachhang->tonggd && $khachhang->tonggd < 11999000) {
+                    $khachhang->phantram =  0.09;
+                } else {
+                    $khachhang->phantram =  0.1;
+                }
+                $khachhang->save();
+            }
         }
         return back();
     }
@@ -246,6 +288,27 @@ class PhieutraController extends Controller
             $thongke->doanhthu -= $phieutra->tongtien;
             $thongke->loinhuan -= $phieutra->tongtien - $tong_nhap;
             $thongke->save();
+            //Cập nhật tổng giao dịch khách hàng
+            $donhang = Dondathang::find($phieutra->id_dh);
+            if ($donhang->id_kh != null) {
+                $khachhang = User::find($donhang->id_kh);
+                $khachhang->tonggd = $khachhang->tonggd - $phieutra->tongtien;
+                $khachhang->save();
+                if (2000000 <= $khachhang->tonggd && $khachhang->tonggd < 3999000) {
+                    $khachhang->phantram =  0.05;
+                } else if (4000000 <= $khachhang->tonggd && $khachhang->tonggd < 5999000) {
+                    $khachhang->phantram =  0.06;
+                } else if (6000000 <= $khachhang->tonggd && $khachhang->tonggd < 7999000) {
+                    $khachhang->phantram =  0.07;
+                } else if (8000000 <= $khachhang->tonggd && $khachhang->tonggd < 9999000) {
+                    $khachhang->phantram =  0.08;
+                } else if (10000000 <= $khachhang->tonggd && $khachhang->tonggd < 11999000) {
+                    $khachhang->phantram =  0.09;
+                } else {
+                    $khachhang->phantram =  0.1;
+                }
+                $khachhang->save();
+            }
         }
         return back();
     }

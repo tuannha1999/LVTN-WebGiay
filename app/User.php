@@ -53,6 +53,6 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function sanpham()
     {
-        return $this->belongsToMany(sanpham::class, 'yeuthich', 'id_user', 'id_sp')->withPivot('img', 'size');
+        return $this->belongsToMany(Sanpham::class, 'yeuthich', 'id_user', 'id_sp')->withPivot('img', 'size');
     }
 }
