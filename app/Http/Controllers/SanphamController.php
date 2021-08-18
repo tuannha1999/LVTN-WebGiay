@@ -133,10 +133,12 @@ class SanphamController extends Controller
         $new_product->tensp = $request->tensp;
         $new_product->gianhap =  0;
         $new_product->giaban = $request->giaban;
+        $new_product->gianhap_new = 0;
         $new_product->giakm = $request->giakm == null ? 0 : $request->giakm;
         $new_product->id_lsp = $request->lsp;
         $new_product->id_th = $request->th;
         $new_product->trangthai = $request->trangthai == null ? 0 : 1;
+        $new_product->gianhap_new = 0;
         $new_product->daban = 0;
         $new_product->save();
         if ($request->tags !== null) {

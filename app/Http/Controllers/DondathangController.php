@@ -289,7 +289,7 @@ class DondathangController extends Controller
                     $khachhang->phantram =  0.08;
                 } else if (10000000 <= $khachhang->tonggd && $khachhang->tonggd < 11999000) {
                     $khachhang->phantram =  0.09;
-                } else {
+                } else if (12000000 < $khachhang->tonggd) {
                     $khachhang->phantram =  0.1;
                 }
                 $khachhang->save();
@@ -461,7 +461,7 @@ class DondathangController extends Controller
                         $khachhang->phantram =  0.08;
                     } else if (10000000 <= $khachhang->tonggd && $khachhang->tonggd < 11999000) {
                         $khachhang->phantram =  0.09;
-                    } else {
+                    } else if (12000000 < $khachhang->tonggd) {
                         $khachhang->phantram =  0.1;
                     }
                     $khachhang->save();

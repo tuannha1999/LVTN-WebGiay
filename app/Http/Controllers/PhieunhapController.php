@@ -148,6 +148,7 @@ class PhieunhapController extends Controller
                     ]);
                     $soluong = Size::with('sanpham')->where('id_sp', $sp['productinfo']->id)->sum('soluong');
                     $save_gianhap = Sanpham::find($sp['productinfo']->id);
+                    $save_gianhap->gianhap_new = $sp['entryprice'];
                     $save_gianhap->gianhap = $save_gianhap->gianhap == 0 ? $sp['entryprice'] : (($save_gianhap->gianhap * $soluong) + ($sp['entryprice'] * $sp['quanty'])) / ($sp['quanty'] + $soluong);
                     $save_gianhap->save();
                     if ($req->nhapkho == 1) {
@@ -183,7 +184,7 @@ class PhieunhapController extends Controller
                 })->addColumn('gianhap', function ($size) {
                     $sp = Sanpham::where('id', $size->id_sp)->first();
                     return '<input type="number" id="price-' . $size->id_sp . $size->id  . '" required
-                     style="width: 100px;height: 30px;" value="' . $sp->gianhap . '">';
+                     style="width: 100px;height: 30px;" value="' . $sp->gianhap_new . '">';
                 })->addColumn('action', function ($size) {
                     // if (Session::has("Cart") != null) {
                     //     if (array_key_exists($size->id_sp  . $size->id, Session::get("Cart")->products)) {

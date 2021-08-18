@@ -22,7 +22,8 @@
                 <div class="col-md-6">
                     <label for="basic-url">Họ tên*</label>
                     <div class="input-group mb-3">
-                      <input type="text" class="form-control @error('hoten') is-invalid @enderror" id="basic-url" aria-describedby="basic-addon3" value="{{old('hoten')}}" name="hoten">
+                      <input type="text" class="form-control @error('hoten') is-invalid @enderror" id="basic-url" aria-describedby="basic-addon3"
+                      value="@if(Auth::check()&&Auth::user()->is_admin==0){{Auth::user()->name}} @else{{old('hoten')}}@endif" name="hoten">
                         @error('hoten')
                       <span class="invalid-feedback" role="alert">
                           <strong>{{ $message }}</strong>
@@ -34,7 +35,8 @@
                 <div class="col-md-6">
                     <label for="basic-url">Số điện thoại*</label>
                      <div class="input-group mb-3">
-                        <input type="number" class="form-control @error('sdt') is-invalid @enderror" id="basic-url" aria-describedby="basic-addon3" value="{{old('sdt')}}" name="sdt">
+                        <input type="text" class="form-control @error('sdt') is-invalid @enderror" id="basic-url" aria-describedby="basic-addon3"
+                         value="@if(Auth::check()&&Auth::user()->is_admin==0){{Auth::user()->sdt}} @else{{old('sdt')}}@endif" name="sdt">
                         @error('sdt')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
