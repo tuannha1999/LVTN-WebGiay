@@ -41,7 +41,7 @@
                 $('#list-phieunhap').DataTable({
                    processing: true,
                    serverSide: true,
-                   oder: false,
+                   order: false,
                    ajax : '{!! route('getdsPhieuNhap') !!}',
                    columns: [
                     { data: 'id', name: 'id',orderable: false },

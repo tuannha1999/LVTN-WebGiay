@@ -270,6 +270,7 @@ class DondathangController extends Controller
             $sanpham = Sanpham::find($sp->pivot->id_sp);
             $sanpham->daban += $sp->pivot->soluong;
             $sanpham->save();
+            //Tổng giá bán và Giá Nhập
             $tong_ban += $sp->pivot->giaban * $sp->pivot->soluong;
             $tong_nhap += $sanpham->gianhap * $sp->pivot->soluong;
         }
@@ -412,7 +413,6 @@ class DondathangController extends Controller
         );
         if (Cart::count() > 0) {
             $total_cart = str_replace(array(','), '', Cart::subtotal());
-            $loinhuan = 0;
             $new_donhang = new Dondathang();
             $new_donhang->hoten = $req->hoten != null ? $req->hoten : null;
             $new_donhang->sdt = $req->sdt != null ? $req->sdt : null;
@@ -428,13 +428,17 @@ class DondathangController extends Controller
             $new_donhang->tongtien = Session::get('tongtien');
             $new_donhang->ngaydat = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
             $new_donhang->save();
+            $tong_ban = 0;
+            $tong_nhap = 0;
             foreach (Cart::content() as $item) {
                 $price = $item->price - (($total_cart - session()->get('tongtien')) / $total_cart) * $item->price;
                 //Cộng sản phẩm đã bán
                 $sanpham = Sanpham::find($item->id);
                 $sanpham->daban += $item->qty;
                 $sanpham->save();
-                $loinhuan += $price - $sanpham->gianhap;
+
+                $tong_ban +=  $price * $item->qty;
+                $tong_nhap += $sanpham->gianhap * $item->qty;
 
                 $new_donhang->sanpham()->attach($item->id, [
                     'soluong' => $item->qty, 'giaban' => $price,
@@ -471,14 +475,14 @@ class DondathangController extends Controller
             $thongke = Thongke::where('ngaydat', Carbon::now('Asia/Ho_Chi_Minh')->toDateString())->first();
             if ($thongke != null) {
                 $thongke->doanhthu += Session::get('tongtien');
-                $thongke->loinhuan += $loinhuan;
+                $thongke->loinhuan += $tong_ban - $tong_nhap;
                 $thongke->donhang++;
                 $thongke->save();
             } else {
                 $thongke_new = new Thongke();
                 $thongke_new->ngaydat = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
                 $thongke_new->doanhthu = Session::get('tongtien');
-                $thongke_new->loinhuan = $loinhuan;
+                $thongke_new->loinhuan = $tong_ban - $tong_nhap;
                 $thongke_new->donhang = 1;
                 $thongke_new->save();
             }

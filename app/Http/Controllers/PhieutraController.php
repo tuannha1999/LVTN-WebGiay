@@ -10,6 +10,7 @@ use App\Sanpham;
 use App\Size;
 use App\Thongke;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
@@ -63,7 +64,8 @@ class PhieutraController extends Controller
     public function getDonhang(Request $request)
     {
         if ($request->ajax()) {
-            $donhang = Dondathang::all()->where('trangthai', 3);
+            $range = Carbon::now()->subDays(7);
+            $donhang = Dondathang::all()->where('trangthai', 3)->where('ngaydat', '>=', $range);
             return  DataTables::of($donhang)
                 ->addColumn('action', function ($donhang) {
                     return '<a href="' . URL('/admin/dsphieutra-addsanphamtra/' . $donhang->id) . '" class="link btn btn-success">Trả hàng</a>';
