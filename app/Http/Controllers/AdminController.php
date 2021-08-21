@@ -119,7 +119,7 @@ class AdminController extends Controller
             $request,
             [
                 'current-password' => 'required',
-                'new-password' => 'required|min:6|confirmed',
+                'new-password' => 'required|min:6|max:20|confirmed',
             ],
             [
                 'current-password.required' => 'Mật khẩu hiện tại không được để trống',

@@ -46,7 +46,7 @@
   
   </form>
     <div>
-    <a class="btn btn-link" href="{{ route('form-reset-password') }}" target="_blank"> Quên mật khẩu?</a>
+    <a class="btn btn-link" href="{{ route('form-reset-password') }}" > Quên mật khẩu?</a>
     </div>
     <br>
     <div>

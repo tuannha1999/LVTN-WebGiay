@@ -5,6 +5,7 @@ Quên mật khẩu
 @endsection
 
 <div class="container" >
+<hr>
 <br>
 <h2 class="title text-center ">ĐĂNG NHẬP</h2>
 <br>
@@ -33,10 +34,10 @@ Quên mật khẩu
     <br>
     </form>
     <br>
-
-    <a class="btn btn-link" href="{{ url('/dangnhap') }}">Quay lại</a>
     <br>
     <br>
+        <a href="#" onClick="history.go(-1);" class="link text-info"><i class="fas fa-chevron-left"></i> <span>Quay lại</span></a>
+   
     </div>
 </div>
 </div>

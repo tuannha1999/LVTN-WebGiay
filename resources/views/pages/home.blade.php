@@ -23,7 +23,7 @@ NT Store
                  {
                      $total+=$size->soluong;
                  }
-                 @endphp
+                @endphp
                 @if ($sp->loaisanpham->slug=='giay'&& $total>0)
                 <div class="productinfo text-center">
                         <a href="{{ url('chitiet-sanpham/'.$sp->id)}}" class="link">

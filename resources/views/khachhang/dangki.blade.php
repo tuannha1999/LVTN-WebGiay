@@ -62,16 +62,15 @@
     
     
     <button type="submit" class="btn btn-secondary " >Đăng kí</button>
-
     <br>
-    <a class="btn btn-link" href="{{ url('/dangnhap') }}">
-    Quay lại</a>
+    <br>
+    
+    <br>
+        <a href="#" onClick="history.go(-1);" class="link text-info"><i class="fas fa-chevron-left"></i> <span>Quay lại</span></a>
     
     
   </form>
-    <br>
-    <br>
-    
+  
   </div>
   </div>
 

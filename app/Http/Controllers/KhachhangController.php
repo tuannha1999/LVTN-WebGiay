@@ -230,18 +230,16 @@ class KhachhangController extends Controller
             $request,
             [
                 'name' => 'required',
-                'email' => 'required|email|unique:users,email',
-                'sdt' => 'required|unique:users,sdt|regex:/(0)[3-9][0-9]{8}/|max:10',
+                'email' => 'required|email',
+                'sdt' => 'required|regex:/(0)[3-9][0-9]{8}/|max:10',
             ],
             [
                 'name.required' => 'Vui lòng nhập tên thành viên',
 
                 'email.required' => 'Vui lòng nhập email',
                 'email.email' => 'Email không hợp lệ',
-                'email.unique' => 'Email đã tồn tại',
 
                 'sdt.required' => 'Vui lòng nhập số điện thoại',
-                'sdt.unique' => 'Số điện thoại đã tồn tại',
                 'sdt.regex' => 'Số điện thoại không hợp lệ',
                 'sdt.max' => 'Số điện thoại không hợp lệ',
             ]
@@ -303,7 +301,7 @@ class KhachhangController extends Controller
     public function dsDonhangganday($id)
     {
         $loai_sp = Loaisanpham::all();
-        $donhang = Dondathang::where('id_kh', Auth::user()->id)->get();
+        $donhang = Dondathang::where('id_kh', Auth::user()->id)->orderby('id', 'desc')->get();
         //dd($donhang);
         return view('khachhang.lichsumuahang', compact('loai_sp', 'donhang'));
     }

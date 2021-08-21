@@ -18,11 +18,6 @@ Giới thiệu
         vệ sinh cũng như mua hàng tốt nhất. Ở đây, chúng tôi không bán hàng fake hay super fake kém chất lượng mà chỉ có hàng replica 1:1 hoặc siêu cấp đạt chuẩn. 
         Cam kết không thổi giá, không tráo chất lượng mẫu mã, hàng có sao thì bán vậy.
         </p>
-        <p class="font-weight-normal">
-        NT Store luôn muốn mang đến chất lượng tốt nhất cho người tiêu dùng, tư vấn kỹ cũng như hướng dẫn một số mẹo hay để bạn phân biệt, 
-        vệ sinh cũng như mua hàng tốt nhất. Ở đây, chúng tôi không bán hàng fake hay super fake kém chất lượng mà chỉ có hàng replica 1:1 hoặc siêu cấp đạt chuẩn. 
-        Cam kết không thổi giá, không tráo chất lượng mẫu mã, hàng có sao thì bán vậy.
-        </p>
         <p class="font-weight-bold h5">Về thương hiệu</p>
         <p class="font-weight-normal">
         NT Store đang cung cấp cũng như order nhiều đôi giày sneaker của các thương hiệu nổi tiếng như Nike, Adidas,… với đa dạng mẫu mã, màu sắc cũng như fullsize. 
@@ -45,6 +40,10 @@ Giới thiệu
         Đối với các loại phụ kiện sẽ có mức giá thấp hơn dao động từ 10.000 – 400.000 VND.
         </li>
         <br>
+        <p class="font-weight-bold h5">Về bảo hành</p>
+        <p class="font-weight-normal">
+        Sau khi khách hàng mua sản phẩm. Trong vòng 7 ngày, nếu sản phẩm có bị lỗi hay gặp vấn đề gì thì khách hàng có thể liên hệ đến cửa hàng để được giải quyết.        </p>
+        <p class="font-weight-normal">
         <p class="font-weight-bold h5">Về phát triển thương hiệu</p>
         <p class="font-weight-normal">
         Tuy rằng, NT Store chỉ là 1 shop giày sneaker nhỏ trong vô vàn các shop giày khác, nhưng không vì thế mà tính chuyên nghiệp của chúng tôi nhỏ. 

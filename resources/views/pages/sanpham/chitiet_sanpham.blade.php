@@ -168,7 +168,7 @@
         }
     });
 
-    //them giỏ hàng
+    //thêm giỏ hàng
 $(document).ready(function() {
         $(".btn-submit").click(function(e){
             e.preventDefault();
@@ -217,7 +217,7 @@ $(document).ready(function() {
     });
 
 
-////
+//lấy sản phẩm vừa xem
     $(function(){
         //luu id sp vao storage
         let idProduct=$("#content_product").attr('data-id');
@@ -241,7 +241,7 @@ $(document).ready(function() {
         }
     });
 
-
+//hiển thị ds sp vừa xem
     $(function(){
         $.ajaxSetup({
                     headers: {
