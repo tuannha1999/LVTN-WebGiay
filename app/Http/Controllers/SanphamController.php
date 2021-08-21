@@ -289,31 +289,7 @@ class SanphamController extends Controller
      */
     public function update()
     {
-        $sp_yeuthich = User::find(Auth::user()->id);
-        dd($sp_yeuthich->sanpham);
-        // $donhang = Dondathang::orderby('trangthai', 'asc')->get();
-        // foreach ($donhang as $item) {
-        //     echo $item->hoten . '-' . $item->trangthai . '<br>';
-        // }
-        //dd(Cart::content());
-        // $donhang = Dondathang::find(100177);
-        // $tong_sl = 0;
-        // foreach ($donhang->sanpham as $dh) {
-        //     $tong_sl += $dh->pivot->soluong;
-        // }
-        // echo $tong_sl;
-        //dd(Auth::check());
-        // $range = Carbon::now()->subDays(7);
-        // $thongke = Thongke::where('ngaydat', '>=', $range)->get();
-        // return $thongke;
-        //session()->forget(['tongtien', 'tiengiamma', 'daapdung', 'tiengiamma', 'dagiamtv']);
-        // $de = Nhacungcap::where('id', 1000006)->delete();
-        //session()->forget('Phieutra');
-        //dd(session()->get('Phieutra'));
-        //dd(session()->get('tongtien'));
-        // foreach (Session::get('Phieutra')->products as $k => $item) {
-        //     echo $k;
-        // }
+        dd(session()->all());
     }
 
     public function locLoaisp($loai)
